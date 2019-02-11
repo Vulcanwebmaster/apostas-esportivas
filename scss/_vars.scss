@@ -1,0 +1,33 @@
+$blue: #2f8ecc;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #c5007b;
+$red: #920808;
+$orange: #fd7e14;
+$yellow: #f7c63f;
+$green: #73b21a;
+$teal: #20c997;
+$cyan: #17a2b8;
+$black: #000000;
+$cinza: #b7b7b7;
+
+$dark: $black;
+
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+);
+
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1140px
+);
+
+$colors: (
+        "default": $cinza,
+);

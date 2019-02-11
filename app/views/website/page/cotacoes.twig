@@ -1,0 +1,30 @@
+{% extends 'website/layout.twig' %}
+
+{% block main %}
+
+    <h1 class="page-title">Cotações</h1>
+
+    {% for id, g in grupos %}
+        <h3 class="page-subtitle">{{ g }}</h3>
+        <div class="container-fluid">
+            <div class="row pt-3">
+                {% for c in cotacoes %}
+                    {% if id == c.getGrupo() %}
+                        <div class="col-3 col-sm-4 col-6 mb-3">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    <div><b>{{ c.getTitulo() }}</b></div>
+                                    <small>{{ c.getSigla() }}</small>
+                                </div>
+                                <div class="card-body pb-0">
+                                    {{ c.getDescricao()|raw }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

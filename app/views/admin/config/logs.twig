@@ -1,0 +1,144 @@
+{% extends 'admin/layout.twig' %}
+
+{% block list %}
+
+    {% if busca.getCount() %}
+        <div class="panel">
+            <div class="panel-body p-0">
+                <div class="table-responsive m-0">
+                    <table class="m-0 table table-minified table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th width="80" class="text-center">ID</th>
+                            <th width="120" class="text-center">Data/Hora</th>
+                            <th>Usuário</th>
+                            <th>Referência</th>
+                            <th width="120">IP</th>
+                            <th>Descrição</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for v in busca.getRegistros() %}
+                            <tr>
+                                <td class="text-center">{{ v.getId() }}</td>
+                                <td class="text-center">{{ v.getInsert(true)|replace({' ': '<br />'})|raw }}</td>
+                                {% if v.getUserNome() %}
+                                    <td>{{ v.getUserNome() }} ({{ v.getUserLogin() }})</td>
+                                {% else %}
+                                    <td>Servidor</td>
+                                {% endif %}
+                                <td>{{ v.getReferencia() }}</td>
+                                <td class="text-center">{{ v.getIp() }}</td>
+                                <td>{{ v.getDescricao() }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer text-right">{{ busca|raw }}</div>
+        </div>
+    {% elseif message %}
+        <div class="alert alert-warning">
+            <i class="fa fa-warning"></i> {{ message }}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <i class="fa fa-warning"></i> Nenhum registro encontrado
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block main %}
+    <form method="post" class="page-form-search panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group col-md-1 col-xs-3">
+                    <label>ID</label>
+                    <input type="number" class="form-control" name="id">
+                </div>
+                <div class="form-group col-md-4 col-xs-9">
+                    <label>Usuário</label>
+                    <select name="user" class="form-control chosen">
+                        <option value>-- Todos --</option>
+                        {{ optUsers() }}
+                    </select>
+                </div>
+                <div class="form-group col-md-3 col-xs-12">
+                    <label>Referência</label>
+                    <input type="text" name="referencia" class="form-control" maxlength="50"/>
+                </div>
+                <div class="clearfix hidden-md hidden-lg"></div>
+                <div class="form-group col-md-2 col-xs-6">
+                    <label>Início</label>
+                    <input type="date" class="form-control" name="dataInicial" placeholder="{{ 'now'|date('Y-m-01') }}">
+                </div>
+                <div class="form-group col-md-2 col-xs-6">
+                    <label>Fim</label>
+                    <input type="date" class="form-control" name="dataFinal" placeholder="{{ 'now'|date('Y-m-t') }}">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label>Descrição</label>
+                    <input type="text" class="form-control" name="search"/>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            <button type="submit" class="btn btn-info">
+                <i class="fa fa-search"></i> Pesquisar
+            </button>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">Logs</h4>
+                    <div class="pull-right m-t-minus-9">
+                    </div>
+                </div>
+                <div class="panel-body page-container panel-table">
+                    <div class="table-responsive m-t-md hide" style="width: 100%;">
+                        <table class="table table-minified table-bordered table-striped list-table">
+                            <thead>
+                            <tr>
+                                <th>Data/Hora</th>
+                                <th>Usuário</th>
+                                <th>IP</th>
+                                <th>Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>01/05/2016 ás 15:05</td>
+                                <td>hebert</td>
+                                <td>127.0.0.1</td>
+                                <td class="text-center">Adicionou 18 jogos</td>
+                            </tr>
+                            <tr>
+                                <td>02/05/2016 ás 10:12</td>
+                                <td>hebert</td>
+                                <td>127.0.0.1</td>
+                                <td class="text-center">Adicionou 5 jogos</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $('<div />').adminPage({
+            formSearch: '.page-form-search',
+            container: '.page-container',
+        });
+
+    </script>
+{% endblock %}

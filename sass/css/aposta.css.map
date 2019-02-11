@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAII,wDAAkB,CAEhB,QAAQ,CAAE,QAAQ,CAClB,gBAAgB,CAAE,OAAO,CAEzB,uEAAiB,CACf,gBAAgB,CAAE,OAAoB",
+"sources": ["../pages/aposta.scss"],
+"names": [],
+"file": "aposta.css"
+}

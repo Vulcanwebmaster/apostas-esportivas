@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8"/>
+
+    {{ seo_header() }}
+
+    <link rel="stylesheet" href="admfiles/plugins/bootstrap/css/bootstrap.min.css" />
+
+    <title>Banca</title>
+
+    <style>
+        @page {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            width: 95%;
+            margin: 10px auto;
+            -webkit-print-color-adjust: exact;
+        }
+
+        table tbody tr td {
+            font-size: 13px;
+            vertical-align: middle !important;
+        }
+
+        .panel-body {
+            padding: 0;
+        }
+
+        .panel-body .table {
+            margin-bottom: 0;
+        }
+
+        @media print {
+            td.btn-info {
+                background-color: #5bc0de !important;
+                -webkit-print-color-adjust: exact;
+                color: #FFF !important;
+            }
+
+            td.btn-danger {
+                background-color: #d9534f !important;
+                -webkit-print-color-adjust: exact;
+                color: #FFF !important;
+            }
+
+            td.btn-success {
+                background-color: #5cb85c !important;
+                -webkit-print-color-adjust: exact;
+                color: #FFF !important;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+{% if result %}
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Fluxo de caixa</h3>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped list-table table-minified">
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Apostas</th>
+                    <th>Jogos</th>
+                    <th>Valor em apostas</th>
+                    <th>Apostas prêmiadas</th>
+                    <th>Líquido</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data, value in result %}
+                    {% set liquido = value.valorApostas - value.pagoApostas %}
+                    <tr>
+                        <td class="text-center">{{ value.fdata }}</td>
+                        <td class="text-center">{{ value.countApostas }}</td>
+                        <td class="text-center">{{ value.qtd_jogos }}</td>
+                        <td class="text-center btn-info">
+                            R$ {{ value.valorApostas|number_format(2,',','.') }}
+                        </td>
+                        <td class="text-center btn-danger">
+                            R$ {{ value.pagoApostas|number_format(2,',','.') }}
+                        </td>
+                        <td class="text-center btn-{{ liquido > 0 ? 'success' : 'danger' }}">
+                            R$ {{ liquido|number_format(2,',','.') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{{ body|raw }}
+
+</body>
+</html>
+    

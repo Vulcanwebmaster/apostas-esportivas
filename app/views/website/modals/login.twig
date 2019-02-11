@@ -1,0 +1,42 @@
+<form id="modal-login" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    Entrar
+                </h3>
+                <div class="close" data-dismiss="modal">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Login/E-mail</label>
+                    <input type="text" class="form-control" name="username" required/>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" class="form-control" name="password" required/>
+                </div>
+                <button type="submit" class="btn btn-danger btn-block">
+                    <i class="fa fa-check"></i> Entrar
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $('#modal-login')
+        .adminPage({
+            autoSearch: false,
+            controller: 'login',
+            module: 'entrar',
+            alertSuccess: true,
+        })
+        .on("success", function (event, e) {
+            if (e.result == 1) {
+                window.location.href = e.url;
+            }
+        });
+
+</script>

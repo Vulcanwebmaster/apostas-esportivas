@@ -1,0 +1,61 @@
+{% extends 'admin/layout.twig' %}
+
+{% block links %}
+    <button type="button" class="btn btn-primary" onclick="$('.admpage-form').setValues();">
+        <i class="fa fa-plus"></i> Novo Lançamento
+    </button>
+{% endblock %}
+
+{% block main %}
+
+    <form class="modal fade admpage-form">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close" data-dismiss="modal">&times;</div>
+                    <h3 class="modal-title">Novo Lançamento</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>Data inicial</label>
+                            <input type="date" name="datainicio" class="form-control" required/>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Data final</label>
+                            <input type="date" name="datafim" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Valor do período</label>
+                        <input type="text" name="valor" class="form-control mask-valor input-lg"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-danger" data-dismiss="modal">
+                        <i class="fa fa-times"></i> Cancelar
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Lançar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $('.admpage-form')
+            .adminPage({
+                container: '.admpage-container',
+            });
+
+    </script>
+
+{% endblock %}

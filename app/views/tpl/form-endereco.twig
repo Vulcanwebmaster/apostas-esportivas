@@ -1,0 +1,39 @@
+<div class="endereco-group">
+    <input type="hidden" name="latitude"/>
+    <input type="hidden" name="longitude"/>
+    <input type="hidden" name="zoom"/>
+    <div class="row">
+        <div class="form-group col-lg-2 col-xs-12 col-12">
+            <label>CEP/ZIPCODE</label>
+            <input type="text" name="cep" class="form-control mask-cep cnpj-cep end-cep"/>
+        </div>
+        <div class="form-group col-lg-5 col-xs-12 col-12">
+            <label>Rua/Street</label>
+            <input type="text" name="logradouro" class="form-control cnpj-logradouro end-logradouro" maxlength="80"/>
+        </div>
+        <div class="form-group col-lg-2 col-md-3 col-xs-12 col-12">
+            <label>Número</label>
+            <input type="text" name="numero" class="form-control cnpj-numero end-numero" maxlength="20"/>
+        </div>
+        <div class="form-group col-lg-3 col-md-9 col-xs-12 col-12">
+            <label>Bairro</label>
+            <input type="text" name="bairro" class="form-control cnpj-bairro end-bairro" maxlength="50"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6 col-xs-12 col-12">
+            <label>Complemento</label>
+            <input type="text" name="complemento" class="form-control cnpj-complemento end-complemento" maxlength="80"/>
+        </div>
+        <div class="form-group col-lg-2 col-md-3 col-xs-12 col-12">
+            <label>Estado</label>
+            <select name="estado" class="form-control cnpj-uf end-estado end-uf" required>
+                {{ optEstados() }}
+            </select>
+        </div>
+        <div class="form-group col-lg-4 col-md-9 col-xs-12 col-12">
+            <label>Cidade</label>
+            <select name="cidade" class="form-control cnpj-cidade end-cidade" ></select>
+        </div>
+    </div>
+</div>

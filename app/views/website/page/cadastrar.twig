@@ -1,0 +1,63 @@
+{% extends 'website/layout.twig' %}
+
+{% block main %}
+
+    <h1 class="page-title">
+        <i class="fa fa-edit"></i> Cadastrar
+    </h1>
+
+    <form action="">
+        <h5 class="page-subtitle">Dados bancários</h5>
+        <div class="pt-3 pb-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-8">
+                        <div>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>Banco</label>
+                                        <select name="banco" class="form-control">
+                                            <option value> -- Selecione --</option>
+                                            {{ bancos }}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>N.º da Agência</label>
+                                        <input type="text" class="form-control" name="agencia">
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>N.º da conta</label>
+                                        <input type="text" class="form-control" name="conta">
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-12 col-12 form-group">
+                                    <label>Tipo de conta</label>
+                                    <select name="contatipo" class="form-control">
+                                        <option>Poupança</option>
+                                        <option>Corrente</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-sm-12 col-12 form-group">
+                                    <label>Variação</label>
+                                    <input type="text" name="variacao" class="form-control" maxlength="10"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-right pb-3 px-3">
+            <button class="btn btn-danger" type="submit">
+                <i class="fa fa-check"></i> Concluír
+            </button>
+        </div>
+    </form>
+
+{% endblock %}

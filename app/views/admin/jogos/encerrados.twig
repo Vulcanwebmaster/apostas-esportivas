@@ -1,0 +1,89 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+{% include 'admin/inc/modal-placar.twig' %}
+
+<form class="admpage-form-search panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <label><b>Data de Cadastro</b></label>
+                <span class="pointer" data-toggle="popover" data-trigger="hover"
+                      data-content="Digite ou selecione a data de cadastro."
+                      data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                <input type="date" name="datacadastro" class="form-control">
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <label><b>Data do Jogo</b></label>
+                <span class="pointer" data-toggle="popover" data-trigger="hover"
+                      data-content="Digite ou selecione a data do jogo."
+                      data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                <input type="date" name="data" class="form-control">
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <label><b>Nome da Equipe</b></label>
+                <span class="pointer" data-toggle="popover" data-trigger="hover"
+                      data-content="Digite o nome da equipe"
+                      data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                <input type="text" name="search" class="form-control">
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <label><b>Campeonato</b></label>
+                <span class="pointer" data-toggle="popover" data-trigger="hover"
+                      data-content="Selecione um campeonato"
+                      data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                <select name="campeonato" class="form-control" data-options="admin/cadastros/campeonatos/options">
+                    <option value> -- Selecione --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer text-right">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-search"></i> Buscar
+        </button>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 ">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title">Jogos Encerrados</h4>
+            </div>
+            <div class="panel-body panel-table page-container">
+                <div class="alert alert-info no-margin">
+                    Selecione o período.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+    var page = $('<div />').adminPage({
+        form: '#form-jogo',
+        container: '.page-container',
+        formSearch: '.admpage-form-search',
+        deleteAction: url('jogos/jogo/excluir'),
+        autoSearch: false,
+    });
+
+    $(document).on('click', '.btn[data-redefinir]', function () {
+        $('.modal-placar')
+            .setValues({
+                jogo: $(this).data('redefinir'),
+            })
+            .find('.jogo-times')
+            .html($(this).data('title'));
+    });
+
+</script>
+
+{% endblock %}

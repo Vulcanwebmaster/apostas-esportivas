@@ -1,0 +1,11 @@
+{% extends 'website/layout.twig' %}
+
+{% block main %}
+
+    <h1 class="page-title">{{ pagina.getTitle()|raw }}</h1>
+
+    <div class="p-3">
+        {{ pagina.getTexto()|raw }}
+    </div>
+
+{% endblock %}

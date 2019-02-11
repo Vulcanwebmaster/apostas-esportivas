@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {{ seo_header() }}
+
+    <style>
+
+        html, body {
+            background-color: white;
+            width: 100%;
+            height: 100%;
+        }
+
+        #form-imagens {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            height: 100vh;
+            width: 100%;
+            display: block;
+            background: #f9f9f9;
+        }
+
+        #form-imagens.hover:after {
+            pointer-events: none;
+            display: block;
+            position: absolute;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            content: '';
+            background: #ededed url('img/drop-files.png') no-repeat center;
+        }
+
+        .container-imagens {
+            min-height: 100vh;
+        }
+
+        .container-imagens.empty {
+            background: url('img/drop-files.png') no-repeat center;
+        }
+
+        .box {
+            margin: 15px 0;
+        }
+
+        .box-content {
+            height: 150px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .box-placeholder:before {
+            content: 'Soltar aqui \21F2';
+            font-size: 15px;
+            text-align: center;
+            display: block;
+            height: 150px;
+            background-color: rgba(255, 255, 0, 0.2);
+            border-radius: 10px;
+            line-height: 150px;
+        }
+
+        .box-image {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: inherit;
+        }
+
+        .box-actions {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .box.ui-sortable-helper .box-content {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .box.btn-add .box-content {
+            background: transparent url('img/btn-add-image.png') no-repeat center;
+            cursor: pointer;
+        }
+
+        .box.btn-add .box-actions,
+        .box.box-new .box-actions {
+            display: none;
+        }
+
+        .box.btn-add .box-content {
+            border: none;
+        }
+
+        .adminpage .modal-content {
+            position: relative;
+        }
+
+        .adminpage.adminpage-loading .modal-content:before {
+            content: '';
+            background: url('dashboard/images/loadingImage.gif') no-repeat center;
+            background-size: 50px;
+            z-index: 100;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="hide box-default">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="box col-xs-6 col-sm-3 col-md-3 col-lg-2">
+                <div class="box-content">
+                    <div class="box-image"></div>
+                    <div class="box-actions">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-action="status"><i class="fa fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" data-action="editar"><i
+                                        class="fa fa-edit"></i></button>
+                            <button type="button" class="btn btn-danger" data-action="excluir"><i
+                                        class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="form-imagens" onsubmit="return false;">
+    <input type="hidden" name="id"/>
+
+    <!-- Container dos Registros -->
+    <div class="container-fluid">
+        <div class="row container-imagens"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title">Salvar Imagem</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Crédito</label>
+                        <input type="text" name="title" maxlength="100" class="form-control"/>
+                    </div>
+                    <div>
+                        <label>Legenda</label>
+                        <textarea name="legenda" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-7 text-left">
+                            <label for="inputfile_56e8632d98e53" class="btn-success btn btn-inputfile">
+                                <span><i class="fa fa-image"></i> Imagem <span></span></span>
+                                <input type="file" name="imagem[]" id="inputfile_56e8632d98e53" accept="image/*"
+                                       multiple=""/>
+                            </label>
+                        </div>
+                        <div class="col-xs-5">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{ seo_footer() }}
+<script>
+
+    var $form = $('#form-imagens')
+        .adminPage({
+            searchValues: {{ json(vars) }},
+            saveValues: {{ json(vars) }},
+            container: '.container-imagens',
+        });
+
+    var imgAdd = $('.imagem.add').remove();
+    var galeria = $('.container-imagens');
+    var defValues = {ref: '{{ vars['ref'] }}', refid: '{{ vars['refid'] }}'};
+    var tpl = $('.box-default .box').first();
+    var $modal = $form.find('.modal');
+
+    galeria.append(tpl.clone().addClass('block btn-add'));
+
+    $('.model').each(function () {
+        $(body).prepend($(this));
+    });
+
+    $form.on('searchComplete', function (event, e) {
+        try {
+            var json = $.parseJSON(e.responseText);
+
+            galeria.find('.box').filter(":not(.block)").remove();
+
+            $.each(json, function (index, values) {
+                var img = tpl.clone();
+                img.data('values', values);
+                img.find('.box-image').css({backgroundImage: 'url("' + values.source + '")'});
+                if (values.status == 1) {
+                    img.find('.fa-eye').removeClass('fa-eye-slash');
+                } else {
+                    img.find('.fa-eye').addClass('fa-eye-slash');
+                }
+                galeria.append(img);
+            });
+
+            if (galeria.find('.box:not(.block)').length == 0) {
+                galeria.addClass('empty');
+            }
+
+        } catch (e) {
+        }
+    });
+
+    function reloadlista() {
+        $form.reloadSearch();
+        $modal.modal('hide');
+    }
+
+    galeria.find(".btn-add").click(novaImagem);
+
+    function novaImagem() {
+        $form.find('[name], [data-name]').val('');
+        $form.find('[type=file]').prop({'name': 'imagem[]', 'multiple': true, 'require': true});
+        $form.find(".form-title").html('Nova imagem');
+        $modal.modal('show');
+    }
+
+    $form.on('click', '[data-action="excluir"]', function () {
+
+        var btn = $(this);
+        var box = btn.parents('.box');
+
+        if (btn.data('status') !== false) {
+            if (confirm('Deseja excluir essa imagem?')) {
+
+                var id = box.attr('data-id');
+                var values = defValues;
+
+                box.addClass('no-mouse');
+                values.id = box.data("values")['token'];
+
+                box.stop().animate({opacity: 0.5}, 'slow').find(".btn").data('status', false);
+                $.post(url('imagens/excluir'), values).always(function () {
+                    box.stop().animate({opacity: 0}, 'slow', function () {
+                        $(this).remove();
+                    });
+                });
+
+            }
+        }
+    });
+
+    $form.on('click', '[data-action="status"]', function () {
+        var btn = $(this);
+        if (btn.data('status') !== false) {
+            btn.data('status', false);
+            var box = $(this).parents('.box');
+            var id = box.attr('data-id');
+            var icon = $(this).children().toggleClass('fa-eye-slash fa-eye');
+            var values = defValues;
+
+            values.id = box.data("values")['token'] || 0;
+
+            icon.toggleClass('fa-eye-slash fa-eye');
+
+            $.post(url('imagens/status'), values, function (e) {
+                if (e.result == 1) {
+                    if (e.status == 1) {
+                        icon.addClass('fa-eye').removeClass('fa-eye-slash');
+                    } else {
+                        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                    }
+                }
+                btn.data('status', true);
+            }, 'json');
+        }
+    });
+
+    $form.on('click', '[data-action="editar"]', function () {
+        var values = $(this).parents('.box').data('values');
+        $form.setValues(values);
+        $modal.modal('show');
+        $form.find(".form-title").html('Editar imagem');
+        $form.find('[type=file]').attr({'multiple': false, 'name': 'imagem', 'require': false});
+    });
+
+    galeria.sortable({
+        items: '.box:not(.btn-add)',
+        cancel: '.box.btn-add',
+        handle: '.box-image',
+        placeholder: 'box-placeholder ' + tpl.attr('class'),
+        update: function (e) {
+            var values = defValues;
+            values.imagens = [];
+            galeria.find('.box:not(.btn-add):not(.box-new)').each(function () {
+                values.imagens.push($(this).data('values').id);
+            });
+            $.post(url('imagens/ordenar'), values);
+        }
+    });
+
+    $(function () {
+
+        var holder = $('#form-imagens')[0];
+        var tests = {
+            filereader: typeof FileReader != 'undefined',
+            dnd: 'draggable' in document.createElement('span'),
+            formdata: !!window.FormData,
+            progress: "upload" in new XMLHttpRequest,
+            size: 1024 * 1024,
+        };
+        var acceptedTypes = {
+            'image/png': true,
+            'image/jpeg': true,
+            'image/gif': true
+        };
+        var progress = document.getElementById('uploadprogress');
+        var fileupload = document.getElementById('upload');
+
+        function previewfile(file) {
+            var img = tpl.clone();
+
+            if (tests.filereader === true && acceptedTypes[file.type] === true && tests.size >= file.size) {
+
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    img.addClass('box-new');
+                    img.find('.box-image').css({backgroundImage: 'url("' + event.target.result + '")'});
+                    galeria.append(img);
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            return img;
+        }
+
+        function readfiles(files) {
+            for (var i = 0; i < files.length; i++) {
+
+                var file = files[i];
+                var formData = tests.formdata ? new FormData() : null;
+
+                if (tests.size < file.size) {
+                    alert('Selecione imagens de no máximo 1MB.');
+                } else if (acceptedTypes[file.type] != true) {
+                    alert('Selecione apenas arquivos do tipo imagem (gif, png, jpg)');
+                } else if (formData) {
+
+                    var img = previewfile(file);
+
+                    // Dados
+                    formData.append('ref', defValues.ref);
+                    formData.append('refid', defValues.refid);
+                    formData.append('imagem', files[i]);
+
+                    // now post a new XHR request
+                    var xhr = new XMLHttpRequest();
+                    var _url = url(CONTROLLER + '/upload', undefined, 'admin');
+
+                    xhr.open('POST', _url);
+
+                    // Completou o envio
+                    xhr.onload = function (e) {
+                        try {
+                            var json = $.parseJSON(e.srcElement.response);
+                            if (json.result == 1) {
+                                img.data("values", json.dados);
+                                img.find('.box-image').css({backgroundImage: 'url("' + json.dados.source + '")'});
+                                img.removeClass('box-new');
+                            } else {
+                                alert(e.message);
+                                img.remove();
+                            }
+                        } catch (ex) {
+                            $form.reloadSearch();
+                        }
+                    };
+
+                    // Progresso
+                    if (tests.progress) {
+                        img.css({opacity: 0.01});
+                        xhr.upload.onprogress = function (event) {
+                            if (event.lengthComputable) {
+                                var complete = event.loaded / event.total * 100 | 0;
+                                img.css({opacity: complete});
+                            }
+                        }
+                    }
+
+                    // Enviando
+                    xhr.send(formData);
+
+                }
+            }
+        }
+
+        if (tests.dnd) {
+            holder.ondragover = function () {
+                $(this).addClass('hover');
+                return false;
+            };
+            holder.ondragend = function () {
+                $(this).removeClass('hover');
+                return false;
+            };
+            $(holder).on('dragleave', holder.ondragend);
+            holder.ondrop = function (e) {
+                $(this).removeClass('hover');
+                e.preventDefault();
+                readfiles(e.dataTransfer.files);
+            }
+        }
+
+
+    });
+
+</script>
+
+</body>
+</html>

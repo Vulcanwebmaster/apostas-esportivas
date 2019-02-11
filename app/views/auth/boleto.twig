@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <base href="{{ base_url() }}/"/>
+
+    <meta charset="UTF-8">
+    
+    <!-- Title -->
+    <title>Escritório Virtual</title>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Admin Dashboard Template"/>
+    <meta name="keywords" content="admin,dashboard"/>
+    <meta name="author" content="Steelcoders"/>
+
+    <link rel="icon" type="image/png" href="img/favicon.png"/>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="backgroundImage" style="background: #540566 !important"></div>
+
+<section id="login" class="boleto-page">
+    <div class="container">
+        <div class="row linha-flex">
+            <div class="col-xs-12">
+
+                <div class="login__logo">
+                    <img src="{{ dados().imgCapa(true, 'logo').getSource(true) }}" alt="Logo">
+                </div>
+                <div class="site">
+                    {{config('dominio')}}
+                </div>
+                <div class="login__box">
+                    <div class="icone">
+                        <i class="fa fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="texto">
+                        <p class="msg">Para ter acesso ao sistema você precisar efutar o pagamento do pré-cadastro.</p>
+                        <p class="info">* Caso você tenha efetuado o pagamento, aguarde o pagamento ser confirmado e
+                            tente novamente mais tarde.</p>
+                    </div>
+                    <div class="acoes">
+                        <a href="boleto" class="btn btn-roxo"><i class="fa fa-print"></i>Imprimir Boleto</a>
+                        <a href="entrar/logout" class="btn btn-roxo"><i class="fa fa-sign-out"></i>Sair</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{{seo_footer()}}
+<script src="cdn/js/jquery.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
+

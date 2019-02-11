@@ -1,0 +1,461 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-white">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ apostasInfos['totalApostas']?:0 }}</p>
+                        <span class="info-box-title">Total de apostas hoje</span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-line-chart"></i>
+                    </div>
+                    <div class="info-box-progress">
+                        <div class="progress progress-xs progress-squared bs-n">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-white">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p>R$
+                            <span class="counter">{{ apostasInfos.valorApostas|number_format(2, ',', '.') }}</span>
+                        </p>
+                        <span class="info-box-title">Total apostado hoje</span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <div class="info-box-progress">
+                        <div class="progress progress-xs progress-squared bs-n">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-white">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p>R$
+                            <span class="counter">{{ apostasInfos.retorno|number_format(2, ',', '.') }}</span>
+                        </p>
+                        <span class="info-box-title">Possível retorno de hoje</span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <div class="info-box-progress">
+                        <div class="progress progress-xs progress-squared bs-n">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row linha-cadastros">
+
+        <div class="col-md-15 col-sm-12 col-xs-12 width-ipad-pro width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ resumoCadastros.noDia ?? 0 }}</p>
+                        <span class="info-box-title"
+                              style="font-size : 13px !important"> Total de cadastros do dia </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-15 col-sm-12 col-xs-12 width-ipad-pro width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ resumoCadastros.ontem ?? 0 }}</p>
+                        <span class="info-box-title"
+                              style="font-size : 13px !important"> Total de cadastros de ontem </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-15 col-sm-12 col-xs-12 width-ipad-pro width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ resumoCadastros['7dias'] ?? 0 }}</p>
+                        <span class="info-box-title" style="font-size : 13px !important"> Total de cadastros dos últimos 7 dias </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-15 col-sm-12 col-xs-12 width-ipad-pro width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ resumoCadastros['noMes'] ?? 0 }}</p>
+                        <span class="info-box-title"
+                              style="font-size : 13px !important"> Total de cadastros do mês </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-15 col-sm-12 col-xs-12 width-ipad-pro width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ resumoCadastros['total'] ?? 0 }}</p>
+                        <span class="info-box-title"
+                              style="font-size : 13px !important"> Total de cadastros geral </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">R$ {{ resumoCadastros['creditos']|number_format(2, ',', '.') }}</p>
+                        <span class="info-box-title"> Crédito total do sistema </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-usd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">R$ {{ resumoMes.valor|number_format(2, ',', '.') }}</p>
+                        <span class="info-box-title"> Total apostado no mês </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-angle-double-up text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">R$ {{ resumoMes.premio|number_format(2, ',', '.') }}</p>
+                        <span class="info-box-title"> Prêmios no mês </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-angle-double-down text-danger"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 width-note">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats {{ resumoMes.liquido > 0 ? 'text-info' : 'text-danger' }}">
+                        <p class="counter">R$ {{ resumoMes.liquido|number_format(2, ',', '.') }}</p>
+                        <span class="info-box-title"> Saldo do mês </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-usd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row hide">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter" style="font-size : 24px !important">R$ 100,00</p>
+                        <span class="info-box-title"> Depósitos do dia </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-usd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter" style="font-size : 24px !important">R$ 100,00</p>
+                        <span class="info-box-title"> Saques do dia </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-usd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter" style="font-size : 24px !important">R$ 100,00</p>
+                        <span class="info-box-title"> Lucro do dia </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-usd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter" style="font-size : 24px !important">R$ 100,00</p>
+                        <span class="info-box-title"> Comissões do dia </span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-usd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row hide">
+
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Pesquisar Aposta</h4>
+                </div>
+                <div class="panel-body">
+                    <form method="" class="form-inline" action="">
+
+                        <div class="form-group">
+                            <input class="form-control" name="search" placeholder="Código da aposta..."/>
+
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-danger" name="serachSubmit"><i class="fa fa-search"></i> Pesquisar
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Encontrar Cambista</h4>
+                </div>
+                <div class="panel-body">
+                    <form method="" class="form-inline" action="">
+
+                        <div class="form-group">
+                            <input class="form-control" name="search" placeholder="Código do Cambista..."/>
+
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-info" name="serachSubmit"><i class="fa fa-search"></i> Pesquisar
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Encontrar Jogo</h4>
+                </div>
+                <div class="panel-body">
+                    <form method="" class="form-inline" action="">
+
+                        <div class="form-group">
+                            <input class="form-control" name="search" placeholder="Código do Jogo..."/>
+
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-warning" name="serachSubmit"><i class="fa fa-search"></i> Pesquisar
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6 col-xs-12 width-ipad-pro">
+            <div class="panel info-box panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Possíveis ganhadores</h4>
+                    <div class="pull-right">
+                        <label class="badge badge-default">Hoje</label>
+                    </div>
+                </div>
+                <div class="panel-body panel-table">
+                    <div class="table-responsive">
+                        <table class="table table-minified table-bordered table-striped list-table">
+                            <thead>
+                            <tr>
+                                <th>Cod. Aposta</th>
+                                <th>Apostador</th>
+                                <th>Valor</th>
+                                <th>Valor de Retorno</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for v in possiveisGanhadores %}
+                                <tr>
+                                    <td class="text-center">{{ v['id'] }}</td>
+                                    <td>{{ v['apostador'] }}</td>
+                                    <td class="text-center">R$ {{ v['valor']|number_format(2, ',', '.') }}</td>
+                                    <td class="text-center">R$ {{ v['retorno']|number_format(2, ',', '.') }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="no-padding">
+                                        <div class="alert alert-info no-margin">
+                                            Nenhum possível ganhador até o momento.
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12 width-ipad-pro">
+            <div class="panel info-box panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Jogos mais apostados</h4>
+                    <div class="pull-right">
+                        <label class="badge badge-default">Em aberto</label>
+                    </div>
+                </div>
+                <div class="panel-body panel-table">
+                    <div class="table-responsive">
+                        <table class="table table-minified table-bordered table-striped list-table">
+                            <thead>
+                            <tr>
+                                <th>Jogo</th>
+                                <th>Apostas</th>
+                                <th>Valor</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for v in jogosMaisApostados %}
+                                <tr>
+                                    <td>{{ v['times'] }}</td>
+                                    <td class="text-center">{{ v['apostas'] }}</td>
+                                    <td class="text-center">R$ {{ v['valor']|number_format(2, ',', '.') }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="no-padding">
+                                        <div class="alert alert-warning no-margin">
+                                            Nenhuma aposta até o momento.
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if isMaster %}
+        <div class="row">
+
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="panel info-box panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Dados para Pagamento</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ informacoes|raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="panel info-box panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Informações</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="b-b p-v-xs"><strong>Período:</strong> {{ periodo }}</div>
+                                <div class="b-b p-v-xs"><strong>Valor do Período:</strong> {{ valor }}</div>
+                                <div class="b-b p-v-xs"><strong>Usuários:</strong> {{ usuarios }}/{{ limite }}
+                                </div>
+                                <div class="p-v-xs"><strong>Apostas:</strong> {{ apostas }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endif %}
+
+{% endblock %}

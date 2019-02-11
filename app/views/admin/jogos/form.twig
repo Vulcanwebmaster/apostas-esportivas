@@ -1,0 +1,215 @@
+{% extends 'admin/layout.twig' %}
+
+{% block links %}
+    <a href="{{ url_referer() }}" class="btn btn-danger">
+        <i class="fa fa-chevron-left"></i> Voltar
+    </a>
+{% endblock %}
+
+{% block main %}
+
+    <form id="form-jogo" onsubmit="return false;">
+        <div class="panel panel-default">
+
+            <input type="hidden" name="id"/>
+
+            <div class="panel-heading">
+                <h4 class="panel-title">Jogo</h4>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label>Campeonato</label>
+                            <select name="campeonato" class="form-control chosen" required
+                                    data-options="admin/cadastros/campeonatos/options">
+                                <option value>-- Selecione o campeonato --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Data do Jogo</label>
+                            <input type="date" name="data" placeholder="{{ 'now'|date('Y-m-d') }}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Hora</label>
+                            <input type="time" name="hora" placeholder="" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Time da Casa</label>
+                            <select name="timecasa" class="form-control chosen" required
+                                    data-options="admin/cadastros/times/options">
+                                <option value>-- Selecione o time da casa --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Time de Fora</label>
+                            <select name="timefora" class="form-control chosen" required
+                                    data-options="admin/cadastros/times/options">
+                                <option value>-- Selecione o time de fora --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <h3>Limites de Jogos</h3>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>
+                                Max. Apostas
+                            </label>
+                            <input type="number" min="0" max="99999999999" name="maxapostas" placeholder="Ilimitado"
+                                   class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Limite 1 Jogo</label>
+                            <input type="text" name="limite1" placeholder="Ilimitado" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Limite 2 Jogos</label>
+                            <input type="text" name="limite2" placeholder="Ilimitado" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Limite 3 Jogos</label>
+                            <input type="text" name="limite3" placeholder="Ilimitado" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+
+                <h3>Cotações</h3>
+
+                <div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        {% for tempo in tempos %}
+                            <li role="presentation" class="{{ tempo.key == '90' ? 'active' : null }}}">
+                                <a href="#{{ tempo.key }}" aria-controls="{{ tempo.key }}" role="tab"
+                                   data-toggle="tab">{{ tempo.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        {% for tempo in tempos %}
+                            <div role="tabpanel" class="tab-pane pane-cotacoes {{ tempo.key == '90'? 'active' : null }}"
+                                 id="{{ tempo.key }}">
+                                <div class="row">
+                                    {% for cotacao in cotacoes %}
+                                        <div class="col-md-3 col-xs-6 form-group">
+                                            <label>{{ cotacao.getSigla() }}</label>
+                                            <input type="number" step="0.01" min="0" max="999.99"
+                                                   name="cotacoes[tempo{{ tempo.key }}][{{ cotacao.getCampo() }}]"
+                                                   class="form-control">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+            {% if v.getStatus() == 1 %}
+                <div class="text-right panel-footer">
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Salvar
+                    </button>
+
+                </div>
+            {% endif %}
+
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $(function(){
+
+            var $form = $('#form-jogo');
+            var values = {{ json(v, true) }};
+
+            values.cotacoes = {
+              'tempo90': values.cotacoes['90'],
+              'tempopt': values.cotacoes.pt,
+              'tempost': values.cotacoes.st,
+            };
+
+            $form
+                .adminPage({
+                    controller: 'jogos/jogo',
+                    autoSearch: false,
+                    alertSuccess: true,
+                    autoReset: false,
+                    reloadSuccess: '{{ url_referer() }}',
+                })
+                .on("change", "[name=campeonato]", function () {
+
+                    var times = $(this).find('option:selected').data('times');
+
+                    var filtro = function () {
+
+                        var value = $(this).val();
+
+                        if (times && value) {
+
+                            var search = '\\[' + value + '\\]';
+                            var result = times.search(search);
+
+                            if (result == -1) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+
+                        } else {
+                            return true;
+                        }
+                    };
+
+                    // Removendo opções inválida
+                    var selects = $('[name=timecasa], [name=timefora]');
+
+                    selects
+                        .find('option').addClass('hide')
+                        .filter(filtro).removeClass('hide');
+
+                    selects.closest('select').trigger('chosen:updated');
+                })
+                .setValues(values);
+
+        });
+
+    </script>
+
+{% endblock %}

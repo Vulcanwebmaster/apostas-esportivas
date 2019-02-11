@@ -1,0 +1,82 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <form class="page-form panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group col-md-6 col-xs-12">
+                    <label>Usuário</label>
+                    <select name="user" class="form-control" required="" data-options="admin/users/users/options">
+                        <option value>-- Todos --</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>DT/Primeira</label>
+                    <input type="date" name="primeira" class="form-control" required=""/>
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>Valor</label>
+                    <input type="text" name="valor" class="form-control mask-valor" required=""/>
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>Intervalo</label>
+                    <select name="intervalo" class="form-control" required="">
+                        <option value="1">Mensal</option>
+                        <option value="2">Bimestral</option>
+                        <option value="3">Trimetral</option>
+                        <option value="6">Semetral</option>
+                        <option value="12">Anual</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>Parcelas</label>
+                    <select name="parcelas" class="form-control" required="">
+                        <option value="-1">Ilimitadas</option>
+                        {% for i in 1..24 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-2 col-xs-6">
+                    <label>Auto PG</label>
+                    <select name="pago" class="form-control">
+                        <option value="0">Não</option>
+                        <option value="1">Sim</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4 col-xs-12">
+                    <label>Descrição</label>
+                    <select name="descricao" class="form-control"
+                            data-options="admin/helpers/options/options/financeiro-descricao">
+                        <option value="0">-- Selecione a descrição --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            <a href="{{ url_referer() }}" class="btn btn-link">&times; Cancelar</a>
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var values = {{ json(v) }};
+
+        $('.page-form')
+            .setValues(values)
+            .adminPage({
+                saveValues: {id: {{ v.getId() }}, token: '{{ v.getToken() }}'},
+                autoSearch: false,
+                reloadSuccess: '{{ url_referer() }}'
+            })
+            .find('[name=user]').val(values.user || {{ user.getId()|default(0) }});
+
+    </script>
+
+{% endblock %}

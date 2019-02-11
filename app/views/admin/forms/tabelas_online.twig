@@ -1,0 +1,134 @@
+{% extends 'admin/layout.twig' %}
+
+{% block script %}
+
+    <script>
+
+        $('<div />').adminPage({
+            container: '.page-container',
+            form: '#form-this',
+            formSearch: '.admpage-form-search',
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block main %}
+
+    <form id="form-this" class="modal fade">
+
+        <input type="hidden" name="id"/>
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close" data-dismiss="modal">&times;</div>
+                    <h3 class="modal-title">Tabela Online</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Mês/Início</label>
+                                <select name="mesinicio" required="" class="form-control">
+                                    {{ optMeses() }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Mês/Fim</label>
+                                <select name="mesfim" required="" class="form-control">
+                                    {{ optMeses() }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Título</label>
+                                <input type="text" name="title" required="" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tipo</label>
+                                <select name="type" required="" class="form-control">
+                                    <option value="sportingbet">SportingBET</option>
+                                    <option value="bet365">Bet365</option>
+                                    <option value="betexplorer">BetExplorer</option>
+                                    <option value="globoesporte">Globo Esporte</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input type="text" name="url" required="" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">
+                        <i class="fa fa-remove"></i>
+                        Cancela
+                    </button>
+                    <button class="btn btn-info">
+                        <i class="fa fa-save"></i>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right m-t-minus-9">
+                <button type="button" onclick="$('#form-this').setValues({});" class="btn btn-info">
+                    <i class="fa fa-plus"></i>
+                    Nova
+                </button>
+            </div>
+            <h3 class="panel-title">Tabelas</h3>
+        </div>
+        <div class="panel-body">
+            <form class="admpage-form-search">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tipo</label>
+                            <select name="type" class="form-control">
+                                <option value="">-- Todos --</option>
+                                <option value="sportingbet">SportingBET</option>
+                                <option value="bet365">Bet365</option>
+                                <option value="betexplorer">BetExplorer</option>
+                                <option value="globoesporte">Globo Esporte</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Campeonato</label>
+                            <input type="text" name="search" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="btn btn-info">
+                        <i class="fa fa-search"></i>
+                        Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-body panel-table">
+            <div class="page-container"></div>
+        </div>
+    </div>
+
+{% endblock %}

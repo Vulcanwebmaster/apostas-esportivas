@@ -1,0 +1,30 @@
+{
+  "name": "LifeWeb Apostas",
+  "autoload": {
+    "psr-4": {
+      "app\\": "app/"
+    },
+    "files": [
+      "app/functions/core.php",
+      "app/functions/form.php",
+      "app/functions/input.php",
+      "app/functions/qrcode.php",
+      "app/functions/url.php",
+      "app/functions/user.php",
+      "app/functions/youtube.php",
+      "app/functions/custom.php"
+    ]
+  },
+  "require": {
+    "php": ">=7.0.0",
+    "cbschuld/browser.php": "dev-master",
+    "paquettg/php-html-parser": "1.7.0",
+    "phpmailer/phpmailer": "^5.2",
+    "ifsnop/mysqldump-php": "2.*",
+    "widepay/sdk-php": "^1.0",
+    "gerencianet/gerencianet-sdk-php": "^1.0",
+    "dompdf/dompdf": "^0.8.0",
+    "twig/twig": "^2.0",
+    "pusher/pusher-php-server": "^3.1"
+  }
+}

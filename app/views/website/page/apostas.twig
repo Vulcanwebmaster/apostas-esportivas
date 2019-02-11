@@ -1,0 +1,144 @@
+{% extends 'website/layout.twig' %}
+
+{% block list %}
+
+    <div class="container-fluid pb-3">
+        {% if busca.getCount() %}
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive m-0">
+                        <table class="table table-minified table-striped table-bordered table-hover m-0">
+                            <thead>
+                            <tr class="table-danger">
+                                <th>Código</th>
+                                <th>Cliente</th>
+                                <th>Jogos</th>
+                                <th>Valor</th>
+                                <th>Prêmio</th>
+                                <th>Data</th>
+                                <th>Usuário</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7">{{ busca.getPageDescription() }}</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for v in busca.getRegistros() %}
+                                <tr class="table-{{ v.getStatusClass() }}">
+                                    <td class="text-center">
+                                        <a href="{{ url('apostas/imprimir', [v.getToken()]) }}" target="_blank">
+                                            #{{ v.getId() }}
+                                        </a>
+                                    </td>
+                                    <td>{{ v.getApostadorNome() }}</td>
+                                    <td class="text-center">{{ v.getJogos() }}</td>
+                                    <td class="text-center">R$ {{ v.getValor(true) }}</td>
+                                    <td class="text-center">R$ {{ v.getRetornoValido(true) }}</td>
+                                    <td class="text-center">{{ v.getData(true) }}</td>
+                                    <td>{{ v.getUserNome() }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">{{ busca|raw }}</div>
+                </div>
+            </div>
+
+            <div style="font-size: 12px;">
+                <span class="text-info mr-2"><i class="fa fa-circle"></i> Ganhou a aposta</span>
+                <span class="text-danger mr-2"><i class="fa fa-circle"></i> Perdeu a aposta</span>
+                <span class="mr-2"><i class="fa fa-circle"></i> Aguardando o jogo terminar</span>
+                <span class="text-warning mr-2"><i class="fa fa-circle"></i> Aposta cancelada</span>
+            </div>
+
+        {% elseif message %}
+            <div class="alert alert-warning">
+                <i class="fa fa-warning"></i> {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                <i class="fa fa-warning"></i> Nenhum registro encontrado
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block main %}
+
+    <h3 class="page-title">
+        <i class="fa fa-ticket"></i> Minhas apostas
+    </h3>
+
+    <div class="container-fluid">
+        <div class="py-3">
+            <form class="admpage-form-search" onsubmit="return false;">
+                <div class="row">
+                    <div class="form-group col-md-4 col-12">
+                        <label>De:</label>
+                        <div class="row">
+                            <div class="col-7">
+                                <input type="date" name="dataInicial" class="form-control form-control-sm"/>
+                            </div>
+                            <div class="col-5">
+                                <input type="time" name="horaInicial" class="form-control form-control-sm"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 col-12">
+                        <label>Até:</label>
+                        <div class="row">
+                            <div class="col-7">
+                                <input type="date" name="dataFinal" class="form-control form-control-sm"/>
+                            </div>
+                            <div class="col-5">
+                                <input type="time" name="horaFinal" class="form-control form-control-sm"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 col-12">
+                        <label>Ordenar por:</label>
+                        <select name="orderby" class="form-control form-control-sm">
+                            <option value="data-desc">Data (decrescente)</option>
+                            <option value="data-asc">Data (crescente)</option>
+                            <option value="valor-desc">Valor da aposta (decrescente)</option>
+                            <option value="valor-asc">Valor da aposta (crescente)</option>
+                            <option value="retorno-desc">Valor do prêmio (decrescente)</option>
+                            <option value="retorno-asc">Valor do prêmio (crescente)</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12">
+                        <label>Cliente</label>
+                        <input type="text" name="apostadornome" class="form-control form-control-sm"/>
+                    </div>
+                </div>
+                <hr class="mt-1"/>
+                <div class="text-right">
+                    <button class="btn btn-danger">
+                        <i class="fa fa-search"></i> Pesquisar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="admpage-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $
+            .adminPage({
+                formSearch: '.admpage-form-search',
+                container: '.admpage-container',
+            });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-br" class="pre-loading {{ responsive ? 'responsive' : null }}">
+<head>
+
+    {{ seo_header() }}
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/bootstrap4.css"/>
+    <link rel="stylesheet" href="css/site.css?v=1.0.4"/>
+    <link rel="stylesheet" href="css/loading.css"/>
+
+    <style>
+        html {
+            background-image: url('{{ dados().imgCapa(true, 'background').getSource(true) }}');
+        }
+    </style>
+
+</head>
+<body>
+
+{% include 'website/inc/header.twig' %}
+
+<div class="app-container container">
+    <div class="app shadow-lg rounded border mb-3">
+        <header class="app-header rounded-top">
+            <div class="row justify-content-end">
+                <div class="col {{ responsive ? 'd-none d-md-block' : '' }}">
+                    <ul>
+                        <li>
+                            <a href="{{ url() }}">
+                                Apostar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('bilhete') }}">
+                                Consultar bilhete
+                            </a>
+                        </li>
+                        {% if user %}
+                            <li>
+                                <a href="{{ url('apostas') }}">
+                                    Minhas apostas
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('logout') }}">
+                                    Sair
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% if user %}
+                    <div class="col-auto">
+                        <a href="{{ url('saldo') }}" class="text-white">
+                            Meu saldo: <span class="text-warning">R$ {{ user.getCredito(true) }}</span>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+        <main class="app-main">
+            {% block main endblock %}
+        </main>
+        <footer class="app-footer rounded-bottom">
+            <div class="container-fluid">
+                <div class="row {{ responsive ? 'justify-content-center justify-content-md-between' : 'justify-content-between' }}">
+                    <div class="col-auto">
+                        ©{{ 'now'|date('Y') }} Todos os direitos reservados.
+                    </div>
+                    {% if responsive %}
+                        <div class="col-12 d-block d-md-none">
+                            <hr class="my-1"/>
+                        </div>
+                    {% endif %}
+                    <div class="col-auto">
+                        <ul>
+                            <li><a href="{{ url('termos-uso') }}">Termos de uso</a></li>
+                            <li>|</li>
+                            <li><a href="{{ url('regras') }}">Regras</a></li>
+                            <li>|</li>
+                            <li><a href="{{ url('cotacoes') }}">Cotações</a></li>
+                            <li>|</li>
+                            <li><a href="{{ url('perguntas-frequentes') }}">Perguntas frequentes</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+{{ seo_footer() }}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="node_modules/owl.carousel2/dist/owl.carousel.js"></script>
+
+<script type="text/javascript" src="node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="cdn/js/clipboard.min.js"></script>
+<script type="text/javascript" src="cdn/js/jquery.form.js"></script>
+<script type="text/javascript" src="cdn/js/jquery.serializeObject.js"></script>
+<script type="text/javascript" src="cdn/js/modernizr.min.js"></script>
+<script type="text/javascript" src="cdn/js/jquery.mask.js"></script>
+<script type="text/javascript" src="cdn/js/mask.js"></script>
+<script type="text/javascript" src="cdn/js/fastclick.js"></script>
+<script type="text/javascript" src="cdn/js/admin.js?v=1.0.0"></script>
+<script type="text/javascript" src="cdn/js/string.js"></script>
+<script type="text/javascript" src="js/site.js?v=1.0.0"></script>
+
+{% include 'website/modals/login.twig' %}
+
+{% block script %}{% endblock %}
+
+</body>
+</html>

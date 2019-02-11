@@ -1,0 +1,88 @@
+@for $i from 0 through 5 {
+  $size: $i * 10;
+  .p-#{$size} {
+    padding: #{$size}px !important;
+  }
+  .p-h-#{$size} {
+    padding-left: #{$size}px !important;
+    padding-right: #{$size}px !important;
+  }
+  .p-v-#{$size} {
+    padding-top: #{$size}px !important;
+    padding-bottom: #{$size}px !important;
+  }
+  .p-t-#{$size} {
+    padding-top: #{$size}px !important;
+  }
+  .p-r-#{$size} {
+    padding-right: #{$size}px !important;
+  }
+  .p-b-#{$size} {
+    padding-bottom: #{$size}px !important;
+  }
+  .p-l-#{$size} {
+    padding-left: #{$size}px !important;
+  }
+  .m-#{$size} {
+    margin: #{$size}px !important;
+  }
+  .m-h-#{$size} {
+    margin-left: #{$size}px !important;
+    margin-right: #{$size}px !important;
+  }
+  .m-v-#{$size} {
+    margin-top: #{$size}px !important;
+    margin-bottom: #{$size}px !important;
+  }
+  .m-t-#{$size} {
+    margin-top: #{$size}px !important;
+  }
+  .m-r-#{$size} {
+    margin-right: #{$size}px !important;
+  }
+  .m-b-#{$size} {
+    margin-bottom: #{$size}px !important;
+  }
+  .m-l-#{$size} {
+    margin-left: #{$size}px !important;
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline-block;
+}
+
+@function opposite-position($direction) {
+  @if $direction == top {
+    @return bottom;
+  } @else if $direction == bottom {
+    @return top;
+  } @else if $direction == left {
+    @return right;
+  } @else if $direction == right {
+    @return left;
+  }
+}
+
+@mixin triangle($direction, $color: currentcolor, $size: 1em, $scale: 1) {
+  /* Core stuff */
+
+  border-#{opposite-position($direction)}: $size * $scale solid $color;
+  $perpendicular-border: $size solid transparent;
+
+  @if $direction == top or $direction == bottom {
+    border-left: $perpendicular-border;
+    border-right: $perpendicular-border;
+  } @else if $direction == right or $direction == left {
+    border-bottom: $perpendicular-border;
+    border-top: $perpendicular-border;
+  }
+}

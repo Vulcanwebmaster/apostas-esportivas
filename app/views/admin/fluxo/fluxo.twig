@@ -1,0 +1,210 @@
+{% extends 'admin/layout.twig' %}
+
+{% block links %}
+    {% if result %}
+        <a href="admin/fluxo/caixa/imprimir?{{ parans|url_encode }}" target="_blank" class="btn btn-info">
+            <i class="fa fa-print"></i> Imprimir
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title">Fluxo</h4>
+        </div>
+        <div class="panel-body">
+            <form class="page-form-search">
+
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Início</label>
+                            <input type="date" class="form-control text-center" name="dataInicial" required=""
+                                   value="{{ 'now'|date('Y-m-01') }}">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Fim</label>
+                            <input type="date" class="form-control text-center" name="dataFinal" required=""
+                                   value="{{ 'now'|date('Y-m-t') }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-bar-chart"></i> Gerar Fluxo
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    {% if result %}
+
+        <div class="panel panel-default">
+            <div class="panel-body panel-table table-responsive">
+                <div class="page-container">
+                    <table class="table table-bordered table-striped list-table table-minified">
+                        <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Apostas</th>
+                            <th>Jogos</th>
+                            <th>Valor em apostas</th>
+                            <th>Apostas prêmiadas</th>
+                            <th>Líquido</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for data, value in result %}
+                            {% set liquido = value.valorApostas - value.pagoApostas %}
+                            <tr>
+                                <td class="text-center">{{ value.fdata }}</td>
+                                <td class="text-center">{{ value.countApostas }}</td>
+                                <td class="text-center">{{ value.qtd_jogos }}</td>
+                                <td class="text-center btn-info">
+                                    R$ {{ value.valorApostas|number_format(2,',','.') }}
+                                </td>
+                                <td class="text-center btn-danger">
+                                    R$ {{ value.pagoApostas|number_format(2,',','.') }}
+                                </td>
+                                <td class="text-center btn-{{ liquido > 0 ? 'success' : 'danger' }}">
+                                    R$ {{ liquido|number_format(2,',','.') }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <canvas id="chart1" height="70"></canvas>
+                </div>
+                <div class="m-t-md" style="line-height: 20px;">
+                    <div style="width: 20px; height: 20px; vertical-align: middle; display: inline-block; border:1px solid #08A7C3; background:#08A7C3;"></div>
+                    <small>
+                        <strong>Valor bruto</strong>
+                    </small>
+                    <div style="width: 20px; height: 20px; vertical-align: middle; display: inline-block; border:1px solid #1AB394; margin-left:20px; background:#1AB394;"></div>
+                    <small>
+                        <strong>Valor líquido</strong>
+                    </small>
+                    <div style="width: 20px; height: 20px; vertical-align: middle; display: inline-block; border:1px solid #FF0101; margin-left:20px; background:#FF0101;"></div>
+                    <small>
+                        <strong>Valor pago</strong>
+                    </small>
+                </div>
+
+                <div class="m-t-md">
+                    <small class="pull-right">
+                        <i class="fa fa-clock-o"> </i>
+                        Atualizado em {{ 'now'|date('d/m/Y') }}
+                    </small>
+                    <small>
+                        <strong>Análise das apostas:</strong> Os valores são alterados ao longo do tempo.
+                    </small>
+                </div>
+
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block script %}
+    {% if result %}
+
+        <script>
+
+            $(document).ready(function () {
+
+                $(window).resize(function () {
+
+                    var values = {{ json(result) }};
+                    var bruto = [];
+                    var liquido = [];
+                    var gastos = [];
+                    var datas = [];
+
+                    $.each(values, function (index, v) {
+
+                        var vLiquido = v.valorApostas - v.pagoApostas;
+                        datas.push(v.fdata);
+                        bruto.push(v.valorApostas.toString().toFloat());
+                        liquido.push(vLiquido.toString().toFloat());
+                        gastos.push(v.pagoApostas.toString().toFloat());
+                    });
+
+                    var ctx1 = document.getElementById("chart1").getContext("2d");
+                    var data1 = {
+                        labels: datas,
+                        datasets: [
+                            {
+                                label: "Valor Bruto",
+                                fillColor: "rgba(8, 167, 195,0.5)",
+                                strokeColor: "rgba(8, 167, 195,0.5)",
+                                pointColor: "rgba(8, 167, 195,0.5)",
+                                pointStrokeColor: "#08A7C3",
+                                pointHighlightFill: "#08A7C3",
+                                pointHighlightStroke: "rgba(8, 167, 195,0.5)",
+                                data: bruto
+                            },
+                            {
+                                label: "Valor Líquido",
+                                fillColor: "rgba(34,186,160,0.8)",
+                                strokeColor: "rgba(34,186,160,1)",
+                                pointColor: "rgba(34,186,160,1)",
+                                pointStrokeColor: "#1AB394",
+                                pointHighlightFill: "#1AB394",
+                                pointHighlightStroke: "rgba(18,175,203,1)",
+                                data: liquido
+                            },
+                            {
+                                label: "Valor Pago",
+                                fillColor: "rgba(255, 63, 63, 0.8)",
+                                strokeColor: "rgba(255, 63, 63, 0.8)",
+                                pointColor: "rgba(255, 63, 63, 0.8)",
+                                pointStrokeColor: "#FF0101",
+                                pointHighlightFill: "#FF0101",
+                                pointHighlightStroke: "rgba(220,220,220,1)",
+                                data: gastos
+                            }
+                        ]
+                    };
+
+                    new Chart(ctx1).Line(data1, {
+                        scaleShowGridLines: true,
+                        scaleGridLineColor: "rgba(0,0,0,.05)",
+                        scaleGridLineWidth: 1,
+                        scaleShowHorizontalLines: true,
+                        scaleShowVerticalLines: true,
+                        bezierCurve: true,
+                        bezierCurveTension: 0.4,
+                        pointDot: true,
+                        pointDotRadius: 4,
+                        pointDotStrokeWidth: 1,
+                        pointHitDetectionRadius: 20,
+                        datasetStroke: true,
+                        datasetStrokeWidth: 2,
+                        datasetFill: true,
+                        legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){\%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){\%><%=datasets[i].label%><%\}%></li><%\}%></ul>",
+                        responsive: true
+                    });
+
+                }).resize();
+
+            });
+        </script>
+
+    {% endif %}
+{% endblock %}

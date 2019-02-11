@@ -1,0 +1,357 @@
+@import "../scss/vars";
+@import "../scss/preboot";
+
+html:not(.responsive) {
+  .app-container {
+    width: 1140px !important;
+    max-width: 1140px !important;
+  }
+}
+
+.roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+body, html {
+  min-height: 100%;
+}
+
+html {
+  background-color: #333;
+  background-image: url(../img/background.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.swal-text {
+  text-align: center;
+}
+
+.swal-footer {
+  text-align: center;
+}
+
+body {
+  background: transparent;
+}
+
+.app {
+
+  $bg: $red;
+
+  .app-header {
+    background-color: $bg;
+    color: white;
+    line-height: 45px;
+    ul {
+      display: block;
+    }
+    ul, li {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      display: inline-block;
+    }
+    a {
+      display: block;
+      padding: 0 15px;
+      color: white;
+      text-decoration: none;
+      &:hover {
+        background-color: rgba(black, 0.3);
+      }
+    }
+  }
+  .app-main {
+    background-color: white;
+  }
+  .app-footer {
+    background-color: $bg;
+    color: white;
+    line-height: 25px;
+    padding: 5px 0;
+    font-size: 12px;
+    ul {
+      display: block;
+      li {
+        display: inline-block;
+      }
+      &, li {
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.page-aposta {
+  .campeonatos {
+    background-color: darken($red, 10%);
+    width: 190px;
+    .title {
+      text-align: center;
+      margin: 0;
+      color: whitesmoke;
+      font-size: 18px;
+      text-transform: uppercase;
+      background-color: rgba(black, 0.3);
+      line-height: 50px;
+    }
+    ul {
+      &, li {
+        display: block;
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        padding: 0 15px;
+        border-bottom: 1px dashed whitesmoke;
+        &.pais {
+          background-color: rgba(black, 0.3);
+        }
+        a {
+          @extend .roboto;
+          display: block;
+          color: white;
+          font-size: 13px;
+          line-height: 20px;
+          padding: 10px 0;
+          text-decoration: none;
+          &:hover {
+            color: lighten($red, 30%);
+          }
+          &.active {
+            color: $yellow;
+          }
+        }
+      }
+      .last li.last {
+        border: none;
+      }
+    }
+    .form-control {
+      border: none;
+      background-color: rgba(white, 0.3);
+    }
+  }
+  .bilhete {
+    width: 248px;
+    background-color: #ededed;
+    .title {
+      margin: 0;
+      background-color: darken(#ededed, 10%);
+      font-size: 20px;
+      text-transform: uppercase;
+      padding: 0 15px;
+      line-height: 45px;
+    }
+  }
+  .lista-jogos {
+    background-color: rgba(black, 0.05);
+  }
+}
+
+#pg-aposta {
+
+  .table.table-jogos {
+    @extend .roboto;
+    font-size: 13px;
+    line-height: normal;
+    &:not(:last-child) {
+      margin: 0 0 20px 0;
+    }
+    tr.campeonato {
+      background-color: #39373a;
+      font-size: 15px;
+      a {
+        color: white;
+      }
+    }
+    th, td {
+      vertical-align: middle;
+      padding: 4px 5px;
+    }
+    thead {
+      tr th {
+        border: none;
+      }
+      tr.tr-pais {
+        background-color: $red;
+        color: white;
+        th {
+          font-size: 20px;
+          font-weight: 300;
+          padding: 10px;
+        }
+        img {
+          height: 20px;
+        }
+      }
+      tr.tr-header {
+        padding: 5px;
+      }
+      .th-cotacao {
+        font-size: 11px;
+        width: 10px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+    }
+    tbody {
+      background-color: rgba(black, 0.05);
+      tr {
+        td:not(:first-child) {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .btn-cotacao {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width: 48px;
+    background-color: #39373a;
+    cursor: pointer;
+    color: white;
+    line-height: 30px;
+    &:hover {
+      background-color: darken($red, 10%);
+    }
+    &.outras {
+      color: #39373a;
+      background-color: $yellow;
+    }
+    &.active {
+      color: white;
+      background-color: $red;
+    }
+  }
+
+}
+
+.card {
+  .card-footer, .card-body, .card-header {
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.table {
+  td, th {
+    vertical-align: middle;
+  }
+  &.table-minified {
+    font-family: 'Open Sans', sans-serif;
+    thead {
+      font-size: 14px;
+    }
+    tbody {
+      font-size: 12px;
+    }
+  }
+}
+
+.page-title {
+  background-color: #ededed;
+  line-height: 50px;
+  font-size: 25px;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.page-subtitle {
+  background-color: lighten(#ededed, 5%);
+  line-height: 30px;
+  font-size: 18px;
+  padding: 5px 15px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.table-aposta {
+  @extend .roboto;
+  td, th {
+    padding: 5px;
+    vertical-align: middle;
+  }
+  font-size: 12px;
+}
+
+.header-mobile {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(black, 0.3);
+  padding: 5px 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 999;
+  .btn-link {
+    color: $red !important;
+  }
+}
+
+html {
+
+  .menu-mobile {
+    position: fixed;
+    z-index: 999;
+    left: -270px;
+    width: 270px;
+    height: 100%;
+    background-color: white;
+    top: 0;
+    @include transition(left 0.3s ease-in-out);
+    .header {
+      line-height: 55px;
+      padding: 0 15px;
+      font-size: 20px;
+      background-color: #ededed;
+    }
+    ul, li {
+      display: block;
+      padding: 0;
+      margin: 0;
+    }
+    li a {
+      display: block;
+      margin: 0;
+      padding: 0 15px;
+      line-height: 40px;
+      color: $red;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ededed;
+    }
+  }
+
+  &.show-menu {
+    .menu-mobile {
+      left: 0;
+    }
+  }
+
+}
+
+@media (max-width: 768px) {
+  .responsive {
+    body {
+      padding-top: 70px;
+    }
+    .page-aposta {
+      width: auto;
+      .bilhete, .campeonatos {
+        width: auto;
+      }
+    }
+  }
+}

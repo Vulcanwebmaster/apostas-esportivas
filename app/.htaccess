@@ -1,0 +1,5 @@
+<FilesMatch "\.(txt|sql|ini|tmp)$">
+Deny FROM ALL
+</FilesMatch>
+
+RewriteRule \.(txt|sql|ini|tmp)$ - [F]

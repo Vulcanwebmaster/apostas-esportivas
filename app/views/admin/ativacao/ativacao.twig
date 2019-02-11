@@ -1,0 +1,124 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            {% include 'admin/helpers/info-saldo.twig' %}
+        </div>
+
+    </div>
+
+    <form class="admpage-form">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default panel-roxo">
+                    <div class="panel-heading">
+                        <h4>Ativação</h4>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="">Selecione o tipo</label>
+                                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                          data-content="Selecione o tipo de ativação." data-original-title="" title="">[<i
+                                                class="fa fa-question"></i>]</span>
+                                    <select name="tipo" required class="form-control">
+                                        <option value>-- Selecione --</option>
+                                        <option value="plano">Ativar Licença</option>
+                                        <option value="recarga">Ativar Mensalidade</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="">Login do Destinatário</label>
+                                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                          data-content="Digite o usuário a ser ativado." data-original-title=""
+                                          title="">[<i
+                                                class="fa fa-question"></i>]</span>
+                                    <input type="text" name="destinatario" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-b-20 m-t-10">
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-check"></i>
+                                    Ativar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="texto">
+                                    {{ pagina('ativacao').getTexto()|raw }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $('.admpage-form')
+            .adminPage({
+                errorAlert: false,
+                autoSearch: false,
+                insertAction: 'check',
+            })
+            .on('success', function (event, e) {
+                if (e.result == 1) {
+                    swal({
+                        title: 'Você Confirma ?',
+                        text: e.message,
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Confirmar',
+                        cancelButtonText: 'Cancelar',
+                    }).then(function () {
+                        $
+                            .post(url(CONTROLLER + '/ativar'), e.values, function (e) {
+
+                                swal({
+                                    title: 'Sucesso !!',
+                                    text: e.message,
+                                    type: 'success'
+                                }).then(function () {
+                                    if (e.result == 1) {
+                                        window.location.reload();
+                                    }
+                                });
+
+                            }, 'json')
+                            .always(function () {
+
+                            });
+                    });
+                } else {
+                    swal(
+                        'Erro !!',
+                        e.message,
+                        'error'
+                    );
+                    /* alert(e.message); */
+                }
+            });
+
+    </script>
+
+{% endblock %}

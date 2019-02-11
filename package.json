@@ -1,0 +1,22 @@
+{
+  "name": "apostas-online",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.1",
+    "font-awesome": "^4.7.0",
+    "jscrollpane": "^2.2.0",
+    "lodash": "^4.17.10",
+    "owl.carousel2": "^2.2.1",
+    "sweetalert": "^2.1.0",
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

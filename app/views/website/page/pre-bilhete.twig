@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+
+    {{ seo_header() }}
+
+</head>
+<body onload="window.print()">
+
+<table border='0' cellpadding='0' cellspacing='0' width='305px' style='font-size:16px;'>
+    <tbody>
+    <tr>
+        <td>==================================</td>
+    </tr>
+    <tr align='center'>
+        <td>
+            {{ dados("banca") }}
+            <br/>
+            Aposte na Emoção
+        </td>
+    </tr>
+    <tr>
+        <td>==================================</td>
+    </tr>
+    <tr>
+        <td>
+            Data do pré-bilhete: {{ aposta.getData(true) }} - {{ aposta.getHora() }}
+            <br />
+            <br />
+        </td>
+    </tr>
+    <tr align='center'>
+        <td>
+            CÓDIGO DO BILHETE<br/>
+            <span style="font-size:26px;">{{ preg_replace('/(.{3})/', '$1 ', aposta.getCodigoBilhete()) }}</span>
+            <br/>
+    <tr align='center'>
+        <td>Procure um dos nossos cambistas<br/>para validar o seu bilhete</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

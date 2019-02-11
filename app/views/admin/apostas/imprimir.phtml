@@ -1,0 +1,348 @@
+<?php ob_start(); ?>
+<html>
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <title>Imprimir Aposta <?php echo $aposta->getId() ?></title>
+
+    <style>
+
+        .aposta {
+            font-family: 'Helvetica', sans serif;
+            text-transform: uppercase;
+            background-color: white;
+            font-weight: bold !important;
+            font-size: 11px;
+            margin: 0 auto;
+            width: 332px;
+        }
+
+        .aposta .conteudo {
+            width: 312px;
+            margin: 0 auto;
+        }
+
+        .aposta .conteudo .banca {
+            padding: 6px 0px;
+            margin: 5px 0px;
+            font-size: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+        }
+
+        .aposta .conteudo .informacoes {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .aposta .conteudo .informacoes.last {
+            border-top: 1px solid #333;
+            padding: 9px 0px 0px;
+        }
+
+        .aposta .conteudo .informacoes .item {
+            width: 100%;
+        }
+
+        .aposta .conteudo .informacoes .item .titulo {
+            font-weight: bold;
+            text-align: left;
+            float: left;
+        }
+
+        .aposta .conteudo .informacoes .item .texto {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .aposta .conteudo .jogos {
+            padding: 2px 0px;
+            margin: 5px 0px;
+            border-top: 1px solid #333;
+        }
+
+        .aposta .conteudo .jogos .jogo {
+            margin: 8px 0;
+        }
+
+        .aposta .conteudo .jogos .jogo .titulo {
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .aposta .conteudo .jogos .jogo .titulo .jogo-title {
+            margin: 8px 0px;
+            font-size: 12px;
+        }
+
+        .aposta .conteudo .jogos .jogo .titulo span {
+            font-weight: bold;
+        }
+
+        .aposta .conteudo .jogos .jogo .cotacao {
+            padding: 4px;
+            border: 1px solid #333;
+        }
+
+        .regras {
+            margin-top: 10px;
+            text-align: justify;
+        }
+
+        .esq {
+            width: 48% !important;
+            float: left;
+            margin-right: 9px;
+        }
+
+        .esq .titulo {
+            margin-right: 5px;
+        }
+
+        .esq .texto {
+            text-align: inherit !important;
+        }
+
+        .dir {
+            width: 49% !important;
+            float: left;
+        }
+
+        .acoes {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            font-family: sans-serif;
+            text-transform: uppercase;
+            display: inline-block;
+            width: 150px;
+            padding: 0;
+            line-height: 40px;
+            background-color: #357eba;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .btn.btn-success {
+            background-color: #357000;
+        }
+
+        .btn:hover {
+            background-color: #999;
+        }
+
+        .pule {
+            text-align: center;
+            font-size: 25px;
+        }
+
+        .imagemBanca {
+            visibility: hidden;
+            display: none !important;
+            opacity: 0;
+            max-height: 40px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<?php if (empty($pdf)) { ?>
+    <div class="acoes no-print">
+        <a href="#print" class="btn btn-success btn-imprimir">
+            Imprimir
+        </a>
+    </div>
+<?php } ?>
+
+<div class="aposta">
+    <div class="conteudo">
+
+        <img src="logo.png" alt="" class="imagemBanca"/>
+
+        <div class="banca"><?php echo app\modules\admin\Admin::getConfiguracoes()->getBanca() ?></div>
+        <div class="informacoes">
+            <div class="item data">
+                <div class="titulo">
+                    Data:
+                </div>
+                <div class="texto">
+                    <?php echo str_replace(' ', ' ', substr($aposta->getInsert(true), 0, -3)) ?>
+                </div>
+            </div>
+            <div class="item apostador" style="float: left;">
+                <div class="titulo">
+                    Apostador:
+                </div>
+                <div class="texto">
+                    <?php echo $aposta->getUserNome() ?>
+                </div>
+            </div>
+        </div>
+        <div class="jogos">
+
+            <table border="0" align="center"
+                   style="text-align: center;font-weight: bold;background-color:#000000;border-collapse:collapse;color:#FFFFFF;font-size: 13px;width: 100%;margin: 2px auto;">
+                <tbody>
+                <tr>
+                    <td class="cotacao">Código</td>
+                    <td class="cotacao">Data/hora</td>
+                    <td class="cotacao">Cotação</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <?php /** @var \app\vo\ApostaJogoVO[] $jogos */
+            foreach ($jogos as $i => $jogo) { ?>
+                <div class="jogo">
+                    <div class="titulo">
+                        <div class="jogo-title"><?php echo $jogo->voJogo()->getTimeCasaTitle() ?>
+                            x <?php echo $jogo->voJogo()->getTimeForaTitle() ?></div>
+                        <span class="cotacao"><?php echo $jogo->voJogo()->getId() ?></span>
+                        <span class="cotacao"><?php echo $jogo->voJogo()->getData(true) . ' ás ' . $jogo->voJogo()->getHora() ?></span>
+                        <span class="cotacao"><?php
+                            echo $jogo->getCotacaoTitle() . " " . $jogo->getCotacaoValor(true);
+                            ?></span>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="informacoes last">
+            <div class="item valor-apostado esq">
+                <div class="titulo">
+                    Apostado:
+                </div>
+                <div class="texto">
+                    R$ <?php echo $aposta->getValor(true) ?>
+                </div>
+            </div>
+            <div class="item valor-apostado dir">
+                <div class="titulo">
+                    Prêmio:
+                </div>
+                <div class="texto">
+                    R$ <?php echo $aposta->getRetornoValido(true) ?>
+                </div>
+            </div>
+            <div class="item jogos-apostados esq">
+                <div class="titulo">
+                    Jogos:
+                </div>
+                <div class="texto">
+                    <?php echo $aposta->getJogos() ?>
+                </div>
+            </div>
+            <div class="item cotacao dir">
+                <div class="titulo">
+                    Cotação:
+                </div>
+                <div class="texto">
+                    <?php echo $aposta->getCotacaoValida(true) ?>
+                </div>
+            </div>
+            <div class="item cotacao">
+                <div class="titulo">
+                    Token:
+                </div>
+                <div class="texto" style="font-size: 9px;padding-top: 3px;">
+                    <?php echo $aposta->getToken() ?>
+                </div>
+            </div>
+            <div class="item cotacao pule">
+                <?php
+                if (!empty($message)) {
+                    echo '<p style="text-align: center; font-size: 15px; margin: 0; text-tranform: uppercase; color: red;">'
+                        . '<b>' . $message . '</b>'
+                        . '</p>';
+                }
+                ?>
+                PULE: <?php echo $aposta->getId() ?>
+            </div>
+            <?php if (app\modules\admin\Admin::getConfiguracoes()->getImprimirRegras()) { ?>
+                <div class="item regras">
+                    <?php echo preg_replace('/ style=[\'"].*?[\'"]/', null, app\modules\admin\Admin::getConfiguracoes()->getRegulamento()) ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+
+<script src="admfiles/plugins/jquery/jquery-2.1.4.min.js"
+        type="text/javascript"></script>
+<script src="cdn/js/html2canvas.js" type="text/javascript"></script>
+<script>
+
+    function imprimirAposta() {
+
+        // Imprime
+        window.print();
+
+        // Fecha a Janela
+        setTimeout(window.close, 500);
+
+    }
+
+    imprimirAposta();
+
+    function printCanvas(dataUrl, width, height) {
+        var windowContent = '<!DOCTYPE html>';
+
+        windowContent += '<html>';
+        windowContent += '<head><title>Print canvas</title></head>';
+        windowContent += '<body>';
+        windowContent += '<img src="' + dataUrl + '" style="margin: 0 auto; display: block;" />';
+        windowContent += '</body>';
+        windowContent += '</html>';
+
+        var printWin = window.open('', '', 'width=' + width + ',height=' + height);
+
+        printWin.document.open();
+        printWin.document.write(windowContent);
+        printWin.document.close();
+        printWin.focus();
+        printWin.print();
+        printWin.close();
+    }
+
+    $('.btn-imprimir').click(imprimirAposta);
+
+    html2canvas($('.aposta')[0]).then(function (canvas) {
+
+        var data = canvas.toDataURL('image/png');
+
+        var prev = window.location.href;
+
+        var link = $('<a/>').html('Baixar Imagem').attr({
+            class: 'btn btn-info',
+            target: 'iframe-download-img',
+            download: 'aposta-<?php echo $aposta->getId() ?>.png',
+            href: data.replace("image/png", "image/octet-stream"),
+        }).click(function () {
+
+            printCanvas(data, canvas.width, canvas.height);
+
+        });
+
+        $('.acoes').prepend(link);
+    });
+
+</script>
+
+</body>
+</html>

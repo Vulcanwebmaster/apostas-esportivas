@@ -1,0 +1,88 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+<form class="admpage-form panel panel-default">
+    <input type="hidden" name="id"/>
+    <div class="panel-heading">
+        <h3 class="panel-title">Cotação</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="form-group col-xs-2">
+                <label>Ordem</label>
+                <input type="number" name="ordem" class="form-control" min="0" max="250"/>
+            </div>
+            <div class="form-group col-xs-2">
+                <label>Principal?</label>
+                <select name="principal" class="form-control">
+                    <option value="0">Não</option>
+                    <option value="1">Sim</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-2">
+                <label>Cor</label>
+                <input type="color" name="cor" class="form-control"/>
+            </div>
+            <div class="form-group col-xs-6">
+                <label>GRUPO</label>
+                <select name="grupo" class="form-control">
+                    {% for id, grupo in grupos %}
+                    <option value="{{ id }}">{{ grupo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-xs-6">
+                <label>Título</label>
+                <input type="text" name="titulo" class="form-control" required maxlength="250"/>
+            </div>
+            <div class="form-group col-xs-3">
+                <label>Campo</label>
+                <input type="text" name="campo" class="form-control" required pattern="[a-z][a-z0-9]+" maxlength="50"/>
+            </div>
+            <div class="form-group col-xs-3">
+                <label>Sigla</label>
+                <input type="text" name="sigla" class="form-control" maxlength="15"/>
+            </div>
+            <div class="form-group col-xs-12">
+                <label>Descrição</label>
+                <textarea name="descricao" class="form-control" data-ckeditor></textarea>
+            </div>
+            <div class="form-group col-xs-12">
+                <label>Query
+                    <small>(É necessário conhecimento de mysql)</small>
+                </label>
+                <input type="text" name="query" class="form-control" required maxlength="2500"/>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer text-right">
+        <div class="pull-left">
+            <button class="btn btn-warning" type="button" onclick="javascript:admSalvarCopia();">
+                <i class="fa fa-copy"></i>
+                Salvar cópia
+            </button>
+        </div>
+        <button type="reset" class="btn btn-link"><i class="fa fa-eraser"></i> Limpar</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+    var form = $('.admpage-form');
+    form
+        .adminPage({});
+
+    function admSalvarCopia() {
+        form.find("[name=id]").val(0);
+        form.submit();
+    }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+<form class='admpage-form panel panel-default' enctype="multipart/form-data" onsubmit="return false">
+
+    <input type="hidden" name="id" />
+
+    <div class='panel-body p-b-10'>
+
+        <div class='row'>
+
+            <div class="form-group col-md-3 col-xs-12">
+                <label>Ordem</label>
+                <input type="number" min="0" max="100" name="ordem" class="form-control" />
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            {% if vars['_periodo'] %}
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>Data inícial</label>
+                    <input type="date" name="inicio" class="form-control" />
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>Data final</label>
+                    <input type="date" name="fim" class="form-control" />
+                </div>
+            {% endif %}
+
+            {% if vars['_title'] %}
+            <div class="form-group col-md-{{ vars['_periodo'] ? 6 : 12 }} col-xs-12">
+                <label>Título</label>
+                <input type="text" name="title" class="form-control" required/>
+            </div>
+            {% endif %}
+
+            {% if vars['_descricao'] %}
+            <div class="form-group col-xs-12">
+                <label>Descrição</label>
+                <input type="text" name="descricao" class="form-control" />
+            </div>
+            {% endif %}
+
+            {% if vars['_link'] %}
+            <div class="form-group col-md-9 col-xs-12">
+                <label>Link</label>
+                <input type="text" name="link" class="form-control" />
+            </div>
+            <div class="form-group col-md-3 col-xs-12">
+                <label>Link (target)</label>
+                <select class="form-control" name="linktarget">
+                    <option value="_self">Mesma página</option>
+                    <option value="_blank">Nova página</option>
+                </select>
+            </div>
+            {% endif %}
+
+            {% if vars['_dias'] %}
+            <div class="form-group col-xs-12">
+                <label>Dias de exibição</label>
+                <select name="dias" class="form-control chosen" multiple>
+                    <option value="0">Domingo</option>
+                    <option value="1">Segunda</option>
+                    <option value="2">Terça</option>
+                    <option value="3">Quarta</option>
+                    <option value="4">Quinta</option>
+                    <option value="5">Sexta</option>
+                    <option value="6">Sábado</option>
+                </select>
+            </div>
+            {% endif %}
+
+            {% if vars['_texto'] %}
+            <div class='form-group col-xs-12'>
+                <label>Texto</label>
+                <textarea name="texto" class="form-control" data-ckeditor></textarea>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class='panel-footer text-right'>
+        <div class='pull-left'>
+            {{inputFile('<i class="fa fa-image"></i> Desktop', 'updesktop', 'image/*')}}
+            {{inputFile('<i class="fa fa-image"></i> Mobile', 'upmobile', 'image/*')}}
+        </div>
+        <button type="submit" class="btn btn-info">
+            <i class='fa fa-save'></i> Salvar
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+
+    $('.admpage-form').adminPage({
+        saveValues: {{json(vars)}},
+        searchValues: {{json(vars)}},
+    });
+
+</script>
+{% endblock %}

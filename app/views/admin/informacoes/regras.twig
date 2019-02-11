@@ -1,0 +1,28 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+    {% if isMaster == false %}
+        <div class="panel">
+            <div class="panel-heading">
+                <h4 class="panel-title">{{ title }}</h4>
+            </div>
+            <div class="panel-body">
+                {{ regra|raw }}
+            </div>
+        </div>
+    {% else %}
+        <form onsubmit="return false;"
+              data-adminpage="{{ {alertSuccess: true, autoSearch: false, autoReset: false, controller: 'config/dados'}|json_encode }}">
+            <div class="panel">
+                <div class="panel-body">
+                    <textarea name="{{ field }}" data-ckeditor height="400">{{ regra }}</textarea>
+                </div>
+                <div class="panel-footer text-right">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-save"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

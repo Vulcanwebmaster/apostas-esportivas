@@ -1,0 +1,105 @@
+{% extends 'website/layout.twig' %}
+
+{% block list %}
+
+    <div class="container-fluid pb-3">
+        {% if busca.getCount() %}
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive m-0">
+                        <table class="table table-minified table-striped table-bordered table-hover m-0">
+                            <thead>
+                            <tr class="table-danger">
+                                <th>Código</th>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Valor/Anterior</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">-/-</td>
+                                <td>-/-</td>
+                                <td>Saldo anterior</td>
+                                <td class="text-right">R$ {{ v.credito|number_format(2, ',', '.') }}</td>
+                            </tr>
+                            {% for v in busca.getRegistros() %}
+                                <tr>
+                                    <td class="text-center">#{{ v.getId() }}</td>
+                                    <td>{{ v.getInsert()|date('d/m/Y \\à\\s H\\hi') }}</td>
+                                    <td>{{ v.getDescricao()|raw }}</td>
+                                    <td class="text-right">
+                                        <div>{{ fncSinal(v.getValor(), true) }}</div>
+                                        <small>{{ fncSinal(v.getSaldoCreditos(), true) }}</small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">{{ busca }}</div>
+                </div>
+            </div>
+        {% elseif message %}
+            <div class="alert alert-warning m-0">
+                <i class="fa fa-warning"></i> {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-warning m-0">
+                <i class="fa fa-warning"></i> Nenhum registro encontrado
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block main %}
+
+    <h3 class="page-title">
+        <i class="fa fa-history d-none d-md-inline"></i> Histórico financeiro
+    </h3>
+
+    <div class="container-fluid">
+        <div class="py-3">
+            <form class="admpage-form-search" onsubmit="javascript:return false;">
+                <div class="row">
+                    <div class="form-group col-md-6 col-12">
+                        <label>De:</label>
+                        <input type="date" name="dataInicial" class="form-control form-control-sm" value="{{ 'now'|date('Y-m-01') }}"/>
+                    </div>
+                    <div class="form-group col-md-6 col-12">
+                        <label>Até:</label>
+                        <input type="date" name="dataFinal" class="form-control form-control-sm" value="{{ 'now'|date('Y-m-t') }}"/>
+                    </div>
+                </div>
+                <hr class="mt-1"/>
+                <div class="text-right">
+                    <button class="btn btn-danger">
+                        <i class="fa fa-search"></i> Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="admpage-container"></div>
+
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $
+            .adminPage({
+                formSearch: '.admpage-form-search',
+                container: '.admpage-container',
+                autoSearch: false,
+            });
+
+        $('.admpage-form-search').submit();
+
+    </script>
+
+{% endblock %}

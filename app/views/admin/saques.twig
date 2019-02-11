@@ -1,0 +1,144 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <style>
+
+        .panel-table {
+            min-height: .01% !important;
+            overflow-x: auto !important;
+        }
+
+    </style>
+
+    {% if isAdm == false or isDev %}
+
+        {% include 'admin/helpers/info-saldo.twig' %}
+        {% include 'admin/inc/modal-saque.twig' %}
+
+        <div class="panel panel-default panel-roxo">
+            <div class="panel-heading">
+                <h4>Instruções de saque</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="text-left m-b-20">
+                            <button class="btn btn-primary" onclick="$('.modal-saque').setValues({});">
+                                <i class="fa fa-check"></i>
+                                Solicitar saque
+                            </button>
+                        </div>
+                        <div class="texto">
+                            {{ pagina('saque').getTexto()|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+    <form class="admpage-form-search panel panel-default">
+        <div class="panel-body p-b-10">
+            <div class="row">
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>DT/Inicial</label>
+                    <input type="date" class="form-control" name="dataInicial" value="{{ 'now'|date('Y-m-01') }}"/>
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>DT/Final</label>
+                    <input type="date" class="form-control" name="dataFinal" value="{{ 'now'|date('Y-m-t') }}"/>
+                </div>
+                <div class="form-group col-md-6 col-xs-12">
+                    <label>Situação</label>
+                    <div class="input-group">
+                        <select name="status" class="form-control">
+                            <option value>-- Todos --</option>
+                            <option value="1" selected>Processando</option>
+                            <option value="2">Aprovado</option>
+                            <option value="0">Rejeitado</option>
+                        </select>
+                        <div class="input-group-btn">
+                            <button class="btn btn-roxo">
+                                <i class="fa fa-filter"></i> Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+    {% if isMaster %}
+        <div class="text-right">
+            <a href="#csv" class="btn-csv btn btn-roxo">
+                <i class="fa fa-download"></i> Baixar CSV
+            </a>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var container = $('.admpage-container');
+
+        var formSearch = $('.admpage-form-search');
+
+        var _page = $
+            .adminPage({
+                formSearch: formSearch,
+                container: container,
+                autoSearch: false,
+            });
+
+        formSearch.submit();
+
+        container
+            .on('click', '[data-confirmar][data-value]', function () {
+
+                var btn = $(this);
+                var token = btn.attr('data-confirmar');
+                var value = btn.attr('data-value');
+                var message = value == 2 ? 'Deseja confirmar o saque?' : 'Deseja recusar o saque?';
+                swal({
+                    title: 'Atenção !!',
+                    text: message,
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim',
+                    cancelButtonText: 'Não'
+                }).then(function () {
+                    $.post(url(CONTROLLER + '/confirmar'), {saque: token, valor: value}, function (e) {
+                        if (e.result != 1) {
+                            swal({
+                                title: 'Erro !!',
+                                text: e.message,
+                                type: 'error',
+                            });
+                        } else {
+                            _page.reloadSearch();
+                        }
+                    });
+                });
+
+            });
+
+        $('.btn-csv')
+            .on("click", function (e) {
+                e.preventDefault();
+                var values = $('.admpage-form-search').serialize();
+                window.location.href = 'admin/saques/csv?' + values;
+                return false;
+            });
+
+    </script>
+
+{% endblock %}

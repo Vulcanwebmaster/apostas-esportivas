@@ -1,0 +1,44 @@
+{% set resumo = resumoJogos() %}
+
+<div class="row">
+
+    <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ resumo.total }}</p>
+                    <span class="info-box-title">Total de jogos no Sistema</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-futbol-o"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ resumo.hoje }}</p>
+                    <span class="info-box-title">Total de Jogos Hoje</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-futbol-o"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ resumo['3dias'] }}</p>
+                    <span class="info-box-title">Total de Jogos nos Próximos 3 Dias</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-futbol-o"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

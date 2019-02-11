@@ -1,0 +1,166 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <style>
+        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+            color: #000 !important;
+            opacity: 1;
+        }
+
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #000;
+            opacity: 1;
+        }
+
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #000;
+            opacity: 1;
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #000;
+            opacity: 1;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #000;
+            opacity: 1;
+        }
+    </style>
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            {% include 'admin/helpers/info-saldo.twig' %}
+        </div>
+
+    </div>
+
+    <form class="admpage-form" onsubmit="return false;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default panel-roxo">
+                    <div class="panel-heading">
+                        <h4>Transferir Créditos</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="">Login do Remetente</label>
+                                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                          data-content="Campo que descreve o usuário atual" data-original-title=""
+                                          title="">[<i class="fa fa-question"></i>]</span>
+                                    <input type="text" name="remetente" placeholder="{{ user.getLogin() }}"
+                                           value="{{ user.getLogin() }}" readonly class="form-control text">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="">Login do Destinatário</label>
+                                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                          data-content="Digite o usuário que irá receber os créditos."
+                                          data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                    <input type="text" name="destinatario" class="form-control text" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="">Valor a ser transferido (R$)</label>
+                                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                          data-content="Digite o valor a ser transferido. Ex.: 20,50"
+                                          data-original-title=""
+                                          title="">[<i class="fa fa-question"></i>]</span>
+                                    <input type="text" name="valor" class="form-control text mask-valor" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-10 m-b-20">
+                            <div class="col-md-8 col-sm-12 col-xs-12">
+                                <div class="checkbox">
+                                    <label style="font-size: 1.1em">
+                                        <input id="autorizo" type="checkbox" value="" required>
+                                        Autorizo o desconto automático do meu saldo para transferir créditos para
+                                        terceiros.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12 col-xs-12 text-right">
+                                <button class="btn btn-danger" type="reset">
+                                    <i class="fa fa-eraser"></i>
+                                    Limpar
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-arrows-h"></i>
+                                    Transferir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="texto">
+                                    {{ pagina('transferencia').getTexto()|raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $('.admpage-form')
+            .on("submit", function (e) {
+
+                e.preventDefault();
+
+                var values = $(this).getValues();
+
+                swal({
+                    title: 'Atenção !!',
+                    text: "Você confirma está transferência ? ",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim',
+                    cancelButtonText: 'Não'
+                }).then(function () {
+
+                    $('html').addClass('page-loading');
+
+                    $.post(url(CONTROLLER + '/insert'), values, function (j) {
+                        $('html').removeClass('page-loading');
+                        if (j.result == 1) {
+
+                            swal({
+                                title: 'Sucesso !!',
+                                text: j.message,
+                                type: 'success',
+                            }).then(function () {
+                                window.location.reload();
+                            });
+
+                        } else {
+                            swal(
+                                'Erro !!',
+                                j.message,
+                                'error'
+                            );
+                        }
+
+                    }, 'json');
+                });
+
+            });
+
+    </script>
+
+{% endblock %}

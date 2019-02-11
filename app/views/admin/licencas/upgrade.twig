@@ -1,0 +1,133 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-heading">
+                    <h4>Faça o upgrade da sua licença !!</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        {% for v in licencas %}
+                            <div class="col-md-4 col-sm-12 col-xs-12">
+                                <div class="box-select">
+                                    <a href="#" data-migrar="{{ v.getId() }}" data-title="{{ v.getTitle() }}">
+                                        <div class="header-box text-uppercase">
+                                            {{ v.getTitle() }}
+                                        </div>
+                                        <div class="content-box">
+                                            <img src="{{ v.imgCapa().getSource(true) }}" class="m-b-20">
+                                            <p class="text-center">
+                                                <b>Plano:</b> R$ {{ v.getValorPlano(true) }}<br/>
+                                                <b>Adesão:</b> R$ {{ v.getValorAdesao(true) }}
+                                            </p>
+                                        </div>
+                                        <div class="footer-box">
+                                            Migrar
+                                        </div>
+                                    </a>
+                                    {% if v.getId() == user.getLicenca() %}
+                                        <div class="message-hover">
+                                            <h4>Ativo</h4>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-heading">
+                    <h4>Atenção !!</h4>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="texto">
+                                {{ pagina('licencas-uso').getTexto() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $(function () {
+
+            var status = true;
+
+            $(document)
+                .on('click', '[data-migrar]', function (e) {
+
+                    e.preventDefault();
+
+                    var btn = $(this);
+                    var title = $(this).data('title');
+
+                    swal({
+                        title: 'Confirme !!',
+                        text: 'Você realmente deseja fazer a migração para o plano ' + title + '?',
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Não',
+                    })
+                        .then(function () {
+                            status = false;
+
+                            var type = btn.attr('data-migrar');
+                            $("html").addClass("page-loading");
+
+                            $
+                                .post(url(CONTROLLER + '/migrar'), {type: type}, function (e) {
+                                    if (e.result == 1) {
+
+                                        $("html").removeClass("page-loading");
+
+                                        swal({
+                                            title: 'Sucesso !!',
+                                            text: e.message,
+                                            type: 'success',
+                                        })
+                                            .then(function () {
+                                                window.location.href = url();
+                                            });
+
+                                    } else {
+                                        $("html").removeClass("page-loading");
+                                        swal(
+                                            'Erro !!',
+                                            e.message,
+                                            'error'
+                                        );
+                                    }
+                                }, 'json')
+                                .always(function () {
+                                    status = true;
+                                });
+                        });
+                });
+
+        });
+
+    </script>
+
+{% endblock %}

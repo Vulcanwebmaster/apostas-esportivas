@@ -1,0 +1,139 @@
+<style>
+
+    {% set text = 'black' %}
+    {% set bg = 'white' %}
+
+    @page {
+        padding: 0 10pt;
+        margin: 0;
+        width: 320pt;
+    }
+
+    html, body {
+        background-color: {{ bg }};
+        font-family: Courier;
+        text-transform: uppercase;
+        margin: 0px auto;
+        width: 300pt;
+        color: {{ text }};
+        font-size: 10pt;
+        line-height: 150%;
+        font-weight: normal;
+    }
+
+    a {
+        color: inherit;
+    }
+
+    hr {
+        display: block;
+        margin: 15px;
+        border-bottom: none;
+        border-top: 1px dashed{{ text }};
+    }
+
+    [padding] {
+        padding: 0 15px;
+    }
+
+    [padding] div {
+        clear: both;
+    }
+
+    .regras {
+        text-align: justify;
+    }
+
+    .token {
+        text-align: center;
+        font-size: 7pt;
+    }
+
+    .header {
+        padding-top: 15px;
+        text-align: center;
+    }
+
+    .header .banca {
+        padding-top: 15px;
+        font-size: 25pt;
+        font-weight: bold;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .codigo {
+        font-size: 18pt;
+    }
+
+    .right {
+        float: right;
+    }
+
+</style>
+
+{% if aposta.getStatus() == 0 %}
+    Aposta cancelada
+{% elseif aposta.getStatus() == 3 %}
+    Aposta cancelada por ausência de pagamento
+{% endif %}
+
+<div class="header" padding>
+    <div class="banca">{{ dados('banca') }}</div>
+    <div class="site">{{ domain()|replace({'https://': '', 'http://': ''}) }}</div>
+</div>
+
+<hr/>
+
+<div padding>
+    <div>DATA: <span class="right">{{ aposta.getData(true) }}</span></div>
+    <div>COLABORADOR: <span class="right">{{ aposta.getUserNome() }}</span></div>
+    <div>CLIENTE: <span class="right">{{ aposta.getApostadorNome() }}</span></div>
+</div>
+
+<hr/>
+
+{% for v in aposta.voJogos(true) %}
+    {% set jogo = v.voJogo() %}
+    <div padding>
+        <div>Futebol - {{ jogo.getData(true) }} às {{ jogo.getHora() }}</div>
+        <div>{{ jogo.getCampeonatoTitle() }}</div>
+        <div>{{ jogo.getTimeCasaTitle() }} <b>x</b> {{ jogo.getTimeForaTitle() }}</div>
+        <div>Cotação: <span class="right">{{ v.getCotacaoTitle() }} {{ v.getCotacaoValor() }}</span></div>
+        <div>Status: <span class="right">{{ v.getStatusTitle() }}</span>
+        </div>
+    </div>
+    <hr/>
+{% endfor %}
+
+<div padding>
+    <div>Quantidade de jogos: <span class="right">{{ aposta.getJogos() }}</span></div>
+    <div>Cotação: <span class="right">{{ aposta.getCotacaoValida() }}</span></div>
+    <div>Total apostado: <span class="right">R$ {{ aposta.getValor(true) }}</span></div>
+    <div>Possível retorno: <span class="right">R$ {{ aposta.getRetornoValido(true) }}</span></div>
+</div>
+
+<hr/>
+
+<div padding class="text-center">
+    <div>BILHETE</div>
+    <div class="codigo">{{ aposta.getCodigoBilhete() }}</div>
+</div>
+
+<hr/>
+
+<div class="regras" padding>
+    {% if dados('ImprimirRegras') %}
+        <div class="regras">{{ dados('RegrasAposta')|raw }}</div>
+    {% endif %}
+</div>

@@ -1,0 +1,284 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row linha-infos-helper">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter"> {{ indicacoes.total.indicadosDiretos|number_format(0, '', '.') }}</p>
+                                <span class="info-box-title">Meus Indicados</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter"> {{ indicacoes.total.indicados|number_format(0, '', '.') }}</p>
+                                <span class="info-box-title">Usuários na Equipe</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-sitemap"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter"> {{ ganhos.pontosAcumulados|number_format(0, '', '.') }}</p>
+                                <span class="info-box-title">Pontos Acumulados</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-ticket"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    R$ {{ ganhos.ganhosApostas|number_format(2, ',', '.') }}</p>
+                                <span class="info-box-title">Ganhos de Apostas Realizadas</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    R$ {{ ganhos.bonusComercializacao|number_format(2, ',', '.') }}</p>
+                                <span class="info-box-title">Bônus de Comercialização</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    R$ {{ ganhos.bonusIndicacao|number_format(2, ',', '.') }}</p>
+                                <span class="info-box-title">Bônus Indicação</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    R$ {{ ganhos.bonusEquipe|number_format(2, ',', '.') }}</p>
+                                <span class="info-box-title">Bônus de Equipe</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    R$ {{ ganhos.bonusParticipacao|number_format(2, ',', '.') }}</p>
+                                <span class="info-box-title">Bônus Participação nos Lucros</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    R$ {{ (ganhos.bonusParticipacao + ganhos.bonusEquipe + ganhos.ganhosApostas + ganhos.bonusIndicacao + ganhos.bonusComercializacao)|number_format(2, ',', '.') }}</p>
+                                <span class="info-box-title">Ganhos Totais no UOLbet</span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="hide panel panel-default">
+
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title">Busca</h4>
+        </div>
+        <div class="panel-body p-b-10">
+            <div class="row">
+                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                    <label>Quantidade de pontos</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Digite uma quantidade de pontos."
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                    <label>Quantidade de usuários</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Digite uma quantidade de usuários."
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                    <label>Nível</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Selecione um tipo de licença"
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <select class="form-control">
+                        <option> -- Selecione --</option>
+                        <option value="1"> Nível 1</option>
+                        <option value="2"> Nível 2</option>
+                        <option value="3"> Nível 3</option>
+                        <option value="4"> Nível 4</option>
+                        <option value="5"> Nível 5</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="text-right">
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-search"></i> Pesquisar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if indicacoes %}
+
+        <div class="panel panel-default panel-roxo">
+            <div class="panel-heading" style="padding-top: 13px !important; padding-left: 12px;">
+                <h4 class="modal-title">Tabela de Ganhos em 5 níveis, Apenas para sua Conferência</h4>
+            </div>
+            <div class="panel-body panel-table">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th width="20" class="text-center">Nível</th>
+                            <th class="text-center">Usuários</th>
+                            <th class="text-center">Pontos da Equipe</th>
+                            <th class="text-center">Bônus de Indicação</th>
+                            <th class="text-center">Bônus de Equipe</th>
+                            <th class="text-center">Total Equipe</th>
+                            <th width="120" class="text-center"><i class="fa fa-users"></i> Indicados</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for nivel, values in indicacoes.niveis %}
+                            <tr>
+                                <td class="text-center vertical-align">{{ nivel }}</td>
+                                <td class="vertical-align text-center">{{ values.indicados }}</td>
+                                <td class="vertical-align text-center">{{ values.pontos|number_format(0, '', '.') }}</td>
+                                <td class="vertical-align text-center">
+                                    R$ {{ values.indicacao|number_format(2,',','.') }}</td>
+                                <td class="text-center vertical-align">
+                                    R$ {{ values.apuracao|number_format(2,',','.') }}</td>
+                                <td class="vertical-align text-center">
+                                    R$ {{ values.ganhos|number_format(2,',','.') }}</td>
+                                <td class="vertical-align text-center">
+                                    <button class="btn btn-roxo btn-users" data-nivel="{{ nivel }}">
+                                        <i class="fa fa-users m-r-0"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot style="background : #ddd !important">
+                        <tr>
+                            <th width="20" class="text-center"></th>
+                            <th class="text-center">{{ indicacoes.total.indicados }}</th>
+                            <th class="text-center">{{ indicacoes.total.pontos|number_format(0,'','.') }}</th>
+                            <th class="text-center">R$ {{ indicacoes.total.indicacao|number_format(2,',','.') }}</th>
+                            <th class="text-center">R$ {{ indicacoes.total.apuracao|number_format(2,',','.') }}</th>
+                            <th class="text-center">R$ {{ indicacoes.total.ganhos|number_format(2,',','.') }}</th>
+                            <th width="120" class="text-center"></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <p class="texto-descricao">
+            <strong>Atenção : </strong>Os ganhos exibidos acima são de acordo com cada bônus pago pela UOLbet e
+            representam
+            uma soma geral dos seus ganhos, desde a sua data de cadastro até o presente momento.
+        </p>
+
+        <div class="modal-usuarios modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="close" data-dismiss="modal">&times;</div>
+                        <h3 class="modal-title">Indicados</h3>
+                    </div>
+                    <div class="modal-body p-0"></div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block script %}
+    {% if indicacoes %}
+        <script>
+
+            $(document)
+                .on('click', '.btn-users[data-nivel]', function () {
+
+                    var nivel = $(this).attr('data-nivel');
+
+                    $('.modal-usuarios')
+                        .modal("show")
+                        .find(".modal-body").html('Carregando')
+                        .load(url(CONTROLLER + '/indicados', [nivel]));
+
+                });
+
+        </script>
+    {% endif %}
+{% endblock %}

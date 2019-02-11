@@ -1,0 +1,254 @@
+<html>
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <style>
+
+        @page {
+            padding: 0 10pt;
+            margin: 0;
+            width: 320pt;
+        }
+
+        html, body {
+            width: 300pt;
+            padding: 10pt 0 0 0;
+            margin: 0 auto;
+            font-family: 'Times Roman', sans-serif;
+        }
+
+        .cotacao span {
+            text-transform: uppercase;
+            border: 1pt solid #333;
+            padding: 4pt 4pt;
+            font-size: 8pt;
+            display: block;
+            margin: 0pt;
+        }
+
+        .tabela-cotacoes-jogo .cotacao span {
+            font-size: 10pt !important;
+        }
+
+        @media print {
+            .cotacao.dark span {
+                -webkit-print-color-adjust: exact;
+                background: #000000;
+                color: #FFFFFF;
+            }
+        }
+
+        .cotacao.dark span {
+            background: #000000;
+            color: #FFF;
+        }
+
+        .cotacao {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .tabela-campeonatos {
+            text-transform: uppercase;
+            background-color: #FFFFFF;
+            border-collapse: collapse;
+            margin: 0 auto 10pt auto;
+            color: #000000;
+            width: 100%;
+        }
+
+        .campeonato-title {
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 10pt;
+            margin: 0;
+        }
+
+        .borda-rodape .campeonato-title td {
+            border-bottom: 1pt solid #000000;
+        }
+
+        .data {
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .esquerda {
+            display: inline-block;
+            width: 70%;
+        }
+
+        .direita {
+            display: inline-block;
+            text-align: right;
+            width: 30%;
+        }
+
+        .grande {
+            width: 16%;
+        }
+
+        .b-b {
+            border-bottom: 1px solid #000;
+        }
+
+        .banca {
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 5pt;
+            font-weight: bold;
+            font-size: 17pt;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .logotipo {
+            height: 50px;
+            display: block;
+            margin: 8pt 0;
+            text-align: center;
+        }
+
+        .logotipo img {
+            height: 50px;
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body>
+
+<?php if (!app\modules\admin\Admin::getConfiguracoes()->getImprimirLogo()) { ?>
+    <div class="banca"><?php echo app\modules\admin\Admin::getConfiguracoes()->getBanca() ?></div>
+<?php } else { ?>
+    <div class="logotipo hidden">
+        <img src="<?php echo abs_source_images(app\modules\admin\Admin::getConfiguracoes()->imgCapa(true, 'logo')->getSource()) ?>"/>
+    </div>
+<?php } ?>
+
+<?php
+$cotacoes = \app\models\CotacoesModel::getCotacoesAtivas();
+$datas = [];
+
+foreach ($jogos as $jogo) {
+    if (!in_array($jogo->getData(), $datas)) {
+        $datas[] = $jogo->getData();
+    }
+}
+
+foreach ($datas as $data) {
+
+    $time = strtotime($data);
+    $mes = app\helpers\Date::getMonthName((int)date('m', $time));
+    $semana = app\helpers\Date::getDayName((int)date('w', $time));
+    $dia = date('d', $time);
+    $ano = date('Y', $time);
+
+    $campeonatos = [];
+
+    echo "<div class="data">{$semana}, {$dia} de {$mes} {$ano}</div>";
+
+    foreach ($jogos as $jogo) {
+        if ($jogo->getData() == $data and !in_array($jogo->getCampeonato(), $campeonatos)) {
+            $campeonatos[] = $jogo->getCampeonato();
+        }
+    }
+
+    foreach ($campeonatos as $campeonato) {
+        ?>
+        <h3 class="campeonato-title b-b">
+            <div class="esquerda"><?php echo $campeonato ?></div>
+            <div class="direita"><?php echo app\helpers\Date::formatData($data) ?></div>
+        </h3>
+        <table class="tabela-cotacoes tabela-campeonatos borda-rodape">
+            <tbody>
+            <tr>
+                <?php
+                foreach ($cotacoes as $i => $cotacao) {
+                    if ($i % 2 == 0) {
+                        $class = in_array($i, [0, 2, 4]) ? 'dark' : null;
+                        echo '<td class="cotacao ' . $class . '"><span>' . $cotacao->getSigla() . '</span></td>';
+                    }
+                }
+                ?>
+            </tr>
+            <tr>
+                <?php
+                foreach ($cotacoes as $i => $cotacao) {
+                    if ($i % 2 == 1) {
+                        $class = in_array($i, [1, 3, 5]) ? 'dark' : null;
+                        echo '<td class="cotacao ' . $class . '"><span>' . $cotacao->getSigla() . '</span></td>';
+                    }
+                }
+                ?>
+            </tr>
+            <tr>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+        foreach ($jogos as $jogo) {
+            if ($jogo->getData() == $data and $jogo->getCampeonato() == $campeonato) {
+                ?>
+                <h3 class="campeonato-title"><?php echo $jogo->getHora() ?> <?php echo $jogo->getTimeCasaTitle() ?>
+                    x <?php echo $jogo->getTimeForaTitle() ?></h3>
+                <table class="tabela-cotacoes-jogo tabela-campeonatos">
+                    <tbody>
+                    <tr>
+                        <?php
+                        foreach ($cotacoes as $i => $cotacao) {
+                            if ($i % 2 == 0) {
+                                $class = 'cotacao ' . (in_array($i, [0, 2, 4]) ? 'dark' : null);
+                                if ($i == 14) {
+                                    $class .= ' menor';
+                                } else if ($i == 16) {
+                                    $class .= ' grande';
+                                } else {
+                                    $class .= ' num';
+                                }
+                                echo '<td class="' . $class . '"><span>' . $jogo->get($cotacao->getCampo(), 'real', true) . '</span></td>';
+                            }
+                        }
+                        ?>
+                    </tr>
+                    <tr>
+                        <?php
+                        foreach ($cotacoes as $i => $cotacao) {
+                            if ($i % 2 == 1) {
+                                $class = 'cotacao ' . (in_array($i, [1, 3, 5]) ? 'dark' : null);
+                                if ($i == 13) {
+                                    $class .= ' menor';
+                                } else if ($i == 15) {
+                                    $class .= ' grande';
+                                } else {
+                                    $class .= ' num';
+                                }
+                                echo '<td class="' . $class . '"><span>' . $jogo->get($cotacao->getCampo(), 'real', true) . '</span></td>';
+                            }
+                        }
+                        ?>
+                    </tr>
+                    </tbody>
+                </table>
+                <?php
+            }
+        }
+    }
+}
+?>
+
+<script>
+    // Imprime
+    window.print();
+
+    // Fecha a Janela
+    setTimeout(window.close, 300);
+</script>
+
+</body>
+</html>

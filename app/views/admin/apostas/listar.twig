@@ -1,0 +1,126 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    {% include 'admin/apostas/editar-aposta.twig' %}
+    {% include 'admin/apostas/modal-jogos.twig' %}
+
+    <form method="post" class="page-form-search" onsubmit="javascript:return false;">
+        <div class="panel panel-default">
+
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title">Lista de Apostas</h4>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    {% if usuarios %}
+                        <div class="col-xs-12 form-group">
+                            <label>Gerente/Cambista</label>
+                            <select name="user" class="form-control">
+                                <option value>-- Todos --</option>
+                                {{ usuarios|raw }}
+                            </select>
+                        </div>
+                    {% endif %}
+                    <div class="col-md-4 col-xs-12 form-group">
+                        <label>Código</label>
+                        <input type="text" name="id" class="form-control"/>
+                    </div>
+                    <div class="col-md-4 col-xs-6 form-group">
+                        <label>DT/Início</label>
+                        <input type="date" name="dataInicial" class="form-control"/>
+                    </div>
+                    <div class="col-md-4 col-xs-6 form-group">
+                        <label>DT/Fim</label>
+                        <input type="date" name="dataFinal" class="form-control"/>
+                    </div>
+                    <div class="col-md-9 col-xs-12 form-group">
+                        <label>Apostador</label>
+                        <input type="text" name="apostadornome" class="form-control"/>
+                    </div>
+                    <div class="col-md-3 col-xs-12 form-group">
+                        <label>Situação</label>
+                        <select name="situacao" class="form-control">
+                            <option value>-- Todas --</option>
+                            <option value="ganhou">Ganhou</option>
+                            <option value="perdeu">Perdeu</option>
+                            <option value="aguardando">Aguardando os jogos terminarem</option>
+                            <option value="cancelada">Cancelada</option>
+                            <option value="possivel">Possível ganhador</option>
+                        </select>
+                    </div>
+                    {% if type == 'abertas' %}
+                        <div class="col-md-3 col-xs-6 form-group">
+                            <label>Valor mínimo</label>
+                            <input type="text" name="valorMinimo" class="form-control mask-valor"/>
+                        </div>
+                        <div class="col-md-3 col-xs-6 form-group">
+                            <label>Valor máximo</label>
+                            <input type="text" name="valorMaximo" class="form-control mask-valor"/>
+                        </div>
+                        <div class="col-md-3 col-xs-6 form-group">
+                            <label>Retorno mínimo</label>
+                            <input type="text" name="retornoMinimo" class="form-control mask-valor"/>
+                        </div>
+                        <div class="col-md-3 col-xs-6 form-group">
+                            <label>Retorno máximo</label>
+                            <input type="text" name="retornoMaximo" class="form-control mask-valor"/>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-search"></i> Pesquisar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="page-container"></div>
+
+    <div class="p-b-20">
+        <span class="text-info m-r-10"><i class="fa fa-circle"></i> Ganhou a aposta</span>
+        <span class="text-danger m-r-10"><i class="fa fa-circle"></i> Perdeu a aposta</span>
+        <span class="m-r-10"><i class="fa fa-circle"></i> Aguardando o jogo terminar</span>
+        <span class="text-warning m-r-10"><i class="fa fa-circle"></i> Aposta excluida, cancelada ou não paga</span>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var page;
+
+        $(function () {
+
+            var container = $('.page-container');
+
+            page = $.adminPage({
+                controller: 'apostas/listar',
+                formSearch: '.page-form-search',
+                container: container,
+                searchValues: {{ json(searchValues) }},
+                deleteAction: url('apostas/aposta/excluir'),
+            });
+
+            container
+                .on('click', '[data-pagar]', function () {
+                    if (confirm("Deseja antecipar o pagamento da aposta?")) {
+                        $('html').addClass('page-loading');
+                        $.post(url('apostas/aposta/pagamento'), {
+                            aposta: $(this).attr('data-pagar'),
+                        }).always(function () {
+                            $('html').removeClass('page-loading');
+                            page.reloadSearch();
+                        });
+                    }
+                });
+
+        });
+    </script>
+
+{% endblock %}

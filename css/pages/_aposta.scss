@@ -1,0 +1,214 @@
+@charset "UTF-8";
+
+.page-aposta {
+
+  .panel-scroll {
+    @media (min-width: 768px) {
+      height: calc(100vh - 350px);
+    }
+    overflow-y: auto;
+    padding: 0px !important;
+  }
+
+  .jogos-selecionados-lista {
+
+    margin-top: 30px;
+    position: relative;
+    border-top: 1px dashed darken(#ededed, 20%);
+
+    &:before {
+      content: 'Jogos selecionados';
+      line-height: 30px;
+      text-transform: uppercase;
+      margin-top: -30px;
+      color: #999;
+      display: block;
+    }
+
+    &:empty:after {
+      content: "Selecione no mínimo 1 jogo para concluir a aposta";
+      display: block;
+      padding: 20px 40px;
+      text-transform: uppercase;
+      background: #ededed;
+      font-weight: bold;
+    }
+
+    .jogo-selecionado {
+
+      position: relative;
+      background-color: #ededed;
+      padding: 10px;
+
+      .jogo {
+        font-size: 1.3em;
+      }
+
+      .btn-group {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      &:nth-child(even) {
+        background-color: darken(#ededed, 5%);
+      }
+    }
+
+  }
+
+  .lista-jogos {
+
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+
+    .campeonato {
+      padding: 5px 10px;
+      text-align: center;
+      background: #333;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .jogo {
+
+      padding-bottom: 10px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      @include transition(padding 0.3s ease-in-out);
+
+      &.active {
+        padding-left: 25px;
+        &:before {
+          position: absolute;
+          top: 50%;
+          left: -150px;
+          text-align: center;
+          margin: -75px 0 0 0;
+          content: 'APOSTADO';
+          background-color: #0a2b1d;
+          color: white;
+          font-weight: bold;
+          display: block;
+          line-height: 25px;
+          padding: 0;
+          width: 150px;
+          z-index: 999;
+
+          transform-origin: top right;
+          @include rotate(-90deg);
+        }
+      }
+
+      &:nth-child(even) {
+        background: #f2f2f2;
+        &.active:before {
+          background-color: green;
+        }
+      }
+
+      .info-topo {
+
+        line-height: 32px;
+        padding: 8px 15px;
+
+        .hora {
+          font-weight: bold;
+        }
+
+        .btn-mais {
+          background: #333;
+          color: #fff;
+          transition: all 0.3s ease;
+          &:hover,
+          &:focus {
+            background: #000 !important;
+          }
+        }
+
+        .times {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          font-weight: bold;
+          color: #900162;
+          .x {
+            margin-left: 3px;
+            margin-right: 3px;
+          }
+        }
+      }
+
+    }
+  }
+
+}
+
+.botoes-cotacoes {
+
+  padding: 0 15px;
+
+  .btn {
+    padding: 5px 3px;
+    width: (100%/5);
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    &.active {
+      background: #900162 !important;
+      color: #fff !important;
+    }
+  }
+
+  &.modal-botoes {
+    padding: 0px !important;
+    margin-bottom: 20px;
+    .btn {
+      width: (100%/8);
+      @media (max-width: 768px) {
+        width: (100%/5);
+      }
+    }
+    h4 {
+      font-weight: bold;
+      color: #900162 !important;
+      text-transform: uppercase !important;
+      margin-bottom: 20px;
+    }
+  }
+
+}
+
+.modal-cotacoes {
+  .modal-header {
+    background: #900162 !important;
+    .modal-title {
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 20px;
+      margin-top: -6px;
+    }
+    button {
+      opacity: 1 !important;
+      span {
+        color: #fff;
+      }
+    }
+  }
+  .modal-body {
+    .info-jogo {
+      line-height: 25px;
+      padding: 10px;
+      font-weight: bold;
+      background: #f5f5f5;
+      margin-bottom: 20px;
+      .times {
+        color: #900162 !important;
+        margin-left: 10px;
+      }
+    }
+  }
+}

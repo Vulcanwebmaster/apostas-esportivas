@@ -1,0 +1,87 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <form class="panel panel-default admpage-form-search">
+        <div class="panel-body p-b-10">
+            <div class="row">
+                {% if users %}
+                    <div class="form-group col-xs-12">
+                        <label>Usuário/Cambista</label>
+                        <select name="user" class="form-control chosen">
+                            <option value>Meu prório histórico</option>
+                            {% for v in users %}
+                                <option value="{{ v.getId() }}">{{ v.getNome() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+                <div class="form-group col-md-5 col-xs-12">
+                    <label>Período</label>
+                    <div class="input-group input-financeiro">
+                        <div class="input-group-addon">
+                            DE:
+                        </div>
+                        <input type="date" class="form-control" name="dataInicial" value="{{ 'now'|date('Y-m-01') }}" required/>
+                        <div class="input-group-addon">
+                            ATÉ:
+                        </div>
+                        <input type="date" class="form-control" name="dataFinal" value="{{ 'now'|date('Y-m-t') }}" required/>
+                    </div>
+                </div>
+                <div class="form-group col-md-7 col-xs-12">
+                    <label>Pesquisar</label>
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" />
+                        <div class="input-group-btn">
+                            <button class="btn btn-roxo" type="submit">
+                                <i class="fa fa-filter"></i> Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+    var formSearch = $('.admpage-form-search');
+
+    formSearch
+        .on("click", "[data-group]", function () {
+            var btn = $(this);
+
+            if (!btn.hasClass('active')) {
+
+                var group = btn.attr('data-group');
+                var ativo = $('[data-group=' + group + '].active');
+
+                ativo.removeClass('active').toggleClass('btn-default btn-primary');
+                btn.addClass('active').toggleClass('btn-default btn-primary');
+
+                formSearch.find('[name=' + group + ']').val(btn.val());
+
+                formSearch.submit();
+            }
+        });
+
+    $('<div />')
+        .adminPage({
+            formSearch: formSearch,
+            container: '.admpage-container',
+            autoSearch: false,
+        });
+
+
+    formSearch.submit();
+
+</script>
+
+{% endblock %}

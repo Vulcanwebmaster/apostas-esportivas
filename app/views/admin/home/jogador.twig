@@ -1,0 +1,21 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    {% include 'admin/inc/modal-saque.twig' %}
+
+    <div class="row">
+        {% for v in banners("slideshow") %}
+            <div class="col-xs-12" style="margin-bottom: 30px">
+                <div class="imagem">
+                    <img class="center-block" src="{{ v.imgCapa().getSource(true) }}">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include 'admin/helpers/comunicados.twig' %}
+
+    {% include 'admin/helpers/info-saldo.twig' %}
+
+{% endblock %}

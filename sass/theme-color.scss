@@ -1,0 +1,106 @@
+$cor1 : #900162;
+$cor2 : #7f0156;
+$cor3 : #2D384A;
+$cor4 : #4e0235;
+
+.page-content {
+    background: $cor3 !important;
+    
+}
+
+.navbar .logo-box {
+    background: $cor1 !important;
+}
+
+.navbar .logo-box a {
+    color: #fff;
+}
+
+.sidebar {
+    background: $cor3 !important;
+}
+
+.sidebar-header {
+    background: $cor3 !important;
+}
+
+.sidebar-profile span small {
+    color: #899dc1;
+}
+
+.menu {
+    background: $cor3 !important;
+}
+
+.menu.accordion-menu a {
+    color: #fff;
+    transition: all 0.3s !important;
+}
+
+.menu.accordion-menu > li > a:hover {
+    background: $cor1;
+    color: #fff;
+}
+
+.menu.accordion-menu > li.active > a,
+.menu.accordion-menu > li.active.open > a {
+    background: #7f0156 !important;
+    color: #fff;
+}
+
+.small-sidebar:not(.page-sidebar-fixed) .accordion-menu li.droplink:hover > a,
+.horizontal-bar .accordion-menu > li.droplink:hover > a,
+.menu.accordion-menu ul,
+.menu.accordion-menu li.open > a,
+.hover-menu .accordion-menu > li.droplink:hover > a {
+    background: #7f0156 !important;
+    color: #fff;
+}
+
+.menu.accordion-menu ul li a:hover,
+.menu.accordion-menu ul li.active a {
+    background: #7f0156 !important;
+    color: #fff;
+}
+
+.menu.accordion-menu ul li a {
+    color: #fff !important;
+    transition: all 0.3s !important;
+}
+
+.badge .badge-warning{
+    background: $cor4 !important;
+}
+
+.droplink{
+    a{
+        &:hover,&:active{
+            background: $cor1 !important;
+        }
+    }
+}
+
+.waves-effect{
+    &:hover,&:focus{
+        background: $cor1 !important;
+        color: #fff !important;
+    }
+}
+
+.sub-menu{
+    a{
+        &:hover,&:active{
+            background: $cor4 !important;
+        }
+    }
+}
+
+.panel{
+    .badge{
+        background: $cor4 !important;
+    }
+}
+
+.pace-progress{
+    background: $cor4 !important;
+}

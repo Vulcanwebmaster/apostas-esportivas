@@ -1,0 +1,282 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row m-t-20">
+        <div class="col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-heading">
+                    <h4 class="modal-title">Minha Equipe</h4>
+                </div>
+            </div>
+        </div>
+
+        {% for nivel, values in indicacoes['niveis'] %}
+            <div class="width-5">
+                <div class="panel info-box panel-white ">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p class="counter text-center"><i class="fa fa-users"></i> {{ values['indicados'] }}</p>
+                            <span class="info-box-title text-center">{{ nivel }}º Nível</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="row m-t-20">
+
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body panel-table">
+                    <div class="table-responsive">
+                        <table class="tabela-rede table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="200" class="text-center">#</th>
+                                <th width="100" class="text-center">Login</th>
+                                <th width="10" class="text-center">Nível</th>
+                                <th width="40" class="text-center">Licença</th>
+                                <th width="60" class="text-center">Recarga</th>
+                                <th width="20" class="text-center">Indicados</th>
+                                <th width="60" class="text-center">Pontos</th>
+                                <th width="60" class="text-center">Apostas</th>
+                                <th width="80" class="text-center">Graduação</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="12">Exibindo todos os registros</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $(document).ready(function () {
+
+            $.ajax({
+                type: "GET",
+                url: url('indicacoes/indicacoes'),
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    listaIndicados(response.indicados);
+                },
+                error: function (response) {
+                    listaIndicados(response.indicados);
+                }
+
+            }).always(function () {
+
+            });
+
+        });
+
+        function listaIndicados(indicados) {
+            var indicadoresDiretos = getNivelUm(indicados);
+            if (indicadoresDiretos.length > 0) {
+                $.each(indicadoresDiretos, function (i, item) {
+
+                    $(".tabela-rede tbody").append(
+                        listForType(item, 0)
+                    );
+                    var listaIndicados = getForIndicador(indicados, item.id);
+                    $.each(listaIndicados, function (i2, item2) {
+                        $(".tabela-rede tbody").append(
+                            listForType(item2, item.id)
+                        );
+                        var listaIndicados3 = getForIndicador(indicados, item2.id);
+                        $.each(listaIndicados3, function (i3, item3) {
+                            $(".tabela-rede tbody").append(
+                                listForType(item3, item.id)
+                            );
+
+                            var listaIndicados4 = getForIndicador(indicados, item3.id);
+                            $.each(listaIndicados4, function (i4, item4) {
+                                $(".tabela-rede tbody").append(
+                                    listForType(item4, item.id)
+                                );
+
+                                var listaIndicados5 = getForIndicador(indicados, item4.id);
+                                $.each(listaIndicados5, function (i5, item5) {
+                                    $(".tabela-rede tbody").append(
+                                        listForType(item5, item.id)
+                                    );
+
+                                });
+
+                            });
+
+                        });
+                    });
+                });
+            } else {
+                $(".tabela-rede tbody").append(
+                    '<tr><th colspan="12" class="text-center text-uppercase">Nenhum usuário na rede encontrado.</th></tr>'
+                );
+            }
+        }
+
+        function listForType(item, idPai) {
+            var html;
+            var status = item.ativo ? 'Pago' : 'Pendente';
+            switch (item.nivel) {
+                case 1:
+                    html = '<tr class="primeiro" data-user="' + item.id +
+                        '"><td class="text-center vertical-align">' +
+                        '<div class="btn-group"><span class="seta"></span>' +
+                        '<button onClick="clique(this)" class="btn btn-primary"><i class="fa fa-plus"></i></button>' +
+                        '</div></td>' +
+                        '<td class="vertical-align">' + item.login + '</td>' +
+                        '<td class="vertical-align text-center">' + item.nivel + '</td>' +
+                        '<td class="text-center vertical-align">' + item.licenca + '</td>' +
+                        '<td class="vertical-align text-center">' + status + '</td>' +
+                        '<td class="vertical-align text-center">' + item.indicados + '</td>' +
+                        '<td class="vertical-align text-center">' + item.pontos + '</td>' +
+                        '<td class="vertical-align text-center">' + item.apostas + '</td>' +
+                        '<td class="vertical-align text-center">' + item.graduacao + '</td>' +
+                        '</tr>';
+                    break;
+                case 2:
+                    html = '<tr class="segundo" style="display : none" data-user="' + item.id +
+                        '" data-reference="' + item.indicador + '" data-pai="' + idPai + '">'
+                        + '<td class="text-center vertical-align">' +
+                        '<div class="btn-group"><span class="seta"></span>' +
+                        '<button onClick="clique(this)" class="btn btn-warning"><i class="fa fa-plus"></i></button>' +
+                        '</div></td>' +
+                        '<td class="vertical-align">' + item.login + '</td>' +
+                        '<td class="vertical-align text-center">' + item.nivel + '</td>' +
+                        '<td class="text-center vertical-align">' + item.licenca + '</td>' +
+                        '<td class="vertical-align text-center">' + status + '</td>' +
+                        '<td class="vertical-align text-center">' + item.indicados + '</td>' +
+                        '<td class="vertical-align text-center">' + item.pontos + '</td>' +
+                        '<td class="vertical-align text-center">' + item.apostas + '</td>' +
+                        '<td class="vertical-align text-center">' + item.graduacao + '</td>' +
+                        '</tr>';
+                    break;
+                case 3:
+                    html = '<tr class="terceiro" style="display : none" data-user="' + item.id +
+                        '" data-reference="' + item.indicador + '" data-pai="' + idPai + '">'
+                        + '<td class="text-center vertical-align">' +
+                        '<div class="btn-group"><span class="seta"></span>' +
+                        '<button onClick="clique(this)" class="btn btn-danger"><i class="fa fa-plus"></i></button>' +
+                        '</div></td>' +
+                        '<td class="vertical-align">' + item.login + '</td>' +
+                        '<td class="vertical-align text-center">' + item.nivel + '</td>' +
+                        '<td class="text-center vertical-align">' + item.licenca + '</td>' +
+                        '<td class="vertical-align text-center">' + status + '</td>' +
+                        '<td class="vertical-align text-center">' + item.indicados + '</td>' +
+                        '<td class="vertical-align text-center">' + item.pontos + '</td>' +
+                        '<td class="vertical-align text-center">' + item.apostas + '</td>' +
+                        '<td class="vertical-align text-center">' + item.graduacao + '</td>' +
+                        '</tr>';
+                    break;
+                case 4:
+                    html = '<tr class="quarto" style="display : none" data-user="' + item.id +
+                        '" data-reference="' + item.indicador + '" data-pai="' + idPai + '">'
+                        + '<td class="text-center vertical-align">' +
+                        '<div class="btn-group"><span class="seta"></span>' +
+                        '<button onClick="clique(this)" class="btn btn-success"><i class="fa fa-plus"></i></button>' +
+                        '</div></td>' +
+                        '<td class="vertical-align">' + item.login + '</td>' +
+                        '<td class="vertical-align text-center">' + item.nivel + '</td>' +
+                        '<td class="text-center vertical-align">' + item.licenca + '</td>' +
+                        '<td class="vertical-align text-center">' + status + '</td>' +
+                        '<td class="vertical-align text-center">' + item.indicados + '</td>' +
+                        '<td class="vertical-align text-center">' + item.pontos + '</td>' +
+                        '<td class="vertical-align text-center">' + item.apostas + '</td>' +
+                        '<td class="vertical-align text-center">' + item.graduacao + '</td>' +
+                        '</tr>';
+                    break;
+                default:
+                    html = '<tr class="quinto" style="display : none" data-user="' + item.id +
+                        '" data-reference="' + item.indicador + '" data-pai="' + idPai + '">'
+                        + '<td class="text-center vertical-align">' +
+                        '<div class="btn-group"><span class="seta"></span>' +
+                        '<button disabled class="btn btn-info"><i class="fa fa-times"></i></button>' +
+                        '</div></td>' +
+                        '<td class="vertical-align">' + item.login + '</td>' +
+                        '<td class="vertical-align text-center">' + item.nivel + '</td>' +
+                        '<td class="text-center vertical-align">' + item.licenca + '</td>' +
+                        '<td class="vertical-align text-center">' + status + '</td>' +
+                        '<td class="vertical-align text-center">' + item.indicados + '</td>' +
+                        '<td class="vertical-align text-center">' + item.pontos + '</td>' +
+                        '<td class="vertical-align text-center">' + item.apostas + '</td>' +
+                        '<td class="vertical-align text-center">' + item.graduacao + '</td>' +
+                        '</tr>';
+                    break;
+            }
+            return html;
+        }
+
+        function getNivelUm(indicados) {
+            var lista = [];
+            for (var i = 0; i < indicados.length; i++) {
+                if (indicados[i].nivel == 1) {
+                    lista[i] = indicados[i];
+                }
+            }
+            return lista;
+        }
+
+        function getForIndicador(indicados, indicadorId) {
+            var lista = [];
+            var contador = 0;
+            for (var i = 0; i < indicados.length; i++) {
+                if (indicados[i].indicador == indicadorId) {
+                    lista[contador] = indicados[i];
+                    contador++;
+                }
+            }
+            return lista;
+        }
+
+        function clique(button) {
+            if ($(button).find("i").hasClass("fa-minus")) {
+                $(button).find("i").removeClass("fa-minus");
+                $(button).find("i").addClass("fa-add");
+            } else {
+                $(button).find("i").removeClass("fa-add");
+                $(button).find("i").addClass("fa-minus");
+            }
+            var atual = $(button).parent().parent().parent();
+            var dataUser = $(button).parent().parent().parent().data("user");
+            if ($(atual).hasClass("ativo") && $(atual).hasClass("primeiro")) {
+                $(".tabela-rede tbody tr").each(function () {
+                    if ($(this).data("pai") == dataUser) {
+                        $(this).slideUp();
+                        $(this).find(".btn").find("i").removeClass("fa-minus");
+                        $(this).find(".btn").find("i").addClass("fa-add");
+                    }
+                });
+            } else {
+
+                $(".tabela-rede tbody tr").each(function () {
+                    if ($(this).data("reference") == dataUser) {
+                        $(this).slideToggle();
+                    }
+                });
+            }
+            $(atual).toggleClass("ativo");
+        }
+
+    </script>
+
+{% endblock %}

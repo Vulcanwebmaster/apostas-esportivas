@@ -1,0 +1,19 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-6 col-sm-12 col-xs-12 m-t-50 center text-center">
+        <h1 class="text-xxl text-primary text-danger" style="font-weight : bold;color : #900162 !important;margin-bottom : 30px">Oops!</h1>
+        <h2 style="font-weight : bold;margin-bottom : 30px">Sistema em Atualização !!</h2>
+        <div class="details">
+            <p><b>O sistema foi bloqueado para atualização !</b> Entre em contato com a nossa equipe para mais informações.</p>
+            <h3>
+                <b>E-mail:</b>
+                <a href="mailto:{{ config('email') }}">{{ config('email') }}</a>
+            </h3>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">R$ {{ user.getCredito(true) }}</p>
+                    <span class="info-box-title m-b-0">Saldo em Créditos</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-usd"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ user.getPontos()|number_format(0,'.','.') }}</p>
+                    <span class="info-box-title m-b-0">Pontos Acumulados</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-ticket"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

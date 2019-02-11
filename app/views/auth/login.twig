@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <base href="{{base_url()}}/"/>
+
+    <meta charset="UTF-8">
+    <!-- Title -->
+    <title>Área De Login</title>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Escritório Virtual"/>
+    <meta name="keywords" content="admin,dashboard,escritorio,virtual"/>
+    <!-- OG Imagens -->
+	<meta property="og:image" content="{{ dados().imgCapa(true, 'logo').getSource(true) }}" />
+    <meta name="author" content="Steelcoders"/>
+    <link rel="icon" type="image/png" href="img/favicon.png"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
+    <link href="css/admin.css" rel="stylesheet">
+
+</head>
+<body class="page-login">
+
+<div class="backgroundImage backmobile" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('images/site-bg.jpg') no-repeat"></div>
+
+<section id="login">
+    <div class="container">
+        <div class="row linha-flex">
+            <div class="col-xs-12">
+
+                <a class="login__logo" href="#">
+                    <img src="{{ dados().imgCapa(true, 'logo').getSource(true) }}" alt="Logo">
+                </a>
+
+                <div class="site">
+                    {{config('dominio')}}
+                </div>
+
+                <div class="login__box">
+                    <form method="post" class="form-login login__form">
+                        <div class="form-group">
+                            <label>Usuário</label>
+                            <input id="usuario" type="text" name="username" class="form-control"
+                                   placeholder="Digite seu usuário"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input id="senha" type="password" name="password" class="form-control" placeholder="Senha"
+                                   required>
+                        </div>
+                        <button type="submit" class="btn">
+                            Entrar
+                            <i class="fa fa-sign-in" style="margin-left : 6px;"></i>
+                        </button>
+                    </form>
+                    <div class="login_esqueceu">
+                        <p>
+                            Esqueceu sua senha ?
+                            <a href="#" data-toggle="modal" data-target="#modalEsqueceu">Clique Aqui</a>
+                        </p>
+                    </div>
+                    <div class="login__back">
+                        <a href="cadastrar">
+                            Criar uma conta <i class="fa fa-user-plus" style="margin-left: 6px"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row linha-flex">
+            <div class="col-xs-12 text-center">
+                <p class="copyright">Copyright © {{'now'|date('Y')}}</p>
+                <p class="direitos">Todos os direitos reservados para {{config('dominio')}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Esqueceu sua senha !-->
+<form class="modal fade" id="modalEsqueceu" tabindex="-1" role="dialog" aria-labelledby="modaEsqueceu"
+      aria-hidden="true" onsubmit="return false;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Esqueceu sua senha ? </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Email cadastrado no sistema</label>
+                    <input class="form-control" name="email" placeholder="email@example.com" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{seo_footer()}}
+<script src="cdn/js/jquery.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="cdn/js/jquery.form.js"></script>
+<script src="cdn/js/jquery.mask.js"></script>
+<script src="cdn/js/jquery.serializeObject.js"></script>
+<script src="cdn/js/modernizr.min.js"></script>
+<script src="cdn/js/fastclick.js"></script>
+<script src="js/sweetalert2.min.js"></script>
+<script src="cdn/js/admin.js"></script>
+
+<script>
+
+    $('.form-login')
+        .adminPage({
+            autoSearch: false,
+            controller: 'login',
+            reloadSuccess: url(null, null, 'admin'),
+        });
+
+    $('#modalEsqueceu')
+        .adminPage({
+            autoSearch: false,
+            alertSuccess: true,
+            controller: 'recuperar',
+        });
+
+</script>
+
+</body>
+</html>

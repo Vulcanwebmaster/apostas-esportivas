@@ -1,0 +1,90 @@
+<form class="modal fade modal-editar-aposta" onsubmit="javascript:return false;" id="testemodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <input type="hidden" name="aposta"/>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="fa fa-info"></i> Informações da aposta
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Cód da Aposta</label>
+                        <input type="text" readonly name="id" class="form-control text-center">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Data da aposta</label>
+                        <input type="text" readonly name="data" class="form-control text-center">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>APOSTADOR</label>
+                        <input type="text" readonly name="apostadornome" class="form-control text-center">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Telefone do Apostador</label>
+                        <input type="text" readonly name="apostadortelefone" class="form-control text-center">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Valor da aposta (R$)</label>
+                        <input type="text" readonly name="valor" class="form-control text-center">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Quantidade de Jogos</label>
+                        <input class="form-control text-center" type="number" name="jogos" readonly>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Cotação</label>
+                        <input class="form-control text-center" type="text" name="cotacao" readonly>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <label>Retorno (R$)</label>
+                        <input class="form-control text-center" type="text" name="retornovalido" readonly>
+                    </div>
+                </div>
+                <div>
+                    <label>Jogos Selecionados</label>
+                    <div class="jogos-selecionados-lista">
+                        <div class="jogo-selecionado">
+                            <div>
+                                <i class="fa fa-clock-o"></i> <span class="tempo">23/08/2017 às 09:00</span>
+                            </div>
+                            <div class="jogo text-uppercase">
+                                <b class="casa">Flamengo</b>
+                                <span>X</span>
+                                <b class="fora">Vasco</b>
+                                <div class="content-campeonato">
+                                    <span class="paren">(</span>
+                                    <span class="campeonato" style="display : inline-block !important">Campeonato Carioca</span>
+                                    <span class="paren">)</span>
+                                </div>
+                            </div>
+                            <div class="cotacoes">
+                                <span class="tempo-cotacao text-uppercase">RESULTADO FINAL</span>
+                                -
+                                <span class="cotacao">Emp (3.00)</span>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-danger btn-sm btn-exclui">
+                                    <i class="fa fa-trash"></i>
+                                    Encerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-cancelar-aposta">
+                    <i class="fa fa-times"></i>Cancelar Aposta
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

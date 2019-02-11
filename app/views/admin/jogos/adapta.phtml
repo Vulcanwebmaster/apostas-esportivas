@@ -1,0 +1,315 @@
+<?php
+if (!$jogos) {
+    echo '<div class="alert alert-warning m-b-0">'
+        . '<i class="fa fa-warning"></i> Todos os jogos foram importados, quando tiver novos jogos aparecerá na importação'
+        . '</div>';
+    return null;
+}
+?>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 ">
+        <div class="panel panel-default">
+
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title"><?php echo $title ?></h4>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-xs-12">
+                        <div class="limites text-center">
+                            <h3 class="m-b-md m-t-xs">Limite para todos os Jogos</h3>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Limite 1</label>
+                                    <input type="text" class="form-control text-center" name="limite1"
+                                           placeholder="1 Jogo">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Limite 2</label>
+                                    <input type="text" class="form-control text-center" name="limite2"
+                                           placeholder="2 Jogos">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Limite 3</label>
+                                    <input type="text" class="form-control text-center" name="limite3"
+                                           placeholder="3 Jogos">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-footer">
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-xs-12 pull-right">
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="subtrair form-control" step="0.1" name="subtrair" value="0.0"/>
+                            <div class="input-group-btn">
+                                <a href="#" alt="Subtrair" onclick="javascript:addOnline.subtrair();"
+                                   class="btn btn-default"><i class="fa fa-minus-circle"></i> Subtrair</a>
+                                <a href="#" alt="Limpar Cotações" onclick="javascript:addOnline.limpar();"
+                                   class="btn btn-default"><i class="fa fa-eraser"></i> Cotações</a>
+                                <a href="#" alt="Cadastrar Jogos" onclick="javascript:addOnline.cadastra();"
+                                   class="btn btn-danger"><i class="fa fa-plus-circle"></i> Cadastrar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-body panel-table">
+
+                <div class="table-responsive m-t-md" style="width: 100%;">
+                    <table id="table-jogos"
+                           class="table table-minified table-hover table-bordered table-striped list-table">
+                        <thead>
+                        <tr>
+                            <th class="text-center text-uppercase"><input type="checkbox" name="checkall"
+                                                                          onclick="javascript:addOnline.checkAll(this);"
+                                                                          value="checkall"/></th>
+                            <th class="text-center text-uppercase">Campeonato</th>
+                            <th class="text-center text-uppercase">Casa / Fora</th>
+                            <?php
+                            foreach ($cotacoes as $i => $cotacao) {
+                                if ($i % 2 == 0) {
+                                    echo '<th>';
+                                    $class = 'dark';
+                                } else {
+                                    $class = 'light';
+                                }
+                                echo '<span class="cotacoes-' . $class . '" style="color: ' . $cotacao->getCor() . ';">' . $cotacao->getSigla() . '</span>';
+                                if ($i % 2 == 1) {
+                                    echo '</th>';
+                                }
+                            }
+                            ?>
+                        </tr>
+                        </thead>
+                        <tbody class="t-body">
+                        <tr class="tr-jogo">
+                            <td class="text-center"><input type="checkbox" name="jogos" class="check" id="checkbox"/>
+                            </td>
+                            <td class="text-center"><span class="editable td-campeonato">Brasileiro</span></td>
+                            <td class="text-center">
+                                <span class="editable td-timecasa">São Paulo</span> x <span
+                                        class="editable td-timefora">Palmeiras</span>
+                                <br/>
+                                <small class="editable td-data" data-type="date">01/05/2016</small>
+                                ás
+                                <small class="editable td-hora" data-type="time">15:05</small>
+                            </td>
+                            <?php
+                            foreach ($cotacoes as $i => $cotacao) {
+                                if ($i % 2 == 0) {
+                                    echo '<th>';
+                                    $class = 'dark';
+                                } else {
+                                    $class = 'light';
+                                }
+                                echo '<span class="editable cotacoes-' . $class . ' td-' . $cotacao->getCampo() . '" data-type="text"></span>';
+                                if ($i % 2 == 1) {
+                                    echo '</th>';
+                                }
+                            }
+                            ?>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var addOnline = {
+        status: true,
+        type: 'adapta',
+        trJogo: $('.tr-jogo').remove(),
+        tBody: $('.t-body'),
+        jogos: [],
+        __init: function () {
+            addOnline.jogos = <?php echo json_encode($jogos) ?>;
+            if (addOnline.jogos) {
+                addOnline.organizaJogos();
+                addOnline.montaTabela();
+            }
+        },
+        /**
+         * Organiza a lista de jogos
+         * @returns {undefined}
+         */
+        organizaJogos: function () {
+
+            addOnline.jogos.sort(function (a, b) {
+                if (a.data > b.data) {
+                    return 1;
+                } else if (a.data < b.data) {
+                    return -1;
+                } else {
+                    if (a.hora > b.hora) {
+                        return 1;
+                    } else if (a.hora < b.hora) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+
+        },
+        /**
+         * Monta a tabela de jogos
+         * @returns {undefined}
+         */
+        montaTabela: function () {
+            $.each(addOnline.jogos, function (index, evento) {
+
+                var jogo = addOnline.trJogo.clone();
+
+                jogo.data('values', evento);
+                jogo.find('.td-campeonato').html(evento.campeonato);
+                jogo.find('.td-timecasa').html(evento.timecasa);
+                jogo.find('.td-timefora').html(evento.timefora);
+                jogo.find('.td-data').html(evento.data.split('-').reverse().join('/'));
+                jogo.find('.td-hora').html(evento.hora);
+                <?php
+                foreach ($cotacoes as $cotacao) {
+                    $campo = 'evento.' . $cotacao->getCampo();
+                    echo "jogo.find('.td-{$cotacao->getCampo()}').html({$campo} ? {$campo}.toString().toReal() : '0,00');\n";
+                }
+                ?>
+
+                jogo.find(".editable").each(function () {
+                    switch ($(this).attr('data-type')) {
+                        case 'date':
+                            $(this).editable({
+                                format: 'dd/mm/yyyy',
+                            });
+                            break;
+                        default:
+                            $(this).editable();
+                    }
+                });
+
+                addOnline.tBody.append(jogo);
+
+                jogo.find('input').uniform();
+            });
+        },
+        /*
+         * Subtrair das cotações vigentes
+         */
+        subtrair: function () {
+            var valor = $("input.subtrair").val();
+            addOnline.tBody.find(".cotacao .editable").each(function () {
+                var cotacao = $(this).html();
+                var subtraido = cotacao - valor;
+                if (subtraido > 0) {
+                    $(this).html(subtraido.toFixed(2));
+                } else {
+                    $(this).html('0.00');
+                }
+            });
+        },
+        /*
+         * Seleciona todos os jogos encontrados
+         */
+        checkAll: function () {
+            if ($('[name=checkall]').is(":checked")) {
+                $('.check').prop("checked", true);
+                $.uniform.update('.check');
+            } else {
+                $('.check').prop("checked", false);
+                $.uniform.update('.check');
+            }
+        },
+        /*
+         * Limpa todas as cotações importadas
+         */
+        limpar: function () {
+            addOnline.tBody.find('.cotacoes-dark, .cotacoes-light').html('0.00');
+        },
+        /*
+         * Retorna os valores dos jogos selecionados
+         */
+        getValues: function () {
+            var values = [];
+            addOnline.getJogos().each(function () {
+                var jogo = $(this);
+                values.push({
+                    type: addOnline.type,
+                    typeref: jogo.data('values').token,
+                    campeonato: jogo.find(".td-campeonato").html(),
+                    timecasa: jogo.find(".td-timecasa").html(),
+                    timefora: jogo.find(".td-timefora").html(),
+                    data: jogo.find(".td-data").html(),
+                    hora: jogo.find(".td-hora").html(),
+                    <?php
+                    foreach ($cotacoes as $cotacao) {
+                        echo "{$cotacao->getCampo()}: jogo.find('.td-{$cotacao->getCampo()}').html(),\n";
+                    }
+                    ?>
+                    limite1: $('[name=limite1]').val(),
+                    limite2: $('[name=limite2]').val(),
+                    limite3: $('[name=limite3]').val(),
+                });
+            });
+            return values;
+        },
+        /*
+         * Retorna os Jogos Selecionados
+         */
+        getJogos: function () {
+            return addOnline.tBody.find('[name=jogos]:checked').parents('tr');
+        },
+        /*
+         * Envia os Jogos Selecionados para Insersão no Banco
+         */
+        enviaJogos: function () {
+
+            addOnline.status = false;
+
+            $.post(url('jogos/adicionar/todos'), {jogos: addOnline.getValues()}, function (e) {
+                alert(e.message);
+                if (e.result == 1) {
+                    addOnline.getJogos().remove();
+                }
+            }, 'json').fail(function (e) {
+                _log('ErrorAdicionarTodos:', e.responseText);
+            }).always(function () {
+                addOnline.status = true;
+            });
+
+        },
+        /*
+         * Salva os jogos
+         */
+        cadastra: function () {
+            if (addOnline.status) {
+                if (addOnline.getJogos().length == 0) {
+                    alert('Nenhum jogo selecionado.');
+                } else {
+                    addOnline.enviaJogos();
+                }
+            }
+        }
+    };
+
+    $(function () {
+        /*
+         * Inícia a leitura de Jogos
+         */
+        addOnline.__init();
+    });
+
+</script>

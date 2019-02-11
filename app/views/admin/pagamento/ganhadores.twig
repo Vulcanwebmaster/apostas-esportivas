@@ -1,0 +1,72 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    {% set param = 'check' %}
+    {% include 'admin/apostas/modal-jogos.twig' %}
+
+    <form method="post" class="page-form-search">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title">Ganhadores</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group col-xs-12">
+                        <label>Nome, login, cidade ou e-mail</label>
+                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                              data-content="Digite o nome, cidade, login ou e-mail"
+                              data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                        <input type="text" name="search" class="form-control"/>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Início</label>
+                            <input type="date" class="form-control text-center" name="dataInicial" value="{{ 'now'|date("Y-m-01") }}">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Fim</label>
+                            <input type="date" class="form-control text-center" name="dataFinal" value="{{ 'now'|date('Y-m-t') }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-search"></i> Pesquisar
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+
+    <div class="page-container"></div>
+
+    <div class="p-b-20">
+        <span class="text-info m-r-10"><i class="fa fa-circle"></i> Baixa realizada</span>
+        <span class="m-r-10"><i class="fa fa-circle"></i> Aguardando baixa</span>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $(function () {
+
+            var page = $('<div />').adminPage({
+                formSearch: '.page-form-search',
+                container: '.page-container',
+                autoSearch: true,
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

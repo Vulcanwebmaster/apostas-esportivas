@@ -1,0 +1,169 @@
+{% extends 'admin/layout.twig' %}
+
+{% block list %}
+
+    {% if busca.getCount() %}
+        <div class="panel">
+            <div class="panel-body p-0">
+                <div class="table-responsive m-0">
+                    <table class="m-0 table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center" width="60"><i class="fa fa-image"></i></th>
+                            <th>Campeonato/País</th>
+                            <th width="5">Ações</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2">{{ busca.getPageDescription() }}</td>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for v in busca.getRegistros() %}
+                            <tr>
+                                <td class="text-center">
+                                    {% if v.voPais() %}
+                                        <img src="{{ v.voPais().imgCapa().redimensiona(0,30) }}"/>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <b>{{ v.getTitle() }}</b>
+                                    <div>{{ v.getPaisTitle() }}</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <div class="btn btn-default" data-editar="{{ v.toArray(true)|json_encode }}">
+                                            <i class="fa fa-edit"></i>
+                                        </div>
+                                        <div class="btn btn-danger" data-excluir="{{ v.getToken() }}">
+                                            <i class="fa fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer text-right">{{ busca|raw }}</div>
+        </div>
+    {% elseif message %}
+        <div class="alert alert-warning">
+            <i class="fa fa-warning"></i> {{ message }}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <i class="fa fa-warning"></i> Nenhum registro encontrado
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block links %}
+
+    <button type="button" class="btn btn-warning btn-danger btn-importar">
+        <i class="fa fa-upload"></i> Importar
+    </button>
+
+    <button type="button" onclick="$('.admpage-form').setValues({});" class="btn btn-success">
+        <i class="fa fa-plus"></i> Novo
+    </button>
+
+{% endblock %}
+
+{% block main %}
+
+    <form class="modal fade admpage-form">
+        <input type="hidden" name="id"/>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close" data-dismiss="modal">&times;</div>
+                    <h3 class="modal-title">Campeonato</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-xs-4">
+                            <label>País</label>
+                            <select name="pais" class="form-control" required
+                                    data-options="admin/helpers/options/options/paises">
+                                <option value>Selecione</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-8">
+                            <label>Campeonato</label>
+                            <input type="text" name="title" class="form-control"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Times</label>
+                        <select name="times" multiple class="form-control chosen"
+                                data-options="admin/cadastros/times/options"></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-link" type="button">
+                        <i class="fa fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-save"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form class="admpage-form-search panel panel-default">
+        <div class="panel-body">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por"/>
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var container = $('.admpage-container');
+
+        $('.admpage-form')
+            .adminPage({
+                formSearch: '.admpage-form-search',
+                container: container,
+            });
+
+        $('.btn-importar')
+            .on("click", function () {
+                if (confirm("Deseja prosseguir com a importação de campeonatos para o sistema?")) {
+
+                    $('html').addClass('page-loading');
+
+                    $
+                        .get(url(CONTROLLER + '/importar'), function (e) {
+                            alert(e.message);
+                        }, 'json')
+                        .fail(function () {
+                            alert("Não foi possível importar os campeonatos, tente noavamente mais tarde.");
+                        })
+                        .always(function () {
+                            $('html').removeClass('page-loading');
+                        });
+
+                }
+            });
+
+    </script>
+
+{% endblock %}

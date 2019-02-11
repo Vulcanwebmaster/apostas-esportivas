@@ -1,0 +1,233 @@
+<form class="admpage-form modal fade" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <input name="id" type="hidden" value="" id="input_59987e4d5f45a"/>
+    <input name="zoom" type="hidden" value="" id="input_59987e4d5f466"/>
+    <input name="latitude" type="hidden" value="" id="input_59987e4d5f472"/>
+    <input name="longitude" type="hidden" value="" id="input_59987e4d5f47e"/>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa fa-user"></i> Usuário</h3>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <h3 class="m-t-0 m-b-30">
+                                <i class="fa fa-id-card"></i>
+                                Dados Pessoais
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-xs-6 form-group">
+                            <label>Graduação</label>
+                            <select name="graduacao" class="form-control">
+                                <option value="0">Não graduado</option>
+                                {% for v in graduacoes %}
+                                    <option value="{{ v.getId() }}">{{ v.getTitle() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if vars.type == 5 %}
+                            <div class="col-md-3 col-xs-6 form-group">
+                                <label>Comissão sobre cambistas</label>
+                                <input type="text" name="comissao" class="form-control mask-valor"/>
+                            </div>
+                        {% endif %}
+                        <div class="col-md-{{ vars.type == 5 ? 6 : 9 }} col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dbbc" class="caption ">Nome Completo</label>
+                                <input name="nome" type="text" value="" required="" id="input_59987e4d5dbbc"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dbfc" class="caption ">CPF</label>
+                                <input name="cpf" type="text" value=""  class="mask-cpf form-control"
+                                       id="input_59987e4d5dbfc"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="select_59987e4d5dc48" class="caption ">Sexo</label>
+                                <select name="sexo" required="" id="select_59987e4d5dc48" class="form-control">
+                                    <option value="m">Masculino</option>
+                                    <option value="f">Feminino</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dc6f" class="caption ">Data Nascimento</label>
+                                <input name="nascimento" type="date" value=""  id="input_59987e4d5dc6f"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <h3 style="margin-bottom : 30px !important;"><i class="fa fa-map-marker"
+                                                                            style="margin-right : 6px;"></i>Localização
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dc9e" class="caption ">CEP</label>
+                                <input name="cep" type="text" value="" required="" class="mask-cep form-control"
+                                       id="input_59987e4d5dc9e"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dcc8" class="caption ">Logradouro</label>
+                                <input name="logradouro" type="text" value="" id="input_59987e4d5dcc8"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dcea" class="caption ">Número</label>
+                                <input name="numero" type="text" value="" id="input_59987e4d5dcea"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dd0a" class="caption ">Complemento</label>
+                                <input name="complemento" type="text" value="" id="input_59987e4d5dd0a"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5dd38" class="caption ">Bairro</label>
+                                <input name="bairro" type="text" value="" id="input_59987e4d5dd38"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label for="select_59987e4d5eabf" class="caption ">Estado</label>
+                                <select name="estado" required="" id="select_59987e4d5eabf" class="form-control">
+                                    {{ optEstados() }}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-xs-12">
+                            <div class="form-group">
+                                <label for="select_59987e4d5eafe" class="caption ">Cidade</label>
+                                <select name="cidade" required="" id="select_59987e4d5eafe"
+                                        class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <h3 style="margin-bottom : 30px !important;">
+                                <i class="fa fa-phone" style="margin-right : 6px;"></i>Telefones de Contato
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5eb40" class="caption ">Telefone</label>
+                                <input name="telefone" type="text" value="" class="mask-telefone form-control"
+                                       id="input_59987e4d5eb40"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5eb76" class="caption ">Celular</label>
+                                <input name="celular" type="text" value="" class="mask-telefone form-control"
+                                       required=""
+                                       id="input_59987e4d5eb76"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5eba0" class="caption ">Whatsapp</label>
+                                <input name="whatsapp" type="text" value="" class="mask-telefone form-control"
+                                       id="input_59987e4d5eba0"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <h3 style="margin-bottom : 30px !important;"><i class="fa fa-lock"
+                                                                            style="margin-right : 6px;"></i>Dados de
+                                acesso
+                            </h3></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5f3bc" class="caption ">E-mail</label>
+                                <input name="email" type="email" value="" placeholder="example@email.com" 
+                                       id="input_59987e4d5f3bc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-6">
+                            <div class="form-group">
+                                <label for="input_59987e4d5ebf2" class="caption ">Login/Usuário</label>
+                                <input name="login" type="text" value="" placeholder="Seu usuário"
+                                       pattern="[A-Za-z0-9_]{5,20}" required="1" id="input_59987e4d5ebf2"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5f3f2" class="caption ">Senha</label>
+                                <input name="senha" type="password" value="" placeholder="Mínimo 5 caracteres"
+                                       pattern="[A-Za-z0-9]{5,20}" maxlength="20" id="input_59987e4d5f3f2"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="input_59987e4d5f421" class="caption ">Confirmar Senha</label>
+                                <input name="confirmar-senha" type="password" value="" placeholder="Repita a senha"
+                                       pattern="[A-Za-z0-9]{5,20}" maxlength="20" id="input_59987e4d5f421"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <div class="row">
+                        <div class="col-xs-6 text-left">
+                            <label for="inputfile_59987e4d5f71e" class="btn-success btn btn-inputfile"
+                                   style="width: auto; overflow: hidden;"><span><i
+                                            class="fa fa-camera"></i> Foto <span></span></span>
+                                <input type="file" name="filefoto" id="inputfile_59987e4d5f71e" accept="image/jpeg"
+                                       style="position: absolute; top: 0; left: 0; opacity: 0; filter: alpha(opacity=0);">
+                            </label>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <div class="btn-group">
+                                <button type="reset" class="btn btn-danger" name="" value=""><i class="fa fa-trash"></i>
+                                    Limpar
+                                </button>
+                                <button type="submit" class="btn btn-primary" name="" value=""><i
+                                            class="fa fa-save"></i>
+                                    Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

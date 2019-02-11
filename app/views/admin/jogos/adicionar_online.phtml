@@ -1,0 +1,391 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 ">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title"><?php echo $title ?></h4>
+                <div class="pull-right m-t-minus-9">
+                    <div class="btn-group btn-group-sm">
+                        <input type="number" class="subtrair btn form-control pull-left" style="width: 100px;"
+                               step="0.1" name="subtrair" value="0.0"/>
+                        <a href="#" alt="Subtrair" onclick="javascript:addOnline.subtrair();"
+                           class="btn btn-default m-l-xs m-b-xs"><i class="fa fa-minus-circle"></i> Subtrair</a>
+                        <a href="#" alt="Limpar Cotações" onclick="javascript:addOnline.limpar();"
+                           class="btn btn-default m-l-xs m-b-xs"><i class="fa fa-eraser"></i> Cotações</a>
+                        <a href="#" alt="Cadastrar Jogos" onclick="javascript:addOnline.cadastra();"
+                           class="btn btn-danger m-l-xs m-b-xs"><i class="fa fa-plus-circle"></i> Cadastrar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="limites text-center">
+                            <h3 class="m-b-md">Limite para todos os Jogos</h3>
+                            <div class="form-inline">
+                                <div class="form-group m-r-md">
+                                    <label class="m-r-xs" for="limite_1">Limite 1</label>
+                                    <input type="text" class="form-control" name="limite_1" id="limite_1"
+                                           placeholder="1 Jogo">
+                                </div>
+                                <div class="form-group m-r-md">
+                                    <label class="m-r-xs" for="limite_2">Limite 2</label>
+                                    <input type="text" class="form-control" name="limite_2" id="limite_2"
+                                           placeholder="2 Jogos">
+                                </div>
+                                <div class="form-group m-r-md">
+                                    <label class="m-r-xs" for="limite_3">Limite 3</label>
+                                    <input type="text" class="form-control" name="limite_3" id="limite_3"
+                                           placeholder="3 Jogos">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="alert"></div>
+
+            </div>
+
+            <div class="panel-body panel-table">
+
+                <div class="table-responsive m-t-md" style="width: 100%;">
+                    <table id="table-jogos"
+                           class="table table-minified table-hover table-bordered table-striped list-table">
+                        <thead>
+                        <tr>
+                            <th class="text-center text-uppercase"><input type="checkbox" name="checkall"
+                                                                          onclick="javascript:addOnline.checkAll(this);"
+                                                                          value="checkall"/></th>
+                            <th class="text-center text-uppercase">Campeonato</th>
+                            <th class="text-center text-uppercase">Casa / Fora</th>
+                            <th>
+                                <span class="cotacoes-dark text-casa">Casa</span>
+                                <span class="cotacoes-light">DPL.C.</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark text-emp">Emp</span>
+                                <span class="cotacoes-light">DPL.F.</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark text-fora">Fora</span>
+                                <span class="cotacoes-light">P.ZERO</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark">Amb.</span>
+                                <span class="cotacoes-light">N.Amb.</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark">G.M.C</span>
+                                <span class="cotacoes-light">G.M.F</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark">+2 G.M</span>
+                                <span class="cotacoes-light">-2 G.M</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark">C.M</span>
+                                <span class="cotacoes-light">F.M</span>
+                            </th>
+                            <th>
+                                <span class="cotacoes-dark">P.Certo</span>
+                                <span class="cotacoes-light">1Faz</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="t-body">
+                        <tr class="tr-jogo">
+                            <td class="text-center"><input type="checkbox" name="jogos" class="check" id="checkbox"/>
+                            </td>
+                            <td class="text-center"><span class="editable td-campeonato">Brasileiro</span></td>
+                            <td class="text-center">
+                                <span class="editable td-timecasa">São Paulo</span> x <span
+                                        class="editable td-timefora">Palmeiras</span>
+                                <br/>
+                                <small class="editable td-data" data-type="date">01/05/2016</small>
+                                ás
+                                <small class="editable td-hora" data-type="time">15:05</small>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-casa text-casa" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-dplcasa" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-empate text-emp" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-dplfora" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-fora text-fora" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-placarzerado" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-amb" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-namb" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-gmcasa" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-gmfora" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-mais2gm" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-menos2gm" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-cm" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-fm" data-type="text">0.00</span>
+                            </td>
+                            <td class="cotacao">
+                                <span class="editable cotacoes-dark td-pcerto" data-type="text">0.00</span>
+                                <span class="editable cotacoes-light td-umfaz" data-type="text">0.00</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box-html hide" data-type="<?php echo $type ?>">
+    <?php
+    switch ($type) {
+        case 'sportingbet':
+        case 'bet365':
+            echo view_load('admin/import/sportingbet', ['jogos' => $jogos], true);
+            break;
+        case 'betexplorer':
+            echo view_load('admin/import/betexplorer', null, true);
+            break;
+        case 'globoesporte':
+            echo view_load('admin/import/globoesporte', null, true);
+            break;
+        default:
+            throw new Exception('Tipo inválido.');
+    }
+    ?>
+</div>
+
+<script>
+
+    var addOnline = {
+        status: true,
+        box: $('.box-html'),
+        type: $('.box-html').attr('data-type'),
+        trJogo: $('.tr-jogo').remove(),
+        tBody: $('.t-body'),
+        jogos: [],
+        __init: function () {
+            switch (addOnline.type) {
+                case 'sportingbet':
+                case 'bet365':
+                    addOnline.jogos = sportingBetJogos();
+                    break;
+                case 'betexplorer':
+                    addOnline.jogos = betExplorerJogos();
+                    break;
+                case 'globoesporte':
+                    addOnline.jogos = globoExporteJogos();
+                    break;
+                default:
+                    throw new Error('TypeError: Importador inválido `' + addOnline.type + '`');
+            }
+
+            addOnline.organizaJogos();
+
+            addOnline.montaTabela();
+        },
+        /**
+         * Organiza a lista de jogos
+         * @returns {undefined}
+         */
+        organizaJogos: function () {
+
+            addOnline.jogos.sort(function (a, b) {
+                if (a.data > b.data) {
+                    return 1;
+                } else if (a.data < b.data) {
+                    return -1;
+                } else {
+                    if (a.hora > b.hora) {
+                        return 1;
+                    } else if (a.hora < b.hora) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+
+        },
+        /**
+         * Monta a tabela de jogos
+         * @returns {undefined}
+         */
+        montaTabela: function () {
+            $.each(addOnline.jogos, function (index, evento) {
+
+                var jogo = addOnline.trJogo.clone();
+
+                jogo.data('values', evento);
+                jogo.find('.td-campeonato').html(evento.campeonato);
+                jogo.find('.td-timecasa').html(evento.timecasa);
+                jogo.find('.td-timefora').html(evento.timefora);
+                jogo.find('.td-data').html(evento.data);
+                jogo.find('.td-hora').html(evento.hora);
+                jogo.find('.td-casa').html(evento.casa || '0.00');
+                jogo.find('.td-empate').html(evento.empate || '0.00');
+                jogo.find('.td-fora').html(evento.fora || '0.00');
+                jogo.find('.td-gmcasa').html(evento.gmcasa || '0.00');
+                jogo.find('.td-gmfora').html(evento.gmfora || '0.00');
+                jogo.find('.td-cm').html(evento.cm || '0.00');
+                jogo.find('.td-fm').html(evento.fm || '0.00');
+                jogo.find('.td-dplcasa').html(evento.dplcasa || '0.00');
+                jogo.find('.td-dplfora').html(evento.dplfora || '0.00');
+                jogo.find('.td-placarzerado').html(evento.placarzerado || '0.00');
+                jogo.find('.td-amb').html(evento.amb || '0.00');
+                jogo.find('.td-namb').html(evento.namb || '0.00');
+                jogo.find('.td-pcerto').html(evento.pcerto || '0.00');
+                jogo.find('.td-umfaz').html(evento.umfaz || '0.00');
+                jogo.find('.td-mais2gm').html(evento.mais2gm || '0.00');
+                jogo.find('.td-menos2gm').html(evento.menos2gm || '0.00');
+                jogo.find('.td-penalty').html(evento.penalty || '0.00');
+
+                jogo.find(".editable").each(function () {
+                    switch ($(this).attr('data-type')) {
+                        case 'date':
+                            $(this).editable({
+                                format: 'dd/mm/yyyy',
+                            });
+                            break;
+                        default:
+                            $(this).editable();
+                    }
+                });
+
+                addOnline.tBody.append(jogo);
+
+                jogo.find('input').uniform();
+            });
+        },
+        /*
+         * Subtrair das cotações vigentes
+         */
+        subtrair: function () {
+            var valor = $("input.subtrair").val();
+            addOnline.tBody.find(".cotacao .editable").each(function () {
+                var cotacao = $(this).html();
+                var subtraido = cotacao - valor;
+                if (subtraido > 0) {
+                    $(this).html(subtraido.toFixed(2));
+                } else {
+                    $(this).html('0.00');
+                }
+            });
+        },
+        /*
+         * Seleciona todos os jogos encontrados
+         */
+        checkAll: function () {
+            if ($('[name=checkall]').is(":checked")) {
+                $('.check').prop("checked", true);
+                $.uniform.update('.check');
+            } else {
+                $('.check').prop("checked", false);
+                $.uniform.update('.check');
+            }
+        },
+        /*
+         * Limpa todas as cotações importadas
+         */
+        limpar: function () {
+            addOnline.tBody.find('.cotacoes-dark, .cotacoes-light').html('0.00');
+        },
+        /*
+         * Retorna os valores dos jogos selecionados
+         */
+        getValues: function () {
+            var values = [];
+            addOnline.getJogos().each(function () {
+                var jogo = $(this);
+                values.push({
+                    type: addOnline.type,
+                    typeref: jogo.data('values').typeref,
+                    campeonato: jogo.find(".td-campeonato").html(),
+                    timecasa: jogo.find(".td-timecasa").html(),
+                    timefora: jogo.find(".td-timefora").html(),
+                    data: jogo.find(".td-data").html(),
+                    hora: jogo.find(".td-hora").html(),
+                    casa: jogo.find(".td-casa").html(),
+                    empate: jogo.find(".td-empate").html(),
+                    fora: jogo.find(".td-fora").html(),
+                    gm: jogo.find(".td-gm").html(),
+                    placarzerado: jogo.find(".td-placarzerado").html(),
+                    gmcasa: jogo.find(".td-gmcasa").html(),
+                    gmfora: jogo.find(".td-gmfora").html(),
+                    dplcasa: jogo.find(".td-dplcasa").html(),
+                    dplfora: jogo.find(".td-dplfora").html(),
+                    amb: jogo.find(".td-amb").html(),
+                    namb: jogo.find(".td-namb").html(),
+                    mais2gm: jogo.find(".td-mais2gm").html(),
+                    menos2gm: jogo.find(".td-menos2gm").html(),
+                    cm: jogo.find(".td-cm").html(),
+                    fm: jogo.find(".td-fm").html(),
+                    pcerto: jogo.find(".td-pcerto").html(),
+                    umfaz: jogo.find(".td-umfaz").html(),
+                    penalty: jogo.find(".td-penalty").html(),
+                    limite1: $('#limite_1').val(),
+                    limite2: $('#limite_2').val(),
+                    limite3: $('#limite_3').val(),
+                });
+            });
+            return values;
+        },
+        /*
+         * Retorna os Jogos Selecionados
+         */
+        getJogos: function () {
+            return addOnline.tBody.find('[name=jogos]:checked').parents('tr');
+        },
+        /*
+         * Envia os Jogos Selecionados para Insersão no Banco
+         */
+        enviaJogos: function () {
+
+            addOnline.status = false;
+
+            $.post(url('jogos/adicionar/todos'), {jogos: addOnline.getValues()}, function (e) {
+                alert(e.message);
+                if (e.result == 1) {
+                    addOnline.getJogos().remove();
+                }
+            }, 'json').fail(function (e) {
+                _log('ErrorAdicionarTodos:', e.responseText);
+            }).always(function () {
+                addOnline.status = true;
+            });
+
+        },
+        /*
+         * Salva os jogos
+         */
+        cadastra: function () {
+            if (addOnline.status) {
+                if (addOnline.getJogos().length == 0) {
+                    alert('Nenhum jogo selecionado.');
+                } else {
+                    addOnline.enviaJogos();
+                }
+            }
+        }
+    };
+
+    $(function () {
+        /*
+         * Inícia a leitura de Jogos
+         */
+        addOnline.__init();
+    });
+
+</script>

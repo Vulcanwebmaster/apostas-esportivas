@@ -1,0 +1,196 @@
+.backgroundImage{
+    background-size: cover !important;
+    background-position: center center !important;
+    width: 100%;
+    height: 100% !important;
+    background-size: cover !important;
+    background: #f1f1f1 fixed center;
+    position: fixed;
+}
+
+.center-coluna{
+    margin: 0 auto;
+    float: none !important;
+    display: block;
+}
+
+.justify-content-center {
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
+
+.d-flex {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+}
+
+#modalTermos{
+    label{
+        font-weight: bold;
+    }
+    .form-control{
+        border-radius: 0px !important;
+        &:focus{
+            border-color: #900162 !important;
+        }
+    }
+    .modal-header{
+        background: #900162;
+        h5{
+            color: #fff !important;
+        }
+        button {
+            opacity : 1;
+            span{
+                color: #fff;
+            }
+        }
+    }
+
+    button {
+        border-radius: 0px !important;
+    }
+
+    .btn-primary{
+        border-radius: 0;
+        background-color: #900162;
+        color : #fff;
+        transition : all 0.3s ease-in-out !important;
+        border-color : #900162;
+        &:hover,&:focus {
+            background-color: #7f0156 !important;
+            color: #fff;
+        }
+    }
+
+
+}
+
+#cadastro-page{
+    padding-top : 50px;
+    padding-bottom : 50px;
+
+    h2{
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        margin-bottom: 20px !important;
+        text-shadow: 0 1px 1px #050600;
+        color: #fff !important;
+        text-align: center;
+        margin-top : 20px !important;
+        font-weight: bold;
+    }
+
+    input{
+        border-radius: 0px !important;
+    }
+
+    small{
+        font-size: 76% !important;
+        font-weight: 400 !important;
+        color: #fff !important;
+    }
+
+    select{
+        border-radius: 0px !important;
+    }
+
+    label{
+        font-weight: bold;
+        color: #fff;
+    }
+
+    h4{
+        font-family: 'Roboto', sans-serif;
+        color: #fff !important;
+        margin-bottom : 26px !important;
+        margin-top : 20px !important;
+        padding-bottom : 10px;
+        position : relative;
+        text-shadow: 0 1px 1px #050600;
+        display : inline-block;
+        font-weight : bold;
+        font-size : 22px;
+        text-transform : uppercase;
+        i{
+            margin-right: 10px;
+        }
+        &:after{
+            content: "";
+            position: absolute;
+            width : 100%;
+            height: 2px;
+            background: #fff;
+            left : 0px;
+            bottom : 0px;
+        }
+        &:before{
+            content: "";
+            position: absolute;
+            width: 28%;
+            height: 3px;
+            background: #900162 !important;
+            left: 0px;
+            bottom: 0px;
+            z-index: 2;
+        }
+        
+        @media screen and (max-width : 550px){
+            &:before{
+                background: #2f003a !important;
+            }
+        }
+        
+    }
+
+    .logo-cadastro{
+        max-width:  250px;
+
+        img{
+            width : 100%;
+        }
+
+    }
+
+    .btn{
+        transition : all 0.5s;
+        background : #900162 !important;
+        border-color : #900162 !important;
+        border-radius : 0px !important;
+        i{
+            margin-right: 6px;
+        }
+
+        &:hover,&:focus{
+            border-color: #7f0156 !important;
+            background: #7f0156 !important;
+        }
+
+    }
+
+
+    .form-control{
+        background: #fff !important;
+
+
+        &:focus{
+            border-color: #900162 !important;
+        }
+    }
+
+    .content-form{
+        p{
+            margin-top: 10px;
+            margin-bottom : 0px;
+            a{
+                color: #da31a4 !important;
+                margin-left: 6px;
+                text-transform: uppercase;
+            }
+        }
+    }
+
+}
+

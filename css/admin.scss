@@ -1,0 +1,1068 @@
+@import "../sass/preboot";
+@import "../sass/helpers";
+@import "pages/cadastro";
+@import "pages/login";
+@import "pages/boleto";
+@import "pages/aposta";
+
+body {
+  margin: 0px;
+  padding: 0px;
+
+  &.page-login {
+    background-color: #540566;
+  }
+}
+
+@media screen and (min-width: 740px) and (max-width: 780px) {
+  .width-ipad-100 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  .width-ipad-50 {
+    flex: 0 0 100% !important;
+    max-width: 50% !important;
+  }
+}
+
+.backgroundImage {
+  @media screen and (max-width: 600px) {
+    min-height: 100vh;
+    display: none;
+  }
+}
+
+.pointer {
+  margin-left: 6px !important;
+}
+
+.form-group {
+  span {
+    margin-left: 4px !important;
+  }
+}
+
+.panel-default {
+  &.panel-roxo {
+    .panel-heading {
+      background: #900162 !important;
+      h4 {
+        color: #fff !important;
+      }
+    }
+  }
+  .panel-heading {
+    h4 {
+      margin-top: 0px !important;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+  .panel-body {
+    h4 {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 14px;
+    }
+  }
+}
+
+.form-flex {
+  display: flex;
+}
+
+.btn-roxo {
+  color: #fff !important;
+  background: #900162 !important;
+  transition: all 0.3s !important;
+  i {
+    margin-right: 6px;
+  }
+  &:hover,
+  &:focus {
+    background: #54033a !important;
+  }
+}
+
+.panel-dinheiro {
+  min-height: 336px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  h4 {
+    font-size: 32px !important;
+    text-transform: uppercase;
+    color: #900162 !important;
+  }
+  .acoes {
+    margin-top: 20px;
+  }
+  @media screen and (min-width: 800px) and (max-width: 1100px) {
+    min-height: 300px !important;
+  }
+}
+
+.box-link {
+  width: 100%;
+  height: 200px;
+  background: #2D384A;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: all 0.4s ease-in-out;
+  .icone {
+    margin-bottom: 14px;
+    i {
+      font-size: 60px;
+    }
+  }
+  .titulo {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none !important;
+    color: #fff !important;
+  }
+  &:hover,
+  &:focus {
+    background: #900162 !important;
+    a {
+      text-decoration: none !important;
+    }
+  }
+  @media screen and (max-width: 550px) {
+    margin-bottom: 40px;
+  }
+  @media screen and (min-width: 740px) and (max-width: 780px) {
+    margin-bottom: 40px !important;
+  }
+  @media screen and (min-width: 800px) and (max-width: 1100px) {
+    .titulo {
+      font-size: 16px !important;
+    }
+  }
+}
+
+.panel-escuro {
+  background: #2d384a !important;
+  color: #fff !important;
+}
+
+.checkbox {
+  label {
+    padding: 0px;
+    font-weight: bold;
+  }
+}
+
+a {
+  &:hover,
+  &:focus {
+    text-decoration: none !important;
+  }
+}
+
+.info-box-title {
+  font-size: 14px !important;
+  font-weight: bold;
+  color: #333 !important;
+}
+
+.valor-boleto {
+  font-size: 28px !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: $corPrincipal;
+  margin-right: 10px;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important
+}
+
+.width-5 {
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 20%;
+  @media screen and (max-width: 600px) {
+    width: 100% !important;
+  }
+  @media screen and (min-width: 740px) and (max-width: 780px) {
+    width: 50% !important;
+  }
+  .info-box-stats {
+    width: 100%;
+    p {
+      font-size: 26px !important;
+    }
+  }
+  .info-box-title {
+    font-size: 16px !important;
+  }
+}
+
+.info-box {
+  &.cor1 {
+    border-bottom: 2px solid #2D384A !important;
+    i {
+      color: #2D384A !important;
+    }
+    .info-box-title {
+      color: #2D384A !important;
+    }
+  }
+  &.cor2 {
+    border-bottom: 2px solid #900162 !important;
+    i {
+      color: #900162 !important;
+    }
+    .info-box-title {
+      color: #900162 !important;
+    }
+  }
+  &.cor3 {
+    border-bottom: 2px solid #54033a !important;
+    i {
+      color: #54033a !important;
+    }
+    .info-box-title {
+      color: #54033a !important;
+    }
+  }
+  &.cor4 {
+    border-bottom: 2px solid #540566 !important;
+    i {
+      color: #540566 !important;
+    }
+    .info-box-title {
+      color: #540566 !important;
+    }
+  }
+  &.cor5 {
+    border-bottom: 2px solid #2D384A !important;
+    i {
+      color: #2D384A !important;
+    }
+    .info-box-title {
+      color: #2D384A !important;
+    }
+  }
+}
+
+.panel {
+  .panel-heading {
+    height: 44px !important;
+    padding-top: 15px !important;
+  }
+}
+
+.img-250 {
+  width: 250px;
+  height: 250px;
+  @media screen and (min-width: 800px) and (max-width: 1100px) {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+.block-botao {
+  width: 100%;
+}
+
+.btn-form {
+  width: 20%;
+  margin-left: 20px;
+}
+
+.form-todos {
+  span {
+    margin-left: 0px !important;
+  }
+  .btn-secondary {
+    background: #fff !important;
+    border: 1px solid #dce1e4;
+    height: 34px;
+  }
+}
+
+.multiselect-container {
+  width: 510px;
+}
+
+.form-btn {
+  text-align: center;
+  padding-top: 23px;
+  .btn {
+    i {
+      margin-right: 4px;
+    }
+  }
+  .btn-danger {
+    margin-right: 6px;
+  }
+}
+
+.m-r-1 {
+  margin-right: 6px;
+}
+
+.btn-ver {
+  background: #900162 !important;
+  color: #fff !important;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  i {
+    margin-right: 6px;
+  }
+  &:hover,
+  &:focus {
+    background: #333 !important;
+  }
+}
+
+.modal-jogos-select {
+  .modal-header {
+    background: #900162 !important;
+    .modal-title {
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 20px;
+      margin-top: -6px;
+    }
+    button {
+      opacity: 1 !important;
+      span {
+        color: #fff;
+      }
+    }
+  }
+  .modal-body {
+    overflow-y: auto;
+    height: 300px;
+  }
+  .lista-jogos-selecionados {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    li {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #cecece;
+      position: relative;
+      .btn-exclui {
+        position: absolute;
+        top: 25px;
+        right: 10px;
+        @media screen and (max-width: 560px) {
+          position: relative !important;
+          margin-top: 20px;
+          top: 0px !important;
+          right: 0px !important;
+        }
+      }
+      &:first-child {
+        padding-top: 0px !important;
+      }
+      .jogo {
+        font-weight: bold;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+tr {
+  &.danger {
+    td {
+      background: #d9534f !important;
+      color: #fff !important;
+    }
+  }
+  &.lilas {
+    td {
+      background: #855bb1 !important;
+      color: #fff !important;
+    }
+  }
+  &.info {
+    td {
+      background: #0b81d8 !important;
+      color: #fff !important;
+    }
+  }
+}
+
+.text-danger {
+  color: #d9534f !important;
+}
+
+.text-lilas {
+  color: #855bb1 !important;
+}
+
+.text-info {
+  color: #0b81d8 !important;
+}
+
+.box-select {
+  position: relative;
+  border-radius: 4px;
+  border: 1px solid #cecece;
+  @media screen and (max-width: 780px) {
+    margin-bottom: 30px;
+  }
+  a {
+    &:hover {
+      .header-box {
+        background: #900162 !important;
+      }
+      .footer-box {
+        background: #900162 !important;
+      }
+      img {
+        filter: grayscale(100%);
+      }
+    }
+  }
+  .header-box {
+    padding: 20px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    &.jogador {
+      background: #33cc66;
+    }
+    &.franqueado {
+      background: #369;
+    }
+    &.consultor {
+      background: #900;
+    }
+  }
+  .content-box {
+    padding: 20px;
+    img {
+      width: 190px;
+      display: block;
+      margin: auto;
+      transition: all 0.3s ease-in-out;
+    }
+    p {
+      color: #000 !important;
+    }
+  }
+  .footer-box {
+    padding: 20px;
+    background: #aaa;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+  }
+  .message-hover {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    h4 {
+      font-size: 40px;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+.vertical-align {
+  vertical-align: middle !important;
+}
+
+.box-premio {
+  position: relative;
+  margin-bottom: 30px;
+  @media screen and (max-width: 780px) {
+    margin-bottom: 30px;
+  }
+  &.celular {
+    .header-box {
+      background: #5a90c6;
+    }
+  }
+  &.cruzeiro {
+    .header-box {
+      background: #983738;
+    }
+  }
+  &.moto {
+    .header-box {
+      background: #009934;
+    }
+  }
+  &.carro {
+    .header-box {
+      background: #999999;
+    }
+  }
+  &.luxo {
+    .header-box {
+      background: #efab51;
+    }
+  }
+  &.casa {
+    .header-box {
+      background: #a523a7;
+    }
+  }
+
+  .header-box {
+    padding: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+  }
+  .content-box {
+    img {
+      width: 100%;
+    }
+  }
+  .footer-box {
+    text-align: center;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background: #999;
+    &.ganhou {
+      background: #5a90c6;
+    }
+  }
+
+}
+
+.modal-indicado {
+  .modal-header {
+    background: #900162 !important;
+    .modal-title {
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 20px;
+      margin-top: -6px;
+    }
+    button {
+      opacity: 1 !important;
+      span {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.lista-comunicados {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+
+  li {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    &:nth-child(even) {
+      background: #f5f5f5
+    }
+    &:nth-child(odd) {
+      background: #FFF
+    }
+    .date-comunicado {
+      width: 16%;
+      margin-right: 1%;
+      i {
+        margin-right: 6px;
+      }
+    }
+    .acoes {
+      margin-left: 1%;
+      width: 19%;
+      text-align: right;
+      button {
+        background: #2D384A !important;
+        transition: all 0.3s !important;
+        &:hover {
+          background: #900162 !important;
+        }
+        i {
+          margin-right: 4px;
+        }
+      }
+    }
+    .titulo-comunicado {
+      width: 61%;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media screen and (max-width: 560px) {
+      flex-direction: column;
+      div {
+        width: 100% !important;
+        margin: 0px !important;
+        text-align: center !important;
+        margin-bottom: 6px !important;
+      }
+    }
+  }
+}
+
+.modal-comunicado {
+  .modal-header {
+    background: #900162 !important;
+    .modal-title {
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 20px;
+      margin-top: -6px;
+      i {
+        margin-right: 12px;
+      }
+    }
+    button {
+      opacity: 1 !important;
+      span {
+        color: #fff;
+      }
+    }
+  }
+  .modal-body {
+    text-align: center;
+
+    .titulo {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+  }
+}
+
+.modal-editar-aposta {
+  .modal-header {
+    background: #900162 !important;
+    .modal-title {
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 20px;
+      margin-top: -6px;
+      i {
+        margin-right: 12px;
+      }
+    }
+    button {
+      opacity: 1 !important;
+      span {
+        color: #fff;
+      }
+    }
+  }
+  .modal-body {
+    label {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .jogos-selecionados-lista {
+      margin-top: 4px;
+      .jogo-selecionado {
+        padding: 10px;
+        position: relative;
+        .jogo {
+          display: inline-block;
+          margin-right: 4px;
+        }
+        .campeonato {
+          display: inline-block;
+        }
+        .cotacoes {
+          max-width: 70%;
+        }
+        .btn-group {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        &:nth-child(even) {
+          background: #f5f5f5;
+          &.ganhou {
+            background-color: #0b81d8 !important;
+            color: white;
+          }
+          &.perdeu {
+            background-color: lighten(red, 20%);
+            color: white;
+          }
+        }
+        &:nth-child(odd) {
+          background: #ddd;
+          &.ganhou {
+            background-color: #0b81d8 !important;
+            color: white;
+          }
+          &.perdeu {
+            background-color: lighten(red, 20%);
+            color: white;
+          }
+        }
+
+        @media screen and (max-width: 560px) {
+          .jogo {
+            display: block !important;
+            margin-top: 4px;
+          }
+          .campeonato {
+            display: block !important;
+            margin-top: 4px;
+          }
+          .cotacoes {
+            max-width: 100% !important;
+            margin-top: 6px !important;
+          }
+          .btn-group {
+            position: relative !important;
+            top: 20px !important;
+            right: 0px !important;
+            left: 0px !important;
+            margin-top: 6px !important;
+
+          }
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    padding-top: 20px;
+    border-top: 1px solid #cecece;
+  }
+}
+
+.modal {
+  @media (max-width: 700px) {
+
+    background-color: white;
+
+    .modal-content {
+      box-shadow: none;
+    }
+
+    .modal-dialog {
+      margin: 0;
+    }
+
+  }
+}
+
+.tabela-rede {
+  .btn-group {
+    display: block !important;
+  }
+  .seta {
+    position: absolute;
+    width: 8px;
+    height: 18px;
+    border-left: 1px solid #333;
+    border-bottom: 1px solid #333;
+    top: 34%;
+    transform: translateY(-50%);
+  }
+  .primeiro {
+    .seta {
+      display: none !important;
+    }
+  }
+  .segundo {
+    .btn {
+      margin-left: 33px;
+    }
+    .seta {
+      left: 9%;
+    }
+  }
+  .terceiro {
+    .btn {
+      margin-left: 70px;
+    }
+    .seta {
+      left: 25%;
+    }
+  }
+
+  .quarto {
+    .btn {
+      margin-left: 106px;
+    }
+    .seta {
+      left: 42%;
+    }
+  }
+
+  .quinto {
+    .btn {
+      margin-left: 138px;
+    }
+    .seta {
+      left: 59%;
+    }
+  }
+
+}
+
+.texto-descricao {
+  color: #000;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.linha-infos-helper {
+  .info-box .info-box-stats p {
+    font-weight: bold;
+  }
+  .info-box .info-box-stats span.info-box-title {
+    font-size: 13px !important;
+  }
+}
+
+.page-aposta {
+  .jogo {
+    @media screen and (max-width: 600px) {
+      .hora {
+        text-align: center !important;
+        br {
+          display: none !important;
+        }
+        span {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}
+
+.input-financeiro {
+  @media screen and (max-width: 480px) {
+    display: block !important;
+  }
+}
+
+.page-aposta .jogo {
+  border: 1px solid #333;
+}
+
+.botoes-cotacoes .btn {
+  background: #dbdbdb !important;
+  border: 1px solid #b3b3b3 !important;
+}
+
+.swal2-container {
+  z-index: 10000 !important;
+}
+
+.modal-jogos {
+  .item-aposta-jogo {
+    &.success {
+      td {
+        vertical-align: middle !important;
+        background: #0b81d8 !important;
+        border-color: #fff !important;
+      }
+    }
+  }
+}
+
+.data-organiza {
+  padding: 8px;
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  background: #862a68;
+  letter-spacing: 1px;
+}
+
+@media screen and (min-width: 770px) and (max-width: 1100px) {
+  .width-ipad-pro {
+    width: 100% !important;
+  }
+}
+
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.col-xs-15 {
+  width: 20%;
+  float: left;
+}
+
+@media (min-width: 768px) {
+  .col-sm-15 {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-md-15 {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-lg-15 {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media screen and (min-width: 1150px) and (max-width: 1500px) {
+  .linha-cadastros {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .width-note {
+    width: 33% !important;
+  }
+
+}
+
+.jogo {
+  .info-topo {
+    .btn-mais {
+      background: #BDBFC1 !important;
+      color: #606062 !important;
+      border: 1px solid #333;
+      font-size: 17px;
+      &:hover, &:focus {
+        color: #fff !important;
+      }
+
+      @media screen and (min-width: 700px) and (max-width: 780px) {
+        font-size: 14px !important;
+      }
+
+    }
+  }
+}
+
+.jogos-selecionados-lista {
+  .jogo-selecionado {
+
+    &.cancelado {
+      position: relative;
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+        display: block;
+        background-color: rgba(black, 0.2);
+        width: 100%;
+        height: 100%;
+      }
+
+      &:after {
+        position: absolute;
+        content: 'CANCELADO';
+        font-weight: bold;
+        color: white;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        background-color: #f90000;
+        padding: 10px 25px;
+        display: block;
+        top: 50%;
+        right: 20px;
+        @include translate(0, -50%);
+      }
+    }
+
+    .content-campeonato {
+      @media screen and (max-width: 560px) {
+        .paren {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
+
+.panel-scroll{
+  @media screen and (max-width : 750px){
+    height: 466px;
+  }
+}
+
+.botao-mobile{
+  display: none;
+  @media screen and (max-width : 750px){
+    display: block;
+    position: fixed;
+    left: -56px;
+    z-index: 10000;
+    bottom: 200px;
+    transform: rotate(-90deg);
+    margin-bottom: 20px;
+  }
+  @media screen and (min-width : 760px) and (max-width : 780px){
+    display: block;
+    position: fixed;
+    left: 150px;
+    z-index: 10000;
+    bottom: 184px;
+    transform: rotate(-90deg);
+    margin-bottom: 20px;
+  }
+  .btn{
+    font-size : 13px !important;
+    font-weight: bold !important;
+  }
+}
+
+.btn-topo-jogos{
+  display: none;
+  @media screen and (max-width : 780px) {
+    display: block !important;
+  }
+}

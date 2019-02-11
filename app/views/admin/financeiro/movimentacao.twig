@@ -1,0 +1,100 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="">Data</label><span class="pointer" data-toggle="popover"
+                                                                  data-trigger="hover"
+                                                                  data-content="Ditie a data para busca."
+                                                                  data-original-title="" title="">[<i
+                                            class="fa fa-question"></i>]</span>
+                                <input type="date" name="data" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="">Tipo</label><span class="pointer" data-toggle="popover"
+                                                                  data-trigger="hover"
+                                                                  data-content="Selecione o tipo de movimentação."
+                                                                  data-original-title="" title="">[<i
+                                            class="fa fa-question"></i>]</span>
+                                <select name="tipo-movimentacao" id="tipo-movimentacao" class="form-control">
+                                    <option value="1">Saque</option>
+                                    <option value="2">Transferência</option>
+                                    <option value="3">Compra de Crédito</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <label class="">Valor</label><span class="pointer" data-toggle="popover"
+                                                               data-trigger="hover"
+                                                               data-content="Digite o valor da movimentação."
+                                                               data-original-title="" title="">[<i
+                                        class="fa fa-question"></i>]</span>
+                            <input name="valor" class="form-control">
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="form-group form-btn">
+                                <button class="btn btn-danger" type="reset"><i class="fa fa-eraser"></i>Limpar</button>
+                                <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body panel-table">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center" width="70">
+                                    #
+                                </th>
+                                <th>
+                                    Data
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th>
+                                    Valor
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in 0..4 %}
+                                <tr>
+                                    <td class="text-center">{{ i+1 }}</td>
+                                    <td>29/06/2017</td>
+                                    <td>Saque</td>
+                                    <td>R$ 60,00</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="4">Exibindo de 1 até 6 de 6 registros</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

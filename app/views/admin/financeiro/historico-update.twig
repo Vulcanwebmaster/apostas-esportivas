@@ -1,0 +1,110 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <form class="admpage-form" enctype="multipart/form-data">
+        <input type="hidden" name="id"/>
+        <div class="panel panel-default">
+            <div class="panel-body p-b-10">
+                <div class="row">
+                    <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                        <label>Data</label><span class="pointer" data-toggle="popover" data-trigger="hover"
+                                                 data-content="Selecione o digite a data." data-original-title=""
+                                                 title="">[<i class="fa fa-question"></i>]</span>
+                        <input name="data" type="date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12 col-sm-6">
+                        <label>Item</label><span class="pointer" data-toggle="popover" data-trigger="hover"
+                                                 data-content="Selecione o tipo de transação" data-original-title=""
+                                                 title="">[<i class="fa fa-question"></i>]</span>
+                        <select name="item" class="form-control">
+                            <option value=""> -- Selecione --</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12 col-sm-6">
+                        <label>Débito/Crédito (R$)</label><span class="pointer" data-toggle="popover"
+                                                                data-trigger="hover"
+                                                                data-content="Digite o valor do débito ou crédito."
+                                                                data-original-title="" title="">[<i
+                                    class="fa fa-question"></i>]</span>
+                        <input name="debito-credito" type="text" class="form-control"/>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12 col-sm-6">
+                        <label>Saldo (R$)</label><span class="pointer" data-toggle="popover" data-trigger="hover"
+                                                       data-content="Digite o valor do saldo." data-original-title=""
+                                                       title="">[<i class="fa fa-question"></i>]</span>
+                        <input name="saldo" type="text" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right panel-footer clearfix">
+                <div class="row">
+                    <div class="col-xs-12 text-right">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-search"></i> Buscar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-heading">
+                    <h4>Extrato</h4>
+                </div>
+                <div class="panel-body panel-table">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th class="text-center" width="80">Data</th>
+                                <th width="100">Item</th>
+                                <th width="140">Descrição</th>
+                                <th width="60">Débito/Crédito (R$)</th>
+                                <th width="80">Saldo (R$)</th>
+                                <th width="80">Pontos Acumulados</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center" style="vertical-align : middle">08/03/2017</td>
+                                <td style="vertical-align : middle"><b>Recebimento</b></td>
+                                <td>Prêmio referente ao bilhete de apostas (#0000)</td>
+                                <td style="vertical-align : middle" class="text-center text-info"><b>+ R$ 200,00 </b>
+                                </td>
+                                <td style="vertical-align : middle" class="text-center"><b> + R$ 1.200,00 </b></td>
+                                <td style="vertical-align : middle" class="text-center"> 614,00</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="vertical-align : middle">08/03/2017</td>
+                                <td style="vertical-align : middle"><b>Recebimento</b></td>
+                                <td>Compra de crédito no sistema (#0123)</td>
+                                <td style="vertical-align : middle" class="text-center text-danger"><b>- R$ 200,00 </b>
+                                </td>
+                                <td style="vertical-align : middle" class="text-center"><b> - R$ 1.000,00 </b></td>
+                                <td style="vertical-align : middle" class="text-center"> 614,00</td>
+                            </tr>
+                            </tbody>
+                            <tfoot style="background : #ddd">
+                            <th width="80"></th>
+                            <th width="100"></th>
+                            <th class="text-right font-weight-bold" width="140">Saldo Financeiro :</th>
+                            <th class="text-center font-weight-bold" width="60"><span
+                                        class="text-info"> + R$ 200,00 </span></th>
+                            <th class="text-center font-weight-bold" width="80"><span
+                                        class="text-danger"> - R$ 200,00 </span></th>
+                            <th width="80"></th>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

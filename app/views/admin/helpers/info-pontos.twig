@@ -1,0 +1,83 @@
+{% set pontos = resumoBancario() %}
+
+<div class="row linha-infos-helper">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ pontos.pontos|number_format(0, '.', '.') }}</p>
+                    <span class="info-box-title">Pontos Acumulados</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-ticket"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ pontos.pontosAposta|number_format(0, '.', '.') }}</p>
+                    <span class="info-box-title">Pontos Minhas Apostas</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-ticket"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ pontos.pontosAdesao|number_format(0, '.', '.') }}</p>
+                    <span class="info-box-title">Pontos de Ativação</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-ticket"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 ">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ pontos.pontosComercializacao|number_format(0, '.', '.') }}</p>
+                    <span class="info-box-title">Pontos Minha Equipe</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-users"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 ">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ pontos.pontosIndicacao|number_format(0, '.', '.') }}</p>
+                    <span class="info-box-title">Pontos de Indicação Equipe</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-users"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 ">
+        <div class="panel info-box panel-white" style="border-bottom: 2px solid #2D384A  !important;">
+            <div class="panel-body">
+                <div class="info-box-stats">
+                    <p class="counter">{{ user.getGraduacaoTitle() }}</p>
+                    <span class="info-box-title">Graduação Alcançada</span>
+                </div>
+                <div class="info-box-icon">
+                    <i class="fa fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

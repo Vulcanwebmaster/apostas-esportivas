@@ -1,0 +1,33 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <form id="form-this" data-adminpage>
+        <input type="hidden" name="id" />
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group col-xs-12">
+                        <label>Título</label>
+                        <input type="text" name="title" class="form-control" required/>
+                    </div>
+                    <div class="col-xs-12">
+                        <label>Permissões</label>
+                        <select name="permissoes" multiple class="form-control chosen">
+                            {{ types|raw }}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button class="btn btn-warning" type="reset">
+                    <i class="fa fa-eraser"></i> Limpar
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fa fa-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

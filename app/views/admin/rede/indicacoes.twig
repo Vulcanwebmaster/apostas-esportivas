@@ -1,0 +1,142 @@
+{% extends 'admin/layout.twig' %}
+
+{% block links %}
+    <a href="admin/indicacoes/csv" class="btn btn-primary">
+        <i class="fa fa-download"></i> Baixar E-mails
+    </a>
+{% endblock %}
+
+{% block main %}
+
+    <form class="panel panel-default admpage-form-search">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title">Busca</h4>
+        </div>
+        <div class="panel-body p-b-10">
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    <label>Buscar</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Digite o cidade, nome, login ou e-mail do úsuario."
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <input type="text" class="form-control" name="search" placeholder="Cidade, nome, login ou e-mail">
+                </div>
+                <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                    <label>Ativação</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Selecione para verificar se o indicado pagou ou não o plano."
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <select class="form-control" name="_indicado[pagouplano]">
+                        <option value>-- Ambos --</option>
+                        <option value="1">Ativa</option>
+                        <option value="0">Inativa</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                    <label>Data início</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Selecione ou digite a data."
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <input type="date" class="form-control mask-date" name="_indicado[dataInicio]">
+                </div>
+                <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                    <label>Data fim</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Selecione ou digite a data."
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <input type="date" class="form-control mask-date" name="_indicado[dataFim]">
+                </div>
+                <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                    <label>Licença</label>
+                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                          data-content="Selecione um tipo de licença"
+                          data-original-title=""
+                          title="">[<i class="fa fa-question"></i>]</span>
+                    <select class="form-control" name="_indicado[type]">
+                        <option value> -- Selecione --</option>
+                        <option value="8"> Jogador</option>
+                        <option value="9"> Consultor</option>
+                        <option value="4"> Franqueado</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="text-right">
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-search"></i> Pesquisar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+    <!-- Modal Indicado -->
+    <form class="modal fade modal-detalhes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">Mais Informações</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <label>Nome Completo</label>
+                            <input readonly type="text" name="nome" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                            <label>Gradução</label>
+                            <input name="graduacao" readonly type="text" value="" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                            <label>Apostas</label>
+                            <input name="apostas" readonly type="text" value="" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                            <label>Indicados</label>
+                            <input name="indicados" readonly type="text" value="" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                            <label>Pontos</label>
+                            <input name="pontos" readonly type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var container = $('.admpage-container');
+
+        $
+            .adminPage({
+                searchValues: {{ json(vars?:[]) }},
+                formSearch: '.admpage-form-search',
+                container: container,
+            });
+
+        container
+            .on("click", "[data-detalhes]", function () {
+                var dados = $(this).data('detalhes');
+                $('.modal-detalhes').setValues(dados);
+            });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    {% include 'admin/helpers/info-pontos.twig' %}
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-heading">
+                    <h4 class="modal-title">Prêmios Alcançados</h4>
+                </div>
+                <div class="panel-body p-t-30 p-b-0">
+                    <div class="row">
+                        {% for v in graduacoes %}
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="box-premio m-b-30">
+                                    <div class="header-box">
+                                        {{ v.getPontos()|number_format(0,'.','.') }} pts
+                                    </div>
+                                    <div class="content-box">
+                                        <img src="{{ v.imgCapa().getSource(true) }}">
+                                    </div>
+                                    <div class="footer-box {{ user.getGraduacaoOrdem() >= v.getOrdem() ? 'ganhou' : '' }}">
+                                        {{ user.getGraduacaoOrdem() >= v.getOrdem() ? 'Ganhou' : 'Pendente' }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-heading">
+                    <h4>Veja abaixo o procedimento para retirar o prêmio </h4>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="texto">
+                                {{ pagina('meus-pontos').getTexto() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="modal fade modal-jogosapostas">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close" data-dismiss="modal">&times;</div>
+                    <h3 class="modal-title">Apostas</h3>
+                </div>
+                <div class="modal-body no-padding">
+
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-link" data-dismiss="modal">
+                        <i class="fa fa-remove"></i>
+                        Fechar
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">Jogos em aberto mais apostados</h4>
+                </div>
+                <div class="panel-body panel-table">
+                    <div class="page-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var page = $('<div />').adminPage({
+            container: '.page-container',
+        });
+
+        page.on('searchSuccess', function () {
+            $('.table-jogos').fixedHeaderTable({height: 500});
+        });
+
+        $(function () {
+            $(document).on('click', '[data-apostas]', function () {
+                $('.modal-jogosapostas').modal('show').find('.modal-body').html("Carregando apostas...");
+                $.get(url('apostas/jogos/detalhes') + '/' + $(this).attr('data-apostas'), {}, function (html) {
+                    $('.modal-jogosapostas .modal-body').html(html);
+                }, 'html');
+            });
+        });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+<div class="modal fade modal-atualizarjogos">
+    <div class=" modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><i class="fa fa-warning"></i> Tem Certeza?</h3>
+            </div>
+            <div class="modal-body">
+                Caso atualize a data e hora, iremos utilizar as novas data e hora do SportingBET, onde, não nos
+                responsabilizamos por data e hora errada!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link btn-lg" data-dismiss="modal"><i class="fa fa-remove"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="javascript:atualizarJogosSend();"><i
+                            class="fa fa-check"></i> Sim, atualizar!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-right m-b-md <?php if (!$edit) echo 'hide'; ?>">
+    <div class="row">
+        <div class="col-lg-4 col-md-7 col-xs-12 pull-right">
+            <div class="input-group">
+                <input type="number" class="subtrair form-control" step="0.1" name="subtrair" value="0.0"/>
+                <div class="input-group-btn">
+                    <a href="#" alt="Subtrair"
+                       onclick="javascript:atualizarJogos('subtrair', 'Todas as cotações serão afetadas, deseja continuar?');"
+                       class="btn btn-default"><i class="fa fa-minus-circle"></i> Subtrair</a>
+                    <button type="button" alt="Atualizar Data/hora"
+                            onclick="javascript:atualizarJogos('datas', 'Caso atualize a data e hora, iremos utilizar as novas data e hora do SportingBET, onde, não nos responsabilizamos por data e hora errada!');"
+                            class="btn btn-info"><span data-toggle="tooltip" title="Atualizar data e hora"><i
+                                    class="fa fa-refresh"></i> Data/Hora</span></button>
+                    <button type="button" alt="Atualizar Cotações"
+                            onclick="javascript:atualizarJogos('cotacoes', 'Caso atualize as cotações, iremos utilizar as novas cotações do SportingBET, onde, não nos responsabilizamos por cotações erradas!');"
+                            class="btn btn-warning"><span data-toggle="tooltip" title="Atualizar cotações"><i
+                                    class="fa fa-refresh"></i> Cotações</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title">Tabela</h4>
+    </div>
+    <div class="panel-body panel-table page-container"></div>
+</div>
+
+<script>
+
+    var container = $('.page-container');
+    var page = $('<div />').adminPage({
+        form: '#form-jogo',
+        container: container,
+        deleteAction: url('jogos/jogo/excluir'),
+    });
+
+    var atualizarJogosType = 0;
+    var atualizarJogosStatus = true;
+
+    function atualizarJogos(type, message) {
+        if (atualizarJogosStatus) {
+            atualizarJogosType = type;
+            $('.modal-atualizarjogos').find('.modal-body').html(message);
+            $('.modal-atualizarjogos').modal('show');
+        } else {
+            alert('Dados estão sendo atualizados.');
+        }
+    }
+
+    function atualizarJogosSend() {
+        atualizarJogosStatus = false;
+        $('.modal-atualizarjogos').modal('hide');
+        $.post(url('jogos/tabela/atualizar'), {
+            tipo: atualizarJogosType,
+            subtrair: $('input.subtrair').val(),
+        }, function (e) {
+            if (e.result == 1) {
+                page.reloadSearch();
+            } else {
+                alert(e.message);
+            }
+        }, 'json').fail(function (e) {
+            _log(e.responseText);
+        }).always(function () {
+            atualizarJogosStatus = true;
+        });
+    }
+
+    /*
+     * Subtrair das cotações vigentes
+     */
+    function subtrairJogos() {
+        var valor = $("input.subtrair").val();
+        addOnline.tBody.find(".cotacao .editable").each(function () {
+            var cotacao = $(this).html();
+            var subtraido = cotacao - valor;
+            if (subtraido > 0) {
+                $(this).html(subtraido.toFixed(2));
+            } else {
+                $(this).html('0.00');
+            }
+        });
+    }
+    /*
+     * Seleciona todos os jogos encontrados
+     */
+    function checkAll() {
+        if ($('[name=checkall]').is(":checked")) {
+            $('.check').prop("checked", true);
+            $.uniform.update('.check');
+        } else {
+            $('.check').prop("checked", false);
+            $.uniform.update('.check');
+        }
+    }
+    /*
+     * Limpa todas as cotações importadas
+     */
+    function limpar() {
+        addOnline.tBody.find('.cotacoes-dark, .cotacoes-light').html('0.00');
+    }
+
+    page.on('searchSuccess', function () {
+
+        if (<?php echo $edit ? 1 : 0 ?>) {
+            container.find("input:checkbox").uniform();
+            container.find("[role].editable").each(function () {
+
+                var type = $(this).attr('role');
+                var j = $(this);
+                var row = j.parents('tr.tabela-jogo');
+                var idJogo = row.attr('data-id');
+                var field = j.attr("role");
+                var config = {
+                    success: function (response, value) {
+                        var valores = {
+                            field: field,
+                            jogo: idJogo,
+                            value: value,
+                        };
+                        $.post(url('jogos/jogo/update_info'), valores, function (e) {
+                            if (!e.result) {
+                                alert(e.message);
+                            }
+                        }, 'json').error(function (e) {
+                            console.log(e.responseText);
+                        });
+                    },
+                };
+
+                switch (type) {
+                    case 'data':
+                        j.format = 'dd/mm/yyyy';
+                        break;
+                    case 'hora':
+                        config.format = 'hh:ii';
+                        break;
+                }
+
+                j.editable(config);
+
+            });
+        }
+
+        $('.table-jogos').fixedHeaderTable({height: 500});
+    });
+
+
+</script>

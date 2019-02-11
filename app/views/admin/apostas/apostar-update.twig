@@ -1,0 +1,1006 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <style>
+
+        .jogo-selecionado .jogo {
+            border: 0px !important;
+            border-bottom: 1px solid #333 !important;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        .btn-limpar {
+            float: right !important;
+            margin-top: -28px;
+            background: #610042;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: none;
+        }
+
+        .btn-limpar i {
+            margin-left: 6px;
+        }
+
+        .btn-limpar:hover {
+            color: #fff !important;
+        }
+
+    </style>
+
+    {% include 'admin/helpers/info-new-aposta.twig' %}
+
+    <form class="form-busca panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label><b>Data do Jogo</b></label>
+                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                              data-content="Digite ou selecione a data do jogo." data-original-title="" title="">[<i
+                                    class="fa fa-question"></i>]</span>
+                        <input id="data-jogo" type="date" name="data" class="form-control text-center">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label><b>Nome da Equipe</b></label>
+                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                              data-content="Digite o nome da equipe" data-original-title="" title="">[<i
+                                    class="fa fa-question"></i>]</span>
+                        <input id="search" type="text" name="search" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label><b>Campeonato</b></label>
+                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                              data-content="Selecione um campeonato"
+                              data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                        <select id="campeonato-select" name="campeonato" class="form-control">
+                            <option value> -- Selecione --</option>
+                            {% for id, c in campeonatos %}
+                                <option value="{{ id }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            <div class="pull-left">
+                <a href="{{ module }}/page/21592047EC3155ART60142ODLXE3YAV09UORFN377WH30K1ILV" class="btn btn-primary">
+                    <i class="fa fa-ticket"></i> Ver Minhas Apostas
+                </a>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-search"></i> Buscar
+            </button>
+        </div>
+    </form>
+
+    <div class="botao-mobile m-b-1">
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-desce btn-info">
+                    <i class="fa fa-ticket"></i> Finalizar Aposta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-aposta">
+
+        <div class="row">
+
+            <!-- Jogos -->
+            <div class="col-md-7 col-sm-12 col-xs-12 width-ipad-pro">
+                <div class="panel panel-default panel-roxo">
+                    <div class="panel-heading">
+                        <h4 class="modal-title">Jogos</h4>
+                        <button class="btn btn-limpar pull-right">Listar todos novamente<i class="fa fa-eraser"></i>
+                        </button>
+                    </div>
+                    <div class="panel-body panel-scroll">
+
+                        {% for data, campeonatos in datas %}
+
+                            <div class="lista-jogos">
+
+                                <div data-dateteste="{{ data }}" class="data-organiza">{{ data|date('d/m/Y') }}</div>
+
+                                {{ htmlCampeonatos }}
+
+                                {% for campeonatoAtual, campeonatoTitle in campeonatos %}
+
+                                    <div>
+
+                                        <header data-campeonatoatual="{{ campeonatoAtual }}"
+                                                class="campeonato">{{ campeonatoTitle }}
+                                        </header>
+
+                                        {% for jogo in _jogos %}
+
+                                            {% if jogo.getCampeonato() == campeonatoAtual and jogo.getData() == data %}
+
+                                                {% set cotacoes = jogo.getCotacoes(true) %}
+
+                                                <div class="jogo" data-jogo="{{ jogo.getId() }}"
+                                                     data-timecasa="{{ jogo.getTimeCasaTitle() }}"
+                                                     data-timefora="{{ jogo.getTimeForaTitle() }}"
+                                                     data-datajogo="{{ jogo.getData() }}"
+                                                     data-campeonato="{{ jogo.getCampeonato() }}">
+                                                    <div class="content-jogo">
+                                                        <div class="info-topo">
+                                                            <div class="row">
+                                                                <div class="hora col-md-3 col-sm-3 col-xs-12">
+                                                                    <i class="fa fa-clock-o"></i> {{ jogo.getHora() }}
+                                                                </div>
+                                                                <div class="times col-md-6 col-sm-6 col-xs-12 text-center text-uppercase">
+                                                                    <span class="casa">{{ jogo.getTimeCasaTitle() }}
+                                                                        <img src="{{ jogo.voTimeCasa().imgCapa().redimensiona(0, 15) }}"/> </span>
+                                                                    <span class="x">X</span>
+                                                                    <span class="fora"> <img
+                                                                                src="{{ jogo.voTimeFora().imgCapa().redimensiona(0, 15) }}"/> {{ jogo.getTimeForaTitle() }} </span>
+                                                                </div>
+                                                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                                                    <button class="btn btn-mais btn-sm btn-block"
+                                                                            onclick="javascript:aposta.modalCotacoes({{ jogo.getId() }})"
+                                                                            type="button">
+                                                                        <i class="fa fa-plus"></i> <span class="">Cotações</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="botoes-cotacoes clearfix">
+                                                            {% for i, c in _cotacoes if i < 5 %}
+                                                                <button type="button" id="{{ jogo.getId() }}"
+                                                                        data-jogo="{{ jogo.getId() }}"
+                                                                        data-cotacao="{{ c.getCampo() }}"
+                                                                        data-valor="{{ cotacoes[90][c.getCampo()]?:1 }}"
+                                                                        data-tempo="90"
+                                                                        class="btn btn-cotacao pull-left {{ cotacoes[90][c.getCampo()]>1?'':'disabled' }}">
+                                                                    <div>{{ c.getSigla() }}</div>
+                                                                    <div class="valor">{{ cotacoes[90][c.getCampo()]|number_format(2, ',', '.') }}</div>
+                                                                </button>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aposta -->
+            <div class="col-md-5 col-sm-12 col-xs-12 width-ipad-pro">
+                <div class="panel panel-default panel-roxo panel-cupom-aposta">
+                    <div class="panel-heading">
+                        <h4 class="modal-title"> Cupom de aposta </h4>
+                    </div>
+                    <form class="admpage-form">
+                        <div class="panel-body panel-cupom">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Nome do Apostador</label>
+                                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                              data-content="Digite o nome do apostador. Não é obrigatório"
+                                              data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                        <input type="text" class="form-control" name="apostadornome">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Telefone do Apostador</label>
+                                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                              data-content="Digite o telefone. Não é obrigatório."
+                                              data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                        <input type="text" class="form-control mask-telefone" name="apostadortelefone">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Valor da aposta (R$)</label>
+                                <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                      data-content="Digite um valor para aposta."
+                                      data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                <input type="text" name="valor" class="form-control mask-valor" required
+                                       value="{{ dados().getApostaMinima(true) }}"/>
+                                <small class="help-block">
+                                    {{ dados().getApostaMinima(true) }} até <span
+                                            class="info-apostamax">{{ dados().getApostaMaxima(true) }}</span>
+                                </small>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="form-group">
+                                        <label>Qtde. de Jogos</label>
+                                        <input class="form-control" type="number" name="qtde-jogos" readonly value="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="form-group">
+                                        <label>Cotação</label>
+                                        <input class="form-control" type="text" name="cotacao" readonly value="1">
+                                        <small class="help-block">
+                                            {{ dados().getCotacaoMinima(true) }} - {{ dados().getCotacaoMaxima(true) }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Retorno (R$)</label>
+                                        <input class="form-control" type="text" value="0,00" readonly name="retorno">
+                                        <small class="help-block">Retorno máximo:
+                                            R$ {{ dados().getRetornoMaximo(true) }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jogos-selecionados-lista">
+                                <div class="jogo-selecionado hide">
+                                    <div><i class="fa fa-clock-o"></i> <span class="tempo"></span></div>
+                                    <div class="jogo text-uppercase" style="">
+                                        <b class="casa"></b>
+                                        <span>X</span>
+                                        <b class="fora"></b>
+                                    </div>
+                                    <div class="campeonato"></div>
+                                    <div class="cotacoes">
+                                        <span class="cotacao"></span>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-danger btn-sm btn-excluir">
+                                            <i class="fa fa-times"></i>
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer" style="overflow : hidden">
+                            <div class="pull-left">
+                                <button type="button" class="btn btn-info btn-topo-jogos">
+                                    <i class="fa fa-chevron-up m-r-1"></i>Ver Jogos
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa fa-save m-r-1"></i>Confirmar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Modal Mais cotações !-->
+        <div class="modal fade modal-cotacoes" id="modal-cotacoes" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Mais Cotações</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="info-jogo">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-12 col-xs-12 text-center">
+                                    <i class="fa fa-clock-o"></i> <span class="data"></span>
+                                    <div class="dia-semana"></div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 text-center">
+                                    <div class="times text-uppercase">
+                                        <span class="casa"></span>
+                                        <span>X</span>
+                                        <span class="fora"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 col-xs-12 text-center">
+                                    <div class="campeonato"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            {% for tempo in tempos %}
+                                <li class="nav-item {{ tempo.key=='90'?'active':null }}">
+                                    <a class="nav-link" href="#tab-{{ tempo.title }}" role="tab" data-toggle="tab">
+                                        {{ tempo.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content p-0 p-t-20">
+                            {% for tempo in tempos %}
+                                <div role="tabpanel" class="tab-pane fade {{ tempo.key=='90'?'active':null }}"
+                                     id="tab-{{ tempo.key }}">
+                                    <div class="botoes-cotacoes modal-botoes">
+                                        {% for id, grupo in grupos %}
+                                            <h4>{{ grupo }}</h4>
+                                            <div>
+                                                {% for c in _cotacoes %}
+                                                    {% if c.getGrupo() == id %}
+                                                        <button type="button" id="teste" data-jogo="0"
+                                                                data-cotacao="{{ c.getCampo() }}"
+                                                                data-tempo="{{ tempo.key }}" data-valor="0.00"
+                                                                class="btn btn-cotacao">
+                                                            <div>{{ c.getSigla() }}</div>
+                                                            <div class="valor"></div>
+                                                        </button>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script class="script-apostar">
+
+        var tplApostaJogo = $('.jogo-selecionado').remove().removeClass('hide');
+
+        $('.jogos-selecionados-lista').html("");
+
+        var modalCotacoes = $('#modal-cotacoes');
+
+        var aposta = {
+            jogos: jogos,
+            cotacoes: cotacoes,
+            apostas: [],
+            apostaMinima: {{ dados().getApostaMinima() }},
+            apostaMaxima: {{ dados().getApostaMaxima() }},
+            cotacaoMinima: {{ dados().getCotacaoMinima() }},
+            cotacaoMaxima: {{ dados().getCotacaoMaxima() }},
+            retornoMaximo: {{ dados().getRetornoMaximo() }},
+            apostar: function (idJogo, cotacao, tempo, valor) {
+
+                if (valor > 1) {
+
+                    // Removendo jogo da aposta atual
+                    aposta.apostas.forEach(function (item, index) {
+                        if (item['jogo']['id'] == idJogo) {
+                            aposta.apostas.splice(index, 1);
+                        }
+                    });
+
+                    var jogo = aposta.jogos[parseInt(idJogo)];
+
+                    valor = jogo['cotacoes'][tempo][cotacao] || 1;
+
+                    aposta.apostas.push({
+                        jogo: jogo,
+                        tempo: tempo,
+                        cotacao: cotacao,
+                        valor: valor
+                    });
+
+                    aposta.render();
+                }
+            },
+            render: function () {
+
+                $('button[data-cotacao]').removeClass('active');
+                $('.lista-jogos .jogo').removeClass('active');
+
+                // Ativando botões selecionados
+                aposta.apostas.forEach(function (item, index) {
+                    $('[data-jogo="' + item['jogo']['id'] + '"][data-cotacao="' + item['cotacao'] + '"][data-tempo="' + item.tempo + '"]').addClass('active');
+                });
+
+                // Listando jogos apostados
+                $('.jogos-selecionados-lista').html('');
+                aposta.apostas.forEach(function (item, index) {
+                    var div = tplApostaJogo.clone();
+                    var jogo = item.jogo;
+                    var cotacao = aposta.cotacoes[item.cotacao];
+                    var data = jogo.data.split('-').reverse().join('/');
+                    var tempo = {90: 'Resultado final', pt: 'Primeiro Tempo', st: 'Segundo Tempo'}[item.tempo];
+
+                    div.find('.btn-excluir').data('index', index);
+                    div.find(".casa").html(jogo.timecasatitle);
+                    div.find(".fora").html(jogo.timeforatitle);
+                    div.find(".tempo").html(data + ' às ' + jogo.hora);
+                    div.find(".campeonato").html(jogo.campeonatotitle);
+                    div.find(".cotacao").html(tempo + ' - ' + cotacao.titulo + ' (' + item.valor.toString().toReal() + ')');
+                    $('.jogos-selecionados-lista').append(div);
+                });
+
+                $('[name=qtde-jogos]').val(aposta.apostas.length);
+
+                aposta.apostas.forEach(function (item, index) {
+                    $('.lista-jogos .jogo').filter('[data-jogo="' + item['jogo']['id'] + '"]').addClass('active');
+                });
+
+                // Retorno
+                $('[name=retorno]').val(aposta.getRetorno().toString().toReal());
+
+                // Aposta máxima
+                $('.info-apostamax').html(aposta.getApostaMaxima().toString().toReal());
+
+                // Cotação
+                $('[name=cotacao]').val(aposta.getCotacao().toString().toReal());
+
+            },
+            getApostaMaxima: function () {
+
+                var maximo = aposta.apostaMaxima;
+
+                var limite = Math.min(3, aposta.apostas.length);
+
+                aposta.apostas.forEach(function (item, index) {
+                    maximo = Math.min(maximo, item['jogo']['limite' + limite]);
+                });
+
+                return maximo;
+            },
+            getRetorno: function () {
+                return Math.min(aposta.retornoMaximo, aposta.getCotacao() * aposta.getValorApostado());
+            },
+            getValorApostado: function () {
+                return $('[name=valor]').val().toString().toFloat();
+            },
+            getCotacao: function () {
+                var cotacao = 1;
+                aposta.apostas.forEach(function (item, index) {
+                    cotacao = cotacao * item.valor;
+                });
+                return Math.min(cotacao, aposta.cotacaoMaxima);
+            },
+            modalCotacoes: function (jogoId) {
+
+                var jogo = aposta.jogos[jogoId];
+                var cotacoes = jogo.cotacoes;
+
+                modalCotacoes.find(".casa").html(jogo.timecasatitle);
+                modalCotacoes.find(".fora").html(jogo.timeforatitle);
+                modalCotacoes.find(".campeonato").html(jogo.campeonatotitle);
+                modalCotacoes.find(".dia-semana").html(jogo.diasemana);
+                modalCotacoes.find(".data").html(jogo.data.split('-').reverse().join('/') + ' às ' + jogo.hora);
+
+                modalCotacoes
+                    .modal('show')
+                    .find('[data-jogo]').each(function () {
+                    $(this).attr("data-jogo", jogoId);
+                    $(this).attr("id", jogoId);
+                });
+
+                ['90', 'st', 'pt'].forEach(function (tempo, index) {
+
+                    var div = $('#tab-' + tempo, modalCotacoes);
+
+                    $.each(cotacoes[tempo], function (cotacao, valor) {
+
+                        var seletor = '[data-jogo="' + jogoId + '"][data-tempo="' + tempo + '"][data-cotacao="' + cotacao + '"]';
+                        var btn = $(seletor, div);
+
+                        btn.attr('data-valor', valor);
+                        btn.find('.valor').html(valor.toString().toReal());
+
+                        if (valor > 1) {
+                            btn.attr('disabled', false);
+                        } else {
+                            btn.attr('disabled', true);
+                        }
+
+                    });
+
+                });
+
+                aposta.render();
+
+            },
+            removeAposta: function (index) {
+                aposta.apostas.splice(index, 1);
+                aposta.render();
+            }
+        };
+
+        $('[name=valor]').keyup(aposta.render);
+
+        $('[data-jogo][data-cotacao][data-valor][data-tempo]')
+            .on("click", function (event) {
+                event.preventDefault();
+                var btn = $(this);
+                var id = ($(this).attr("id"));
+                $(this).closest('.modal-cotacoes').modal("hide");
+                aposta.apostar(
+                    id,
+                    btn.data("cotacao"),
+                    btn.data("tempo"),
+                    btn.attr("data-valor")
+                );
+            });
+
+        // Remover jogo
+        $('.jogos-selecionados-lista')
+            .on("click", '.btn-excluir', function () {
+                var index = $(this).data('index');
+                aposta.removeAposta(index);
+            });
+
+        $('.admpage-form')
+            .adminPage({
+                autoSearch: false,
+                alertSuccess: true,
+                controller: 'apostas/apostar',
+                insertAction: 'fazerAposta',
+                reloadSuccess: window.location.href
+            })
+            .on("success", function (event, e) {
+                if (e.result == 1) {
+                    aposta.apostas = [];
+                    aposta.render();
+                }
+            })
+            .on('beforeSubmit', function () {
+
+                var valorApostado = aposta.getValorApostado();
+                var cotacao = aposta.getCotacao();
+
+                if (!aposta.apostas) {
+                    swal(
+                        'Atenção !!',
+                        "Selecione no mínimo 1 jogo para concluir a aposta.",
+                        'warning'
+                    );
+                    return false;
+                } else if (aposta.apostaMinima > valorApostado) {
+                    swal(
+                        'Atenção !!',
+                        "Aposta mínima de R$ " + aposta.apostaMinima.toString().toReal() + " reais.",
+                        'warning'
+                    );
+                    return false;
+                } else if (aposta.apostaMaxima < valorApostado) {
+                    swal(
+                        'Atenção !!',
+                        "Aposta maxima de R$ " + aposta.apostaMaxima.toString().toReal() + " reais.",
+                        'warning'
+                    );
+                    return false;
+                } else if (aposta.cotacaoMinima > aposta.getCotacao()) {
+                    swal(
+                        'Atenção !!',
+                        "Aposta deve atingir uma cotação mínima de " + aposta.cotacaoMinima.toString().toReal(),
+                        'warning'
+                    );
+                    return false;
+                } else {
+
+                    var jogos = [];
+
+                    aposta.apostas.forEach(function (jogo, index) {
+                        jogos.push({
+                            jogo: jogo['jogo']['id'],
+                            cotacao: jogo['cotacao'],
+                            tempo: jogo['tempo']
+                        });
+                    });
+
+                    return {jogos: JSON.stringify(jogos)};
+                }
+            });
+
+        $(document).ready(function () {
+
+            $(".btn-desce").click(function (event) {
+                event.preventDefault();
+                $('body,html').animate({
+                    scrollTop: $('.panel-cupom-aposta').offset().top
+                }, 700);
+            });
+
+            $(".btn-topo-jogos").click(function (event) {
+                event.preventDefault();
+                $('body,html').animate({
+                    scrollTop: $('.page-aposta').offset().top
+                }, 700);
+            });
+
+            $(".btn-limpar").click(function () {
+                var btn = $(this);
+                $(btn).hide();
+                $('html').addClass('page-loading');
+                $(".panel-scroll").slideUp('', function () {
+                    $(".panel-scroll .data-organiza").show();
+                    $(".panel-scroll .alert").remove();
+                    $("#data-jogo").val("");
+                    $("#search").val("");
+                    $("#campeonato-select").val("");
+                    $(".panel-scroll header").each(function () {
+                        $(this).removeClass("hide");
+                    });
+                    $(".panel-scroll .jogo").each(function () {
+                        $(this).removeClass("hide");
+                    });
+                    $(".panel-scroll").slideDown('');
+                    $('html').removeClass('page-loading');
+                });
+
+            });
+
+            $(".form-busca").on("submit", function (e) {
+
+                e.preventDefault();
+                var data = $("#data-jogo").val();
+                var search = $("#search").val();
+                var campeonato = $("#campeonato-select").val();
+
+                if (data == "" && search == "" && campeonato == "") {
+                    swal(
+                        'Atenção !',
+                        'Você não preencheu nenhum campo',
+                        'warning'
+                    );
+                } else {
+                    searchFormat = search.replace(/\s*$/, "");
+                    $(".btn-limpar").show();
+                    $('html').addClass('page-loading');
+                    $(".panel-scroll").slideUp('', function () {
+                        $(".panel-scroll .data-organiza").hide();
+                        $(".panel-scroll .alert").remove();
+                        $(".panel-scroll .jogo").each(function () {
+                            $(this).removeClass("hide");
+                        });
+                        $(".panel-scroll header").each(function () {
+                            $(this).removeClass("hide");
+                        });
+                        retornaResultBusca(data, searchFormat, campeonato);
+                        $(".panel-scroll").slideDown('');
+                        $('html').removeClass('page-loading');
+                    });
+                }
+
+            });
+        });
+
+        function retornaResultBusca(data, search, campeonato) {
+
+            var time = search.toLowerCase();
+            var jogosHtml = $(".panel-scroll .jogo");
+
+            if (data != "" && time != "" && campeonato != "") {
+                //Todos
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var dataJogo = $(jogo).data('datajogo');
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    var timeCasa = $(jogo).data('timecasa').toLowerCase();
+                    var timeFora = $(jogo).data('timefora').toLowerCase();
+                    if ((data == dataJogo) && (time == timeCasa || time == timeFora) && (campeonato == campeonatoJogo)) {
+                        contador++;
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    var jaAdiciou = false;
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        if (atual.data("campeonatoatual") == campeonato && jaAdiciou == false) {
+                            jaAdiciou = true;
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            } else if (data != "" && time != "" && campeonato == "") {
+                //Só data e time
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    var dataJogo = $(jogo).data('datajogo');
+                    var timeCasa = $(jogo).data('timecasa').toLowerCase();
+                    var timeFora = $(jogo).data('timefora').toLowerCase();
+                    if ((data == dataJogo) && (time == timeCasa || time == timeFora)) {
+                        contador++;
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    var jaAdiciou = false;
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        if (atual.data("campeonatoatual") == campeonato && jaAdiciou == false) {
+                            jaAdiciou = true;
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            } else if (data != "" && time == "" && campeonato == "") {
+                //Só data
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var dataJogo = $(jogo).data('datajogo');
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    if ((data == dataJogo)) {
+                        contador++;
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        console.log(atual);
+                        if (atual.data("campeonatoatual") == campeonato) {
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            } else if (data != "" && time == "" && campeonato != "") {
+                //Só data e campeonato
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var dataJogo = $(jogo).data('datajogo');
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    if ((data == dataJogo) && (campeonato == campeonatoJogo)) {
+                        contador++;
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        console.log(atual);
+                        if (atual.data("campeonatoatual") == campeonato) {
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            } else if (data == "" && time != "" && campeonato != "") {
+                //Só Time e campeonato
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    var timeCasa = $(jogo).data('timecasa').toLowerCase();
+                    var timeFora = $(jogo).data('timefora').toLowerCase();
+                    if ((time == timeCasa || time == timeFora) && (campeonato == campeonatoJogo)) {
+                        contador++;
+                        campeonatosHelper.push(campeonatoJogo);
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        console.log(atual);
+                        if (atual.data("campeonatoatual") == campeonato) {
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            } else if (data == "" && time == "" && campeonato != "") {
+                //Só Campeonato
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    if ((campeonato == campeonatoJogo)) {
+                        contador++;
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        console.log(atual);
+                        if (atual.data("campeonatoatual") == campeonato) {
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            } else if (data == "" && time != "" && campeonato == "") {
+                //Só time
+                var contador = 0;
+                $.each(jogosHtml, function (key, jogo) {
+                    var campeonatoJogo = $(jogo).data('campeonato');
+                    var timeCasa = $(jogo).data('timecasa').toLowerCase();
+                    var timeFora = $(jogo).data('timefora').toLowerCase();
+                    if ((time == timeCasa || time == timeFora)) {
+                        contador++;
+                    } else {
+                        $(jogo).addClass("hide");
+                    }
+
+                });
+
+                if (contador == 0) {
+                    $(".panel-scroll header").each(function () {
+                        $(this).addClass("hide");
+                    });
+                    $(".panel-scroll").append(
+                        '<div class="alert alert-warning m-t-20 m-l-20 m-r-20" role="alert">' +
+                        '<strong>Nenhum Resultado Encotrado !</strong>' +
+                        '</div>'
+                    );
+                } else {
+                    var dataFormatada = data.split('-').reverse().join('/');
+                    $(".panel-scroll").find(".data-organiza").each(function () {
+                        var atual = $(this);
+                        if ($(atual).data("dateteste") == dataFormatada) {
+                        } else {
+                            $(atual).hide();
+                        }
+                    });
+                    $(".panel-scroll").find("header").each(function () {
+                        var atual = $(this);
+                        console.log(atual);
+                        if (atual.data("campeonatoatual") == campeonato) {
+                        } else {
+                            $(atual).addClass("hide");
+                        }
+                    });
+                }
+
+            }
+        }
+
+    </script>
+
+{% endblock script %}

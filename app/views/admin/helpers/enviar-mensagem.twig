@@ -1,0 +1,124 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            <form class="admpage-form">
+                <div class="panel panel-roxo">
+
+                    <div class="panel-heading">
+                        <h4 class="modal-title">Título Página</h4>
+                    </div>
+
+                    <div class="panel-content">
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <label class="">Pessoas</label>
+                                    <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                          data-content="Selecione as pessoas que receberam a mensagem."
+                                          data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+
+                                    <div class="form-group form-todos">
+
+                                        <select id="pessoas" name="pessoas[]"
+                                                class="example-getting-started form-control" multiple="multiple">
+
+                                            {% for title, lista in {'Meus indicados': [indicados, 'voIndicado'], 'Meus superiores': [indicadores, 'voIndicador']} %}
+                                                {% if lista[0] %}
+                                                    <optgroup label="{{ title }}">
+                                                        {% for user in lista[0] %}
+                                                            {% set user = user[lista[1]]() %}
+                                                            <option value="{{ user.getToken() }}">{{ user.getToken() }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="">Título</label><span class="pointer" data-toggle="popover"
+                                                                            data-trigger="hover"
+                                                                            data-content="Digite um título para a mensagem."
+                                                                            data-original-title="" title="">[<i
+                                                    class="fa fa-question"></i>]</span>
+                                        <input type="text" name="assunto" required minlength="5"
+                                               class="form-control text">
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12">
+
+                                    <div class="form-group">
+                                        <label> Texto</label>
+                                        <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                              data-content="Digite um texto para a página." data-original-title=""
+                                              title="">[<i
+                                                    class="fa fa-question"></i>]</span>
+                                        <textarea data-ckeditor="simples" class="form-control"
+                                                  name="mensagem"></textarea>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right panel-footer">
+
+                        <button class="btn btn-danger" type="reset">
+                            <i class="fa fa-eraser"></i>
+                            Limpar
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-paper-plane"></i>
+                            Enviar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.admpage-form')
+                .adminPage({
+                    autoSearch: false,
+                    alertSuccess: true,
+                });
+
+            $('.example-getting-started').multiselect({
+                allSelectedText: 'Todas Selecionadas',
+                nonSelectedText: 'Nenhuma pessoa selecionada !!',
+                nSelectedText: ' - Pessoas Selecionadas!',
+                buttonContainer: '<div class="block-botao" />',
+                selectAllText: 'Selecionar todos',
+                buttonWidth: "100%",
+                enableFiltering: true,
+                filterPlaceholder: 'Buscar',
+                includeSelectAllOption: true,
+                buttonClass: 'btn btn-secondary'
+            });
+        });
+
+    </script>
+
+{% endblock %}

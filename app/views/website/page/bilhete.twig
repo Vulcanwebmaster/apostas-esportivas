@@ -1,0 +1,107 @@
+{% extends 'website/layout.twig' %}
+
+{% block main %}
+
+    <h3 class="page-title"><i class="fa fa-ticket"></i> Consulta de Bilhete</h3>
+    <div class="container pt-3 pb-3">
+        <form class="admpage-form">
+            <div class="row">
+                <div class="col-12">
+                    <label>Código</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" maxlength="12" name="codigo" class="form-control"/>
+                        <div class="input-group-append">
+                            <button class="btn btn-danger">
+                                <i class="fa fa-search"></i> Pesquisar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr/>
+        <div class="admpage-container"></div>
+    </div>
+
+{% endblock %}
+
+{% block bilhete %}
+    <table class="table table-striped table-bordered table-hover mb-0">
+        <tbody>
+        <tr>
+            <th>Código:</th>
+            <td colspan="3">{{ aposta.getCodigoBilhete() }}</td>
+        </tr>
+        <tr>
+            <th>Cliente:</th>
+            <td>{{ aposta.getApostadorNome() }}</td>
+            <th>Usuário:</th>
+            <td>{{ user.getNome() }}</td>
+        </tr>
+        <tr>
+            <th>Valor da aposta:</th>
+            <td>{{ aposta.getValor(true) }}</td>
+            <th>Número de jogos:</th>
+            <td>{{ aposta.getJogos() }}</td>
+        </tr>
+        <tr>
+            <th>Data:</th>
+            <td>{{ aposta.getData(true) }}</td>
+            <th>Valor do prêmio:</th>
+            <td>R$ {{ aposta.getRetornoValido(true) }}</td>
+        </tr>
+        <tr>
+            <th>Qtd. Acertos:</th>
+            <td>{{ aposta.get('acertos') }}</td>
+            <th>Situação:</th>
+            <td>
+                {% if aposta.getStatus() == 1 %}
+                    {{ aposta.getVerificado() ? (aposta.getGanhou() ? 'Ganhou' : 'Perdeu') : 'Aguardando conclusão dos jogos' }}
+                {% else %}
+                    {{ {0: 'Cancelada', 2: 'Aguardando pagamento', 3: 'Não recebeu pagamento', 99: 'Excluída'}[aposta.getStatus()] }}
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    {% if aposta.getStatus() == 2 %}
+        <div class="text-right pt-3">
+            <form onsubmit="javascript:return false;" class="form-bilhete">
+                <input type="hidden" name="token" value="{{ aposta.getToken() }}">
+                <button class="btn btn-danger">
+                    <i class="fa fa-check"></i> Validar aposta
+                </button>
+            </form>
+        </div>
+        <script>
+            $('.form-bilhete')
+                .adminPage({
+                    autoSearch: false,
+                    controller: 'bilhete',
+                    insertAction: 'validar',
+                    alertSuccess: true,
+                })
+                .on("success", function (event, e) {
+                    if (e.result == 1)
+                        page.reloadSearch();
+                });
+        </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var page = $
+            .adminPage({
+                formSearch: '.admpage-form',
+                container: '.admpage-container',
+            });
+
+    </script>
+
+{% endblock %}

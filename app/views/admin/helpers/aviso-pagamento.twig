@@ -1,0 +1,23 @@
+{% if user.getPagouPlano() == 0 and dados().valorPlanoAdesao(user) > 0 %}
+<div class="alert alert-danger p-20">
+    <i class="fa fa-warning"></i> Sua adesão ao plano <span class="text-uppercase">{{ user.getLicencaTitle() }}</span>
+    ainda não está ativa,
+    <a href="{{ module }}/page/2159932FEA2E0E8N9EQLOQ5LOJENY9DYTM3AWB1PNIG4O96GR6">clique aqui</a>
+    para fazer um depósito no valor da sua adesão (R$ {{ dados().valorPlanoAdesao(user, true) }}) para ativar sua conta
+    {% if dados().valorPlanoAdesao(user) <= user.getCredito() %}
+        ou <a href="{{ module }}/ativacao/utilizarSaldo" target="_self">clique
+        aqui</a> para utilizar seu saldo atual e quitar seu plano.
+    {% endif %}
+</div>
+{% elseif user.estaEmDia() == false %}
+    <div class="alert alert-danger p-20">
+        <i class="fa fa-warning"></i> Sua mensalidade não está em dia, <a
+                href="{{ module }}/page/2159932FEA2E0E8N9EQLOQ5LOJENY9DYTM3AWB1PNIG4O96GR6">clique aqui</a>
+        e faça um depósito no valor mínimo de R$ {{ dados().valorRecarga(user, true) }} para continuar recebendo suas
+        remunerações em rede do sistema
+        {% if dados().valorRecarga(user) <= user.getCredito() %}
+            ou <a href="{{ module }}/ativacao/utilizarSaldo" target="_self">clique
+            aqui</a> para utilizar seu saldo atual e quitar sua mensalidade
+        {% endif %}
+    </div>
+{% endif %}

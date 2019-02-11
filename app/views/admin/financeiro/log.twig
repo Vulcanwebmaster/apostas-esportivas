@@ -1,0 +1,81 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <form class="admpage-form-search panel">
+        <div class="panel-body p-b-10">
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    <label>Usuário</label>
+                    <select name="user" class="form-control chosen" data-options="admin/users/users/options">
+                        <option value>-- Todos --</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-4">
+                    <label>Data Início</label>
+                    <input type="date" class="form-control" name="dataInicial">
+                </div>
+                <div class="form-group col-xs-2">
+                    <label>Hora Início</label>
+                    <input type="time" class="form-control" name="horaInicial">
+                </div>
+                <div class="form-group col-xs-4">
+                    <label>Data Final</label>
+                    <input type="date" class="form-control" name="dataFinal">
+                </div>
+                <div class="form-group col-xs-2">
+                    <label>Hora Final</label>
+                    <input type="time" class="form-control" name="horaFinal">
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-right">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-filter"></i> Filtrar
+            </button>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+        $(function () {
+
+            var container = $('.admpage-container');
+
+            $
+                .adminPage({
+                    autoSearch: false,
+                    container: container,
+                    formSearch: '.admpage-form-search',
+                });
+
+            container
+                .on("click", '[data-estornar]', function () {
+                    if (confirm('Deseja prosseguir com o estorno da transação?')) {
+
+                        var btn = $(this);
+
+                        $('html').addClass('page-loading');
+
+                        btn.remove();
+
+                        $
+                            .get(url(CONTROLLER + '/estornar', [btn.data("estornar")]), function (e) {
+                                alert(e.message);
+                            }, 'json')
+                            .always(function () {
+                                $('html').removeClass('page-loading');
+                            });
+                    }
+                })
+
+        });
+
+    </script>
+
+{% endblock %}

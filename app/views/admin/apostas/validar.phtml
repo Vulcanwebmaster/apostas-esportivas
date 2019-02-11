@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 col-xs-12 col-xs-offset-0">
+        <form class="panel panel-default form-pule" onsubmit="return false;">
+            <div class="panel-heading">
+                PULE
+            </div>
+            <div class="panel-body">
+                <input type="text" name="pule" class="form-control input-lg text-center" required=""/>
+            </div>
+            <div class="panel-footer text-right">
+                <button class="btn btn-success">
+                    Abrir detalhes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container-detalhes"></div>
+
+<script>
+
+    $('.form-pule').submit(function (e) {
+        e.preventDefault();
+        $('.container-detalhes').html('Carregando...');
+        $.post(url(CONTROLLER + '/detalhes'), $(this).getValues(), function (html) {
+            $('.container-detalhes').html(html);
+        }, 'html');
+    });
+
+    $(document).on('click', '.btn-validar', function (e) {
+        e.preventDefault();
+
+        var token = $(this).attr("data-token");
+
+        $.post(url(CONTROLLER + '/validar'), {
+            token: token,
+        }, function (e) {
+            if (e.result == 1) {
+                window.open(e.url, '_blank');
+            } else {
+                alert(e.message);
+            }
+        });
+
+        // Limpando o formulário
+        $('.form-pule').setValues({});
+        $('.container-detalhes').html('');
+    });
+
+</script>

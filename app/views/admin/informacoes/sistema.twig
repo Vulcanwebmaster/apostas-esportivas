@@ -1,0 +1,32 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-white">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p class="counter">{{ usuarios }}/{{ limite }}</p>
+                        <span class="info-box-title">Usuários</span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="panel info-box panel-white">
+                <div class="panel-body">
+                    <div class="info-box-stats">
+                        <p><span class="counter">{{ apostas }}</span></p>
+                        <span class="info-box-title">Apostas realizadas</span>
+                    </div>
+                    <div class="info-box-icon">
+                        <i class="fa fa-edit"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

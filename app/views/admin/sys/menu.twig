@@ -1,0 +1,121 @@
+{% extends 'admin/layout.twig' %}
+
+{% block links %}
+    <button onClick="$('#form-this').resetForm().modal();" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Novo
+    </button>
+{% endblock %}
+
+{% block main %}
+
+    <form class="modal fade admpage-form" id="form-this" onsubmit="return false;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close" data-dismiss="modal">&times;</div>
+                    <h3 class="modal-title">Menu</h3>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id"/>
+                    <div class="row">
+                        <div class="form-group col-md-3 col-xs-7">
+                            <label>Módulo</label>
+                            <select name="module" class="form-control" required>
+                                {{ optModules|raw }}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2 col-xs-5">
+                            <label>Posição</label>
+                            <input type="number" name="ordem" class="form-control" min="0" max="255"/>
+                        </div>
+                        <div class="form-group col-md-2 col-xs-12">
+                            <label>Root</label>
+                            <select name="root" class="form-control"></select>
+                        </div>
+                        <div class="form-group col-md-5 col-xs-12">
+                            <label>Controller</label>
+                            <input type="text" name="controller" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-2 col-xs-5">
+                            <label>Principal</label>
+                            <input type="number" name="principal" class="form-control" min="0" max="255"/>
+                        </div>
+                        <div class="form-group col-md-3 col-xs-5">
+                            <label>Ícone</label>
+                            <input type="text" name="icone" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-3 col-xs-5">
+                            <label>Título</label>
+                            <input type="text" name="title" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4 col-xs-5">
+                            <label>Descrição</label>
+                            <input type="text" name="descricao" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4 col-xs-5">
+                            <label>Onclick</label>
+                            <input type="text" name="onclick" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6 col-xs-5">
+                            <label>Variáveis</label>
+                            <input type="text" name="variaveis" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-2 col-xs-5">
+                            <label>Status</label>
+                            <select name="status" class="form-control" required>
+                                <option value="1">Ativo</option>
+                                <option value="2">Invisível</option>
+                                <option value="0">Inativo</option>
+                                <option value="99">Excluído</option>
+                            </select>
+                        </div>
+                        {% if isDev %}
+                            <div class="form-group col-xs-12">
+                                <label>Permissões</label>
+                                <select name="permissoes" class="form-control chosen" multiple required>
+                                    {{ permissoes|raw }}
+                                </select>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-left">
+                        <button class="btn btn-warning" type="button" onclick="javascript:salvarCopia()">
+                            <i class="fa fa-copy"></i> Salvar cópia
+                        </button>
+                    </div>
+                    <button type="button" data-dismiss="modal" class="btn btn-link">
+                        &times; Cancelar
+                    </button>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-save"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="form-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var form = $('.admpage-form');
+
+        form
+            .adminPage({
+                container: '.form-container',
+            });
+
+        function salvarCopia() {
+            form.find("[name=id]").val(0);
+            form.submit();
+        }
+
+    </script>
+
+{% endblock %}

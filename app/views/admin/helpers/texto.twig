@@ -1,0 +1,78 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="text-right m-b-md">
+        <a href="{{ module }}" type="button" class="btn btn-warning btn-lg panel-btn-right">
+            <i class="fa fa-chevron-left"></i>
+            Voltar
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <form>
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <h4 class="modal-title">Título Página</h4>
+                    </div>
+
+                    <div class="panel-content">
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="">Título</label><span class="pointer" data-toggle="popover" data-trigger="hover" data-content="Ditie um título para página." data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                        <input type="text" name="titulo" class="form-control text">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+
+                                    <div class="form-group">
+                                        <label> Texto</label><span class="pointer" data-toggle="popover" data-trigger="hover" data-content="Digite um texto para a página." data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                        <textarea rows="4"></textarea>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="">Descrição</label><span class="pointer" data-toggle="popover" data-trigger="hover" data-content="Digite uma descrição de no máximo 160 caracteres." data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                        <input type="text" name="titulo" class="form-control text">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="">Keywords</label><span class="pointer" data-toggle="popover" data-trigger="hover" data-content="Palavras chave do texto,digite as palavras separadas por ','" data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+                                        <input type="text" name="keywords" class="form-control text">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right panel-footer">
+
+                        <button class="btn btn-danger" type="reset">
+                            <i class="fa fa-eraser"></i>
+                            Limpar
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Salvar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

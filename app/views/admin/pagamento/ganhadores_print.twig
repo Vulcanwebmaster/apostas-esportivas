@@ -1,0 +1,138 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="admfiles/plugins/bootstrap/css/bootstrap.min.css"/>
+
+    <style>
+
+        body, html {
+            width: 290px;
+            margin: 0 auto;
+            font-size: 12px;
+            font-family: monospace
+        }
+
+        table {
+            width: 290px;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        hr {
+            margin: 15px 0;
+            border-top: 1px dashed black;
+        }
+
+        .print-title {
+            font-weight: bold;
+            margin: 15px 0 0 0;
+        }
+
+        .data-dia {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 0 15px 0;
+        }
+
+        table th, table td {
+            font-size: 12px;
+        }
+
+        table td {
+            text-align: left;
+        }
+
+        table tbody {
+            line-height: 17px;
+        }
+
+        table tbody tr td {
+            font-size: 10px !important;
+        }
+
+        .borda {
+            border-top: 3px solid black;
+            border-bottom: 3px solid black;
+        }
+
+        .table-jogo {
+            margin-bottom: 20px;
+        }
+
+        .table-jogo .title {
+            text-align: left;
+            font-weight: bold;
+            margin: 4px 0px 4px 0px;
+            font-size: 14px;
+            line-height: 24px;
+        }
+
+    </style>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <td class="text-center">
+            <h3 class="print-title">{{ dados().getBanca() }}</h3>
+        </td>
+    </tr>
+    </thead>
+</table>
+
+<hr/>
+
+<table>
+    <thead>
+    <tr>
+        <td>INICIO</td>
+        <td>FIM</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{ dataInicial }}</td>
+        <td>{{ dataFinal }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<hr/>
+<table class="table-jogo">
+    <thead>
+    <tr>
+        <td>Cod.</td>
+        <td>Data</td>
+        <td>Val.</td>
+        <td>Ret.</td>
+        <td>Jogos</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for v in apostas %}
+        <tr>
+            <td class="text-uppercase">{{ v.getId() }}</td>
+            <td class="text-uppercase">{{ v.getData(true) }}</td>
+            <td class="text-uppercase">{{ v.getValor(true) }}</td>
+            <td class="text-uppercase">{{ v.getRetornoValido(true) }}</td>
+            <td class="text-uppercase">{{ v.getJogos() }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+
+    // Imprime
+    window.print();
+
+    // Fecha a Janela
+    setTimeout(window.close, 300);
+
+
+</script>
+
+</body>
+</html>

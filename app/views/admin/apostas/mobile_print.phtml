@@ -1,0 +1,191 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+
+        body {
+            font: 100% monospace, arial, tahoma, sans-serif;
+            overflow: hidden;
+        }
+
+        .page {
+            page-break-before: always;
+            display: block;
+        }
+
+        .aposta {
+            width: 100%;
+            font-size: 2.45em;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        .aposta .conteudo {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .aposta .conteudo .banca {
+            padding: 6px 0px;
+            margin: 5px 0px;
+            font-size: 37px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+        }
+
+        .aposta .conteudo .informacoes {
+            display: inline-block;
+        }
+
+        .aposta .conteudo .informacoes.last {
+            border-top: 1px solid #333;
+            padding: 9px 0px 0px;
+        }
+
+        .aposta .conteudo .informacoes .item {
+            width: 100%;
+        }
+
+        .aposta .conteudo .informacoes .item .titulo {
+            font-weight: bold;
+            text-align: left;
+            float: left;
+        }
+
+        .aposta .conteudo .informacoes .item .texto {
+            font-weight: normal;
+            text-align: right;
+        }
+
+        .aposta .conteudo .jogos {
+            border-top: 1px solid #333;
+            padding: 2px 0px;
+            margin: 5px 0px;
+        }
+
+        .aposta .conteudo .jogos .jogo {
+            margin: 8px 0;
+        }
+
+        .aposta .conteudo .jogos .jogo .titulo {
+            text-align: center;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .aposta .conteudo .jogos .jogo .titulo .jogo-title {
+            margin: 8px 0px;
+            font-size: 0.8em !important;
+        }
+
+        .aposta .conteudo .jogos .jogo .titulo span {
+            font-weight: normal;
+        }
+
+        .aposta .conteudo .jogos .jogo .cotacao {
+            padding: 4px;
+            border: 1px solid #333;
+        }
+
+        .regras {
+            margin-top: 10px;
+            text-align: justify;
+        }
+
+        .esq {
+            width: 48% !important;
+            float: left;
+            margin-right: 9px;
+        }
+
+        .esq .titulo {
+            margin-right: 5px;
+        }
+
+        .esq .texto {
+            text-align: inherit !important;
+        }
+
+        .dir {
+            width: 49% !important;
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="aposta">
+    <div class="conteudo">
+        <div class="banca"><?php echo app\modules\admin\Admin::getConfiguracoes()->getBanca() ?></div>
+        <div class="informacoes">
+            <div class="item codigo esq" style="width: 38% !important;">
+                <div class="titulo">Código:</div>
+                <div class="texto"><?php echo $aposta->getId() ?></div>
+            </div>
+            <div class="item data dir" style="width: 56% !important;">
+                <div class="titulo">Data:</div>
+                <div class="texto"><?php echo str_replace(' ', ' ', substr($aposta->getInsert(true), 0, -3)) ?></div>
+            </div>
+            <div class="item apostador" style="float: left;">
+                <div class="titulo">Apostador:</div>
+                <div class="texto"><?php echo $aposta->getUserNome() ?></div>
+            </div>
+        </div>
+        <div class="jogos">
+            <?php /** @var \app\vo\ApostaJogoVO[] $jogos */
+            foreach ($jogos as $i => $jogo) { ?>
+                <div class="jogo">
+                    <div class="titulo">
+                        <div class="jogo-title"><?php echo $jogo->voJogo()->getTimeCasaTitle() ?>
+                            x <?php echo $jogo->voJogo()->getTimeForaTitle() ?></div>
+                        <span class="cotacao"><?php echo $jogo->voJogo()->getId() ?></span>
+                        <span class="cotacao"><?php echo $jogo->voJogo()->getData(true) . ' ás ' . $jogo->voJogo()->getHora() ?></span>
+                        <span class="cotacao"><?php
+                            echo $jogo->getCotacaoTitle() . " " . $jogo->getCotacaoValor(true);
+                            ?></span>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="informacoes last">
+            <div class="item valor-apostado esq">
+                <div class="titulo">Valor apostado:</div>
+                <div class="texto"><?php echo $aposta->getValor(true) ?></div>
+            </div>
+            <div class="item valor-apostado dir">
+                <div class="titulo">retorno:</div>
+                <div class="texto"><?php echo $aposta->getRetornoValido(true) ?></div>
+            </div>
+            <div class="item jogos-apostados esq">
+                <div class="titulo">Jogos apostados:</div>
+                <div class="texto"><?php echo $aposta->getJogos() ?></div>
+            </div>
+            <div class="item cotacao dir">
+                <div class="titulo">Cotação:</div>
+                <div class="texto"><?php echo $aposta->getCotacaoValida(true) ?></div>
+            </div>
+            <div class="item cotacao" style="width: 100%;">
+                <div class="titulo">Token:</div>
+                <div class="texto" style="font-size:25px;padding-top: 3px;"><?php echo $aposta->getToken() ?></div>
+            </div>
+            <?php if (app\modules\admin\Admin::getConfiguracoes()->getImprimirRegras()) { ?>
+                <div class="item regras">
+                    <?php echo preg_replace('/ style=[\'"].*?[\'"]/', null, app\modules\admin\Admin::getConfiguracoes()->getRegulamento()) ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+<script>
+    // Imprime
+    //window.print();
+
+    // Fecha a Janela
+    //setTimeout(window.close, 100);
+</script>
+
+</body>
+</html>

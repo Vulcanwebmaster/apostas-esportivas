@@ -1,0 +1,96 @@
+<script>
+    $(window).load(function () {
+
+        var modal = $('.modal-jogos');
+
+        if (modal.length) {
+
+            $(document).on('click', '[data-apostajogos]', function () {
+                $('.modal-jogos').modal('show').find('.modal-body').html("");
+
+                var _url = url('apostas/aposta/tabelaJogos', [$(this).attr('data-apostajogos')]);
+
+                {% if param %}
+                _url += '/{{ param }}';
+                {% endif %}
+
+                $.get(_url, {}, function (html) {
+
+                    $('.modal-jogos .modal-body').html(html);
+
+                    modal.find('.item-aposta-jogo').each(function () {
+                        $(this).find("[name=tipo]").val($(this).attr("data-cotacao"));
+                    });
+
+                }, 'html');
+            });
+
+            $('.btn-update-jogos').click(function () {
+
+                var aposta = $('.tabela-aposta').attr("data-token");
+                var jogos = {};
+
+                modal.find('.item-aposta-jogo').each(function () {
+
+                    var item = $(this);
+                    var cotacao = item.find("[name=tipo]").val();
+
+                    if (cotacao && item.attr("data-cotacao") != cotacao) {
+                        jogos[item.attr("data-id")] = cotacao;
+                    }
+                });
+
+                if (jogos) {
+
+                    modal.modal('hide');
+
+                    $.post(url('apostas/aposta/atualizaJogos'), {
+                        aposta: aposta,
+                        jogos: jogos,
+                    }, function (e) {
+                        alert(e.message);
+                        if (e.result != 1) {
+                            setTimeout(function () {
+                                modal.modal('show');
+                            }, 500);
+                        } else {
+                            $('.page-form-search').submit();
+                        }
+                    }, 'json').fail(function (e) {
+                        _log(e.responseText);
+                    });
+
+                } else {
+                    alert('Nenhuma aposta foi alterada.');
+                }
+
+            });
+
+        }
+
+    });
+</script>
+
+<div class="modal fade modal-jogos">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close" data-dismiss="modal">&times;</div>
+                <h3 class="modal-title">Aposta/Jogos</h3>
+            </div>
+            <div class="modal-body p-0"></div>
+            <div class="modal-footer">
+                <div class="btn btn-link" data-dismiss="modal">
+                    <i class="fa fa-remove"></i>
+                    Fechar
+                </div>
+                {% if isDeveloper or isFuncionario %}
+                    <button type="button" class="btn btn-info btn-update-jogos" data-dismiss="modal">
+                        <i class="fa fa-edit"></i>
+                        Alterar
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

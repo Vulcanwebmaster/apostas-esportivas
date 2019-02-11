@@ -1,0 +1,179 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    {% if isAdm == false or isDev %}
+
+        {% include 'admin/helpers/info-saldo.twig' %}
+
+        <style>
+
+            .panel-table {
+                min-height: .01% !important;
+                overflow-x: auto !important;
+            }
+
+        </style>
+
+        <div class="row">
+            <div class="col-lg-4 col-xs-12">
+                <form class="admpage-form" enctype="multipart/form-data">
+                    <div class="panel panel-default panel-roxo">
+                        <div class="panel-heading">
+                            <h4>Novo Depósito</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <!--<div class="col-md-6 col-sm-12 col-xs-12">-->
+                                <!--<div clas="form-group">-->
+                                <!--<label class="">Selecione</label>-->
+                                <!--<span class="pointer" data-toggle="popover" data-trigger="hover"-->
+                                <!--data-content="Selecione uma das opções." data-original-title="" title="">[<i-->
+                                <!--class="fa fa-question"></i>]</span>-->
+                                <!--<select name="tipo" required class="form-control">-->
+                                <!--<option value>&#45;&#45; Selecione &#45;&#45;</option>-->
+                                <!--<option></option>-->
+                                <!--</select>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label class="">Valor do depósito (R$)</label>
+                                            <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                                  data-content="Digite o valor a ser transferido. Ex.: 20,50"
+                                                  data-original-title=""
+                                                  title="">[<i class="fa fa-question"></i>]</span>
+                                            <input type="text" name="valor"
+                                                   class="form-control input-lg text mask-valor"
+                                                   required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 text-left">
+                                    <label class="btn-success btn btn-inputfile">
+                                <span>
+                                    <i class="fa fa-file-text-o" style="margin-right: 6px;"></i> Comprovante
+                                    <span></span>
+                                </span>
+                                        <input type="file" name="upcomprovante" accept="image/*" required>
+                                    </label>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 text-right">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary" name="" value="">
+                                            <i class="fa fa-send"></i> Enviar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-8 col-xs-12">
+                <div class="panel panel-default panel-roxo">
+                    <div class="panel-heading">
+                        <h4>Instruções de depósito</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="texto">
+                                    {{ pagina('deposito').getTexto()|raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+    <form class="admpage-form-search panel panel-default">
+        <div class="panel-body p-b-10">
+            <div class="row">
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>DT/Inicial</label>
+                    <input type="date" class="form-control" name="dataInicial"/>
+                </div>
+                <div class="form-group col-md-3 col-xs-6">
+                    <label>DT/Final</label>
+                    <input type="date" class="form-control" name="dataFinal"/>
+                </div>
+                <div class="form-group col-md-6 col-xs-12">
+                    <label>Situação</label>
+                    <div class="input-group">
+                        <select name="status" class="form-control">
+                            <option value>-- Todos --</option>
+                            <option value="1">Analisando</option>
+                            <option value="2">Aprovado</option>
+                            <option value="0">Rejeitado</option>
+                        </select>
+                        <div class="input-group-btn">
+                            <button class="btn btn-roxo">
+                                <i class="fa fa-filter"></i> Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="admpage-container"></div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        var container = $('.admpage-container');
+
+        var _page = $
+            .adminPage({
+                formSearch: '.admpage-form-search',
+                form: '.admpage-form',
+                container: container,
+            });
+
+        container
+            .on('click', '[data-confirmar][data-value]', function () {
+                var btn = $(this);
+                var token = btn.attr('data-confirmar');
+                var value = btn.attr('data-value');
+                var message = value == 2 ? 'Deseja confirmar o depósito?' : 'Deseja recusar o depósito?';
+                swal({
+                    title: 'Atenção !!',
+                    text: message,
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim',
+                    cancelButtonText: 'Não'
+                }).then(function () {
+                    $.post(url(CONTROLLER + '/confirmar'), {deposito: token, valor: value}, function (e) {
+                        if (e.result != 1) {
+                            swal(
+                                'Erro !!',
+                                e.message,
+                                'error'
+                            );
+                        } else {
+                            _page.reloadSearch();
+                        }
+                    });
+                });
+
+            });
+
+    </script>
+
+{% endblock %}

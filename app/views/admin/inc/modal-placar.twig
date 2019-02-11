@@ -1,0 +1,30 @@
+<form class="modal-placar modal fade">
+    <input type="hidden" name="jogo"/>
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close" data-dismiss="modal">&times;</div>
+                <h3 class="modal-title">Placar</h3>
+            </div>
+            <div class="modal-body">
+                <div class="jogo-times m-b-20 text-center"></div>
+                {% for key in ['primeiro', 'segundo'] %}
+                <div class="form-group">
+                    <label>{{key|upper}} TEMPO</label>
+                    <div class="input-group">
+                        <input type="number" name="timecasaplacar{{key}}" class="form-control" required min="0" max="99"/>
+                        <div class="input-group-addon">casa x fora</div>
+                        <input type="number" name="timeforaplacar{{key}}" class="form-control" required min="0" max="99"/>
+                    </div>
+                </div>
+                {% endfor %}
+                <small class="text-justify text-danger">OBS: O resultado final será a soma dos resultados.</small>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">
+                    <i class="fa fa-check"></i> Definir
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,80 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            {% include 'admin/helpers/info-saldo.twig' %}
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="panel panel-default panel-roxo">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label><b>Informe o valor a ser comprado. (Mínimo de R$ 50,00)</b></label>
+                            <span class="pointer" data-toggle="popover" data-trigger="hover"
+                                  data-content="Digite um valor para comprar créditos para o sistema."
+                                  data-original-title="" title="">[<i class="fa fa-question"></i>]</span>
+
+                            <form class="admpage-form">
+                                <div class="form-group form-flex">
+                                    <input type="text" name="valor" class="form-control mask-valor" required>
+                                    <button class="btn btn-roxo btn-copy">
+                                        <i class="fa fa-check"></i> Comprar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default panel-roxo">
+        <div class="panel-heading">
+            <h4>Aqui virá o texto cadastrado na página de comprar créditos</h4>
+        </div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="texto">
+                        <p>Tenha sempre créditos em seu escritório virtual, pois o consumo deles é quem vai determinar
+                            seus
+                            ganhos em nosso sistema. Se seus créditos acabaram, compre agora mesmo e continue ganhando
+                            suas
+                            comissões. Existem duas formas de você comprar o crédito. Veja abaixo quais são: </p>
+                        <p>1) Aqui no seu escritório virtual, no menu FINANCEIRO > COMPRAR CRÉDITOS, informe o valor que
+                            deseja comprar, clique no botão COMPRAR e na próxima tela escolha a forma de pagamento
+                            desejada.</p>
+                        <p>2) No franqueado mais próximo. Dessa forma você não paga nenhuma taxa. Encontre a franquia
+                            mais
+                            próxima de você, clicando no menu FRANQUIAS e informando os dados solicitados para fazer a
+                            pesquisa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        $('.admpage-form')
+            .adminPage({
+                autoSearch: false,
+            })
+            .on('success', function (event, e) {
+                if (e.result == 1) {
+                    window.location.href = e.url;
+                }
+            });
+
+    </script>
+
+{% endblock %}
